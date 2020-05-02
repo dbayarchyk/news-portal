@@ -50,3 +50,26 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.users
     OWNER to admin;
+
+-- Table: public.articles
+
+-- DROP TABLE public.articles;
+
+CREATE TABLE public.articles
+(
+    id bigint NOT NULL DEFAULT nextval('articles_id_seq'::regclass),
+    title character varying COLLATE pg_catalog."default" NOT NULL,
+    author_id bigint NOT NULL,
+    content character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT articles_pkey PRIMARY KEY (id),
+    CONSTRAINT fkey_author_id FOREIGN KEY (author_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.articles
+    OWNER to admin;

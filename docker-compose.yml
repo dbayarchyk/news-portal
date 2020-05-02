@@ -8,6 +8,14 @@ services:
       - ./api/services/auth:/usr/src/app
     environment:
       FLASK_ENV: development
+  api-services-article:
+    build: ./api/services/article/.
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./api/services/article:/usr/src/app
+    environment:
+      FLASK_ENV: development
 
   postgres:
     image: postgres:12.2-alpine
