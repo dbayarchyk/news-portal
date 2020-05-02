@@ -227,8 +227,8 @@ def refresh_handler_v1():
 
     return response
 
-@app.route('/v1/logout', methods=['GET'])
-def logout_handler_v1():
+@app.route('/v1/signout', methods=['GET'])
+def signout_handler_v1():
     response = make_response('', 204)
 
     response.set_cookie('refresh_token', '', expires=0)
