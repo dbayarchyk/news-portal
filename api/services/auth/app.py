@@ -226,3 +226,11 @@ def refresh_handler_v1():
     response.set_cookie('refresh_token', value = str(new_refreshToken), httponly = True)
 
     return response
+
+@app.route('/v1/logout', methods=['GET'])
+def logout_handler_v1():
+    response = make_response('', 204)
+
+    response.set_cookie('refresh_token', '', expires=0)
+
+    return response
