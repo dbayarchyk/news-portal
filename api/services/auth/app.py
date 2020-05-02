@@ -73,7 +73,7 @@ def signin_handler_v1():
 
     access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
-        'user_id': user['id'],
+        'sub': user['id'],
         'user_email': user['email'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
@@ -83,7 +83,7 @@ def signin_handler_v1():
 
     refreshToken = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=15),
-        'user_id': user['id'],
+        'sub': user['id'],
     }, REFRESH_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
     response.set_cookie("refresh_token", value = str(refreshToken), httponly = True)
@@ -201,7 +201,7 @@ def refresh_handler_v1():
             'message': 'Refresh token is not valid.',
         }, 401)
 
-    user = find_user_by_id(refresh_token_payload['user_id'])
+    user = find_user_by_id(refresh_token_payload['sub'])
 
     if user is None:
         return make_response({
@@ -210,7 +210,7 @@ def refresh_handler_v1():
 
     new_access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
-        'user_id': user['id'],
+        'sub': user['id'],
         'user_email': user['email'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
@@ -220,7 +220,7 @@ def refresh_handler_v1():
 
     new_refreshToken = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=15),
-        'user_id': user['id'],
+        'sub': user['id'],
     }, REFRESH_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
     response.set_cookie('refresh_token', value = str(new_refreshToken), httponly = True)
