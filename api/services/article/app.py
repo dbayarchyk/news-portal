@@ -93,3 +93,50 @@ def articles_handler_v1():
         'items_count': items_count,
         'items': items,
     }, 200)
+
+def get_article_by_id(id):
+    db_connection = None
+    article = None
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+        cursor.execute("""
+            SELECT
+                id,
+                title,
+                content,
+                author_id
+            FROM
+                articles
+            WHERE
+                articles.id = %s
+        """, (id,))
+
+        article = cursor.fetchone()
+
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+    return article
+
+@app.route('/v1/articles/<id>', methods=['GET'])
+def article_by_id_handler_v1(id):
+    id = int(id)
+
+    article = get_article_by_id(id)
+
+    if article is None:
+        return make_response({
+            'message': 'Article not found.'
+        }, 404)
+
+    return make_response(dict(article), 200)
