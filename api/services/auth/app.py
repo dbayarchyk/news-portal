@@ -28,12 +28,25 @@ def find_user_by_email(email):
 
         cursor.execute("""
             SELECT
-                id,
-                email,
-                password    
+                users.id,
+                users.email,
+                users.password,
+                user_roles.role AS role,
+                ARRAY_AGG(permissions.name) AS permissions
             FROM
                 users
-            WHERE email = %s;
+            INNER JOIN user_roles
+                ON users.role_id = user_roles.id
+            LEFT JOIN
+                user_roles_to_permissions
+                ON user_roles.id = user_roles_to_permissions.user_role_id
+            INNER JOIN
+                permissions
+                ON user_roles_to_permissions.permission_id = permissions.id
+            WHERE
+                users.email = %s
+            GROUP BY
+	            users.id, user_roles.role;
         """, (email,))
 
         user = cursor.fetchone()
@@ -74,7 +87,8 @@ def signin_handler_v1():
     access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
         'sub': user['id'],
-        'user_email': user['email'],
+        'role': user['role'],
+        'permissions': user['permissions'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
     response = make_response({
@@ -168,11 +182,25 @@ def find_user_by_id(id):
 
         cursor.execute("""
             SELECT
-                id,
-                email    
+                users.id,
+                users.email,
+                users.password,
+                user_roles.role AS role,
+                ARRAY_AGG(permissions.name) AS permissions
             FROM
                 users
-            WHERE id = %s;
+            INNER JOIN user_roles
+                ON users.role_id = user_roles.id
+            LEFT JOIN
+                user_roles_to_permissions
+                ON user_roles.id = user_roles_to_permissions.user_role_id
+            INNER JOIN
+                permissions
+                ON user_roles_to_permissions.permission_id = permissions.id
+            WHERE
+                users.id = %s
+            GROUP BY
+	            users.id, user_roles.role;
         """, (id,))
 
         user = cursor.fetchone()
@@ -211,7 +239,8 @@ def refresh_handler_v1():
     new_access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
         'sub': user['id'],
-        'user_email': user['email'],
+        'role': user['role'],
+        'permissions': user['permissions'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
 
     response = make_response({

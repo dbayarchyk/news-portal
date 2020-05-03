@@ -35,6 +35,73 @@ TABLESPACE pg_default;
 ALTER TABLE public.user_roles
     OWNER to admin;
 
+-- Table: public.permissions
+
+-- DROP TABLE public.permissions;
+
+CREATE TABLE public.permissions
+(
+    id bigint NOT NULL DEFAULT nextval('permissions_id_seq'::regclass),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT permissions_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.permissions
+    OWNER to admin;
+
+INSERT INTO public.permissions
+    (id, name)
+VALUES
+    (1, "ARTICLE_VIEW_ALL_DRAFT"),
+    (2, "ARTICLE_VIEW_OWN_DRAFT"),
+    (3, "ARTICLE_VIEW_ALL_PUBLISHED"),
+    (4, "ARTICLE_VIEW_OWN_PUBLISHED")
+    (5, "ARTICLE_VIEW_ALL_PUBLISHED"),
+    (6, "ARTICLE_VIEW_OWN_ARCHIVED");
+
+-- Table: public.user_roles_to_permissions
+
+-- DROP TABLE public.user_roles_to_permissions;
+
+CREATE TABLE public.user_roles_to_permissions
+(
+    id bigint NOT NULL DEFAULT nextval('user_roles_to_permissions_id_seq'::regclass),
+    user_role_id smallint NOT NULL DEFAULT nextval('user_roles_to_permissions_user_role_id_seq'::regclass),
+    permission_id bigint NOT NULL DEFAULT nextval('user_roles_to_permissions_permission_id_seq'::regclass),
+    CONSTRAINT user_roles_to_permissions_pkey PRIMARY KEY (id),
+    CONSTRAINT user_roles_to_permissions_fkey_permission_id FOREIGN KEY (permission_id)
+        REFERENCES public.permissions (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT user_roles_to_permissions_fkey_user_role_id FOREIGN KEY (user_role_id)
+        REFERENCES public.user_roles (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.user_roles_to_permissions
+    OWNER to admin;
+
+INSERT INTO public.user_roles_to_permissions
+    (id, user_role_id, permission_id)
+VALUES
+    (1, 1, 3),
+    (2, 2, 3),
+    (3, 3, 2),
+    (4, 3, 3),
+    (5, 3, 5),
+    (6, 4, 1),
+    (7, 4, 2),
+    (8, 4, 3),
+    (9, 4, 4),
+    (10, 4, 1);
+
 -- Table: public.users
 
 -- DROP TABLE public.users;
