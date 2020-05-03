@@ -27,6 +27,9 @@ def get_articles_count():
                 count(*) AS articles_count
             FROM
                 articles
+            INNER JOIN
+                article_statuses
+                ON articles.status_id = article_statuses.id;
         """)
 
         result = cursor.fetchone()
@@ -60,14 +63,18 @@ def get_articles(**options):
 
         cursor.execute("""
             SELECT
-                id,
-                title,
-                content,
-                author_id
+                articles.id,
+                articles.title,
+                articles.content,
+                articles.author_id,
+                article_statuses.name AS status
             FROM
                 articles
+            INNER JOIN
+                article_statuses
+                ON articles.status_id = article_statuses.id
             LIMIT %s
-            OFFSET %s
+            OFFSET %s;
         """, (page_size, start_from))
 
         articles_rows = cursor.fetchall()
@@ -109,14 +116,18 @@ def get_article_by_id(id):
 
         cursor.execute("""
             SELECT
-                id,
-                title,
-                content,
-                author_id
+                articles.id,
+                articles.title,
+                articles.content,
+                articles.author_id,
+                article_statuses.name AS status
             FROM
                 articles
+            INNER JOIN
+                article_statuses
+                ON articles.status_id = article_statuses.id
             WHERE
-                articles.id = %s
+                articles.id = %s;
         """, (id,))
 
         article = cursor.fetchone()
