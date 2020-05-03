@@ -111,7 +111,7 @@ CREATE TABLE public.users
     id bigint NOT NULL DEFAULT nextval('users_id_seq'::regclass),
     email character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
-    role_id bigint NOT NULL DEFAULT 1,
+    role_id bigint NOT NULL DEFAULT 2,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_unique_email UNIQUE (email),
     CONSTRAINT users_fkey_role_id FOREIGN KEY (role_id)

@@ -62,6 +62,11 @@ def find_user_by_email(email):
 def signin_handler_v1():
     request_body = request.get_json()
 
+    if request_body is None:
+        return make_response({
+            'message': 'Provide an email and a password in a body'
+        }, 400)
+
     if request_body['email'] is None:
         return make_response({
             'message': 'Please provide an email.'
@@ -137,6 +142,11 @@ def create_user(email, password):
 @app.route('/v1/signup', methods=['POST'])
 def signup_handler_v1():
     request_body = request.get_json()
+
+    if request_body is None:
+        return make_response({
+            'message': 'Provide an email and a password in a body'
+        }, 400)
 
     if request_body['email'] is None:
         return make_response({
