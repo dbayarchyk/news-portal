@@ -3,8 +3,10 @@ import psycopg2.extras
 import jwt
 import requests
 from flask import Flask, request, make_response
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 DB_HOST = 'postgres'
 DB_NAME = 'itdog_database'
