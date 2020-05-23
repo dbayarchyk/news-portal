@@ -273,3 +273,52 @@ def signout_handler_v1():
     response.set_cookie('refresh_token', '', expires=0)
 
     return response
+
+def find_visitor_permissions():
+    db_connection = None
+    result = None
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+        cursor.execute("""
+            SELECT
+                ARRAY_AGG(permissions.name) AS permissions
+            FROM
+                user_roles
+            INNER JOIN
+                user_roles_to_permissions
+                ON user_roles.id = user_roles_to_permissions.user_role_id
+            INNER JOIN
+                permissions
+                ON user_roles_to_permissions.permission_id = permissions.id
+            WHERE
+                user_roles.role = 'VISITOR'
+            GROUP BY
+	            user_roles.role;
+        """)
+
+        result = cursor.fetchone()
+
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+    return result['permissions'] if result is not None else []
+
+@app.route('/v1/permissions/visitor', methods=['GET'])
+def get_visitor_permissions():
+    permissions = find_visitor_permissions()
+
+    response = make_response({
+        'permissions': permissions
+    }, 200)
+
+    return response
