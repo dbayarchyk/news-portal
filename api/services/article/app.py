@@ -1,6 +1,7 @@
 import psycopg2
 import psycopg2.extras
 import jwt
+import requests
 from flask import Flask, request, make_response
 
 app = Flask(__name__)
@@ -10,6 +11,22 @@ DB_NAME = 'itdog_database'
 DB_USER = 'admin'
 DB_PASSWORD = 'admin'
 ACCESS_TOKEN_SECRET = 'secret_access_token'
+AUTH_SERVICE_ENDPOINT = 'http://api-services-auth:5000'
+
+def get_visitor_permissions():
+    try:
+        result = requests.get(
+            url = AUTH_SERVICE_ENDPOINT + '/v1/permissions/visitor'
+        )
+
+        if result.status_code != 200:
+            return [result.status_code]
+
+        data = result.json()
+
+        return data['permissions'] if data is not None else []
+    except Exception:
+        return []
 
 def get_articles_count(**options):
     db_connection = None
@@ -199,8 +216,7 @@ def articles_handler_v1():
             if error is jwt.ExpiredSignatureError:
                 return make_response('', 401)
     else:
-        # TODO: get permissions for the VISITOR
-        permissions = None
+        permissions = get_visitor_permissions()
 
     if permissions is None:
         return make_response({
@@ -209,7 +225,7 @@ def articles_handler_v1():
 
     are_draft_allowed = 'ARTICLE_VIEW_ALL_DRAFT' in permissions or 'ARTICLE_VIEW_OWN_DRAFT' in permissions,
     are_draft_allowed_for_current_user_id = 'ARTICLE_VIEW_ALL_DRAFT' not in permissions
-    current_user_id = access_token_payload['sub']
+    current_user_id = access_token_payload['sub'] if access_token_payload is not None else None
     are_published_allowed = 'ARTICLE_VIEW_ALL_PUBLISHED' in permissions or 'ARTICLE_VIEW_OWN_PUBLISHED' in permissions
     are_published_allowed_for_current_user_id = 'ARTICLE_VIEW_ALL_PUBLISHED' not in permissions
     are_archived_allowed = 'ARTICLE_VIEW_ALL_ARCHIVED' in permissions or 'ARTICLE_VIEW_OWN_ARCHIVED' in permissions
@@ -347,8 +363,7 @@ def article_by_id_handler_v1(id):
             if error is jwt.ExpiredSignatureError:
                 return make_response('', 401)
     else:
-        # TODO: get permissions for the VISITOR
-        permissions = None
+        permissions = get_visitor_permissions()
 
     if permissions is None:
         return make_response({
@@ -358,7 +373,7 @@ def article_by_id_handler_v1(id):
     id = int(id)
     are_draft_allowed = 'ARTICLE_VIEW_ALL_DRAFT' in permissions or 'ARTICLE_VIEW_OWN_DRAFT' in permissions,
     are_draft_allowed_for_current_user_id = 'ARTICLE_VIEW_ALL_DRAFT' not in permissions
-    current_user_id = access_token_payload['sub']
+    current_user_id = access_token_payload['sub'] if access_token_payload is not None else None
     are_published_allowed = 'ARTICLE_VIEW_ALL_PUBLISHED' in permissions or 'ARTICLE_VIEW_OWN_PUBLISHED' in permissions
     are_published_allowed_for_current_user_id = 'ARTICLE_VIEW_ALL_PUBLISHED' not in permissions
     are_archived_allowed = 'ARTICLE_VIEW_ALL_ARCHIVED' in permissions or 'ARTICLE_VIEW_OWN_ARCHIVED' in permissions
