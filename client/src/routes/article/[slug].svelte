@@ -52,7 +52,7 @@
   <title>{article.title}</title>
 </svelte:head>
 
-<h1>{article.title}</h1>
+<h1 class="headline-1">{article.title}</h1>
 
 <div class="content">
   {@html article.content}

@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.leading-generic {
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.headline-1 {
+  @apply text-5xl;
+  @apply leading-generic;
+}
+
+.headline-2 {
+  @apply text-4xl;
+  @apply leading-generic;
+}
+
+.headline-3 {
+  @apply text-3xl;
+  @apply leading-generic;
+}
+
+.headline-4 {
+  @apply text-2xl;
+  @apply leading-generic;
+}
+
+.headline-5 {
+  @apply text-xl;
+  @apply leading-generic;
+}
+
+.headline-6 {
+  @apply text-lg;
+  @apply leading-generic;
+}
+
+.body-text {
+  @apply text-base;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-black;
+}
+
+.body-text-secondary {
+  @apply text-base;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-gray-500;
+}
+
+.link {
+  @apply text-base;
+  @apply leading-generic;
+  @apply text-blue-500;
+  @apply normal-case;
+}
+
+.link:hover {
+  @apply text-blue-700;
+  @apply underline;
+}
+
+.link:visited {
+  @apply text-purple-700;
+}
+
+.link:visited:hover {
+  @apply text-purple-500;
+}
