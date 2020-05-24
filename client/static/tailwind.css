@@ -69,3 +69,9 @@
 .link:visited:hover {
   @apply text-purple-500;
 }
+
+.layout-container {
+  @apply px-3;
+  @apply mx-auto;
+  max-width: 80rem;
+}
