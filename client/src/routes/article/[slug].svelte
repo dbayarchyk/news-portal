@@ -21,11 +21,20 @@
 </script>
 
 <script>
+  import marked from "marked";
+  import readingTime from "reading-time";
+
   import Error from "../../components/Error.svelte";
 
   export let article;
   export let error;
 </script>
+
+<style>
+  .article {
+    max-width: 75ch;
+  }
+</style>
 
 <svelte:head>
   {#if article}
@@ -38,9 +47,26 @@
 {#if error}
   <Error status={error.status} message={error.message} />
 {:else}
-  <h1 class="headline-1">{article.title}</h1>
+  <article class="article mx-auto">
+    <h1 class="headline-1 text-center mt-5">{article.title}</h1>
 
-  <div class="content">
-    {@html article.content}
-  </div>
+    <p class="body-text-secondary text-center mt-5">
+      <span>Dzmitry Bayarchyk</span>
+      |
+      <span>{new Date().toLocaleDateString()}</span>
+      |
+      <span>
+        {Math.round(readingTime(article.content).minutes)} min read ☕️
+      </span>
+    </p>
+
+    <img
+      class="w-full mt-8"
+      src={`https://picsum.photos/600/300?random=${article.id}`}
+      alt="" />
+
+    <div class="content mt-5 bode-text-normal">
+      {@html marked(article.content)}
+    </div>
+  </article>
 {/if}

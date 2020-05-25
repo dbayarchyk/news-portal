@@ -21,17 +21,11 @@
 
 <script>
   import Error from "../components/Error.svelte";
+  import ArticleCard from "../components/ArticleCard.svelte";
 
   export let articles;
   export let error;
 </script>
-
-<style>
-  ul {
-    margin: 0 0 1em 0;
-    line-height: 1.5;
-  }
-</style>
 
 <svelte:head>
   <title>IT Dog</title>
@@ -40,15 +34,15 @@
 {#if error}
   <Error status={error.status} message={error.message} />
 {:else}
-  <ul>
-    {#each articles as article}
-      <li class="mb-5">
-        <h2 class="headline-1">
-          <a class="hover:underline" rel="prefetch" href="article/{article.id}">
-            {article.title}
-          </a>
-        </h2>
-      </li>
-    {/each}
-  </ul>
+  <section class="py-3">
+    <h1 class="headline-1">News</h1>
+
+    <ul class="grid grid-cols-4 gap-2 mt-2">
+      {#each articles as article}
+        <li>
+          <ArticleCard articleId={article.id} title={article.title} />
+        </li>
+      {/each}
+    </ul>
+  </section>
 {/if}
