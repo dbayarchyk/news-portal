@@ -8,6 +8,7 @@ services:
       - ./api/services/auth:/usr/src/app
     environment:
       FLASK_ENV: development
+
   api-services-article:
     build: ./api/services/article/.
     ports:
@@ -36,3 +37,11 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
+
+  client:
+    build: ./client/.
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+    command: ["npm", "run", "dev", "&&", "npm", "run", "watch:tailwind"]
