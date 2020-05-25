@@ -4,12 +4,26 @@
   export async function preload({ params, query }) {
     const articlesResult = await getArticles();
 
-    return { articles: articlesResult.items };
+    if (articlesResult.ok) {
+      const data = await articlesResult.json();
+
+      return { articles: data.items };
+    }
+
+    return {
+      error: {
+        status: articleResponse.status,
+        message: data.message
+      }
+    };
   }
 </script>
 
 <script>
-  export let articles = [];
+  import Error from "../components/Error.svelte";
+
+  export let articles;
+  export let error;
 </script>
 
 <style>
@@ -23,12 +37,18 @@
   <title>IT Dog</title>
 </svelte:head>
 
-<ul>
-  {#each articles as article}
-    <li>
-      <a class="hover:underline" rel="prefetch" href="article/{article.id}">
-        <h2 class="headline-1">{article.title}</h2>
-      </a>
-    </li>
-  {/each}
-</ul>
+{#if error}
+  <Error status={error.status} message={error.message} />
+{:else}
+  <ul>
+    {#each articles as article}
+      <li class="mb-5">
+        <h2 class="headline-1">
+          <a class="hover:underline" rel="prefetch" href="article/{article.id}">
+            {article.title}
+          </a>
+        </h2>
+      </li>
+    {/each}
+  </ul>
+{/if}

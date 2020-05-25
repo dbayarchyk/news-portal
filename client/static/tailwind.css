@@ -7,37 +7,50 @@
 }
 
 .headline-1 {
+  @apply font-semibold;
   @apply text-5xl;
   @apply leading-generic;
 }
 
 .headline-2 {
+  @apply font-semibold;
   @apply text-4xl;
   @apply leading-generic;
 }
 
 .headline-3 {
+  @apply font-semibold;
   @apply text-3xl;
   @apply leading-generic;
 }
 
 .headline-4 {
+  @apply font-semibold;
   @apply text-2xl;
   @apply leading-generic;
 }
 
 .headline-5 {
+  @apply font-semibold;
   @apply text-xl;
   @apply leading-generic;
 }
 
 .headline-6 {
+  @apply font-semibold;
   @apply text-lg;
   @apply leading-generic;
 }
 
-.body-text {
+.body-text-normal {
   @apply text-base;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-black;
+}
+
+.body-text-primary {
+  @apply font-semibold;
   @apply leading-generic;
   @apply normal-case;
   @apply text-black;
