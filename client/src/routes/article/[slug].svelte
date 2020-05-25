@@ -65,7 +65,7 @@
       src={`https://picsum.photos/600/300?random=${article.id}`}
       alt="" />
 
-    <div class="content mt-5 bode-text-normal">
+    <div class="markdown mt-5">
       {@html marked(article.content)}
     </div>
   </article>

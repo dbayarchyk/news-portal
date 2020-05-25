@@ -14378,6 +14378,7 @@ video {
 }
 
 .body-text-normal {
+  text-align: justify;
   font-size: 1rem;
   line-height: calc(2px + 2ex + 2px);
   text-transform: none;
@@ -14387,6 +14388,7 @@ video {
 }
 
 .body-text-primary {
+  text-align: justify;
   font-weight: 600;
   line-height: calc(2px + 2ex + 2px);
   text-transform: none;
@@ -14396,6 +14398,7 @@ video {
 }
 
 .body-text-secondary {
+  text-align: justify;
   font-size: 1rem;
   line-height: calc(2px + 2ex + 2px);
   text-transform: none;
@@ -14438,6 +14441,109 @@ video {
   margin-left: auto;
   margin-right: auto;
   max-width: 80rem;
+}
+
+.markdown * {
+  text-align: justify;
+  font-size: 1rem;
+  line-height: calc(2px + 2ex + 2px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+}
+
+.markdown h1 {
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown h2 {
+  font-weight: 600;
+  font-size: 2.25rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown h3 {
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown h4 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown h5 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown h6 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: calc(2px + 2ex + 2px);
+}
+
+.markdown * + * {
+  margin-top: 1.25rem;
+}
+
+.markdown ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding-left: 1.5rem;
+}
+
+.markdown ul li + li {
+  margin-top: 0.25rem;
+}
+
+.markdown * + ul,
+.markdown ul + * {
+  margin-top: 1.5rem;
+}
+
+.markdown ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+  padding-left: 1.5rem;
+}
+
+.markdown ol li + li {
+  margin-top: 0.25rem;
+}
+
+.markdown * + ol,
+.markdown ol + * {
+  margin-top: 1.5rem;
+}
+
+.markdown strong {
+  text-align: justify;
+  font-weight: 600;
+  line-height: calc(2px + 2ex + 2px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+}
+
+.markdown blockquote {
+  font-style: italic;
+  position: relative;
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+  border-left-width: 4px;
+  --border-opacity: 1;
+  border-color: #4299e1;
+  border-color: rgba(66, 153, 225, var(--border-opacity));
+  padding: 1rem;
 }
 
 @media (min-width: 640px) {
