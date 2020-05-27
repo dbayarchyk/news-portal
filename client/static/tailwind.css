@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .leading-generic {
-  line-height: calc(2px + 2ex + 2px);
+  line-height: calc(5px + 2ex + 5px);
 }
 
 .headline-1 {
@@ -43,7 +43,6 @@
 }
 
 .body-text-normal {
-  @apply text-justify;
   @apply text-base;
   @apply leading-generic;
   @apply normal-case;
@@ -51,7 +50,6 @@
 }
 
 .body-text-primary {
-  @apply text-justify;
   @apply font-semibold;
   @apply leading-generic;
   @apply normal-case;
@@ -59,11 +57,28 @@
 }
 
 .body-text-secondary {
-  @apply text-justify;
   @apply text-base;
   @apply leading-generic;
   @apply normal-case;
   @apply text-gray-500;
+}
+
+.text-cropped::before {
+  content: "";
+  display: block;
+  height: 0px;
+  width: 0px;
+  /* (1em - line-height) * 0.5 */
+  margin-bottom: calc((1em - (5px + 2ex + 5px)) * 0.5);
+}
+
+.text-cropped::after {
+  content: "";
+  display: block;
+  height: 0px;
+  width: 0px;
+  /* (1em - line-height) * 0.5 */
+  margin-top: calc((1em - (5px + 2ex + 5px)) * 0.5);
 }
 
 .link {
@@ -94,6 +109,7 @@
 
 .markdown * {
   @apply body-text-normal;
+  @apply text-xl;
 }
 
 .markdown h1 {
@@ -121,13 +137,13 @@
 }
 
 .markdown * + * {
-  @apply mt-5;
+  @apply mt-6;
 }
 
 .markdown ul {
   @apply list-disc;
   @apply list-inside;
-  @apply pl-6;
+  @apply pl-8;
 }
 
 .markdown ul li + li {
@@ -142,7 +158,7 @@
 .markdown ol {
   @apply list-decimal;
   @apply list-inside;
-  @apply pl-6;
+  @apply pl-8;
 }
 
 .markdown ol li + li {
