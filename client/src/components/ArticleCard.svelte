@@ -32,10 +32,10 @@
 <article class="relative inline-flex flex-col">
   <div class="inline-flex flex-col-reverse">
     <a
-      class="article-link hover:underline"
+      class="article-link hover:underline mt-1"
       rel="prefetch"
       href="article/{articleId}">
-      <h2 class="headline-2">{title}</h2>
+      <h2 class="body-text-primary">{title}</h2>
     </a>
 
     <div class="article-image-wrapper">
@@ -48,5 +48,5 @@
     </div>
   </div>
 
-  <p class="body-text-secondary">Hello there</p>
+  <p class="body-text-secondary text-cropped">Hello there</p>
 </article>
