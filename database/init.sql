@@ -137,6 +137,7 @@ CREATE TABLE public.articles
     author_id bigint NOT NULL,
     content character varying COLLATE pg_catalog."default" NOT NULL,
     status_id smallint NOT NULL DEFAULT 1,
+    created_date date NOT NULL,
     CONSTRAINT articles_pkey PRIMARY KEY (id),
     CONSTRAINT fkey_author_id FOREIGN KEY (author_id)
         REFERENCES public.users (id) MATCH SIMPLE

@@ -52,7 +52,8 @@ def get_articles_count(**options):
                     articles.title,
                     articles.content,
                     articles.author_id,
-                    article_statuses.name AS status
+                    article_statuses.name AS status,
+                    articles.created_date
                 FROM
                     articles
                 INNER JOIN
@@ -138,7 +139,8 @@ def get_articles(**options):
                     articles.title,
                     articles.content,
                     articles.author_id,
-                    article_statuses.name AS status
+                    article_statuses.name AS status,
+                    articles.created_date
                 FROM
                     articles
                 INNER JOIN
@@ -286,7 +288,8 @@ def get_article_by_id(**options):
                     articles.title,
                     articles.content,
                     articles.author_id,
-                    article_statuses.name AS status
+                    article_statuses.name AS status,
+                    articles.created_date
                 FROM
                     articles
                 INNER JOIN
