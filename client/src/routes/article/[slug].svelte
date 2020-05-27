@@ -53,7 +53,7 @@
     <p class="body-text-secondary text-center mt-5">
       <span>Dzmitry Bayarchyk</span>
       |
-      <span>{new Date().toLocaleDateString()}</span>
+      <span>{new Date(article.created_date).toLocaleDateString()}</span>
       |
       <span>
         {Math.round(readingTime(article.content).minutes)} min read ☕️
