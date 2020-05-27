@@ -19,7 +19,7 @@ services:
       FLASK_ENV: development
 
   postgres:
-    image: postgres:12.2-alpine
+    build: ./database/.
     ports:
       - "5432:5432"
     volumes:
@@ -32,6 +32,8 @@ services:
 
   postgres-pgadmin:
     image: dpage/pgadmin4
+    depends_on:
+      - postgres
     ports:
       - "8000:80"
     environment:
