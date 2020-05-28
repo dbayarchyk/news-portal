@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.leading-generic {
+  line-height: calc(5px + 2ex + 5px);
+}
+
+.headline-1 {
+  @apply font-semibold;
+  @apply text-5xl;
+  @apply leading-generic;
+}
+
+.headline-2 {
+  @apply font-semibold;
+  @apply text-4xl;
+  @apply leading-generic;
+}
+
+.headline-3 {
+  @apply font-semibold;
+  @apply text-3xl;
+  @apply leading-generic;
+}
+
+.headline-4 {
+  @apply font-semibold;
+  @apply text-2xl;
+  @apply leading-generic;
+}
+
+.headline-5 {
+  @apply font-semibold;
+  @apply text-xl;
+  @apply leading-generic;
+}
+
+.headline-6 {
+  @apply font-semibold;
+  @apply text-lg;
+  @apply leading-generic;
+}
+
+.body-text-normal {
+  @apply text-base;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-black;
+}
+
+.body-text-primary {
+  @apply font-semibold;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-black;
+}
+
+.body-text-secondary {
+  @apply text-base;
+  @apply leading-generic;
+  @apply normal-case;
+  @apply text-gray-500;
+}
+
+.text-cropped::before {
+  content: "";
+  display: block;
+  height: 0px;
+  width: 0px;
+  /* (1em - line-height) * 0.5 */
+  margin-bottom: calc((1em - (5px + 2ex + 5px)) * 0.5);
+}
+
+.text-cropped::after {
+  content: "";
+  display: block;
+  height: 0px;
+  width: 0px;
+  /* (1em - line-height) * 0.5 */
+  margin-top: calc((1em - (5px + 2ex + 5px)) * 0.5);
+}
+
+.link {
+  @apply text-base;
+  @apply leading-generic;
+  @apply text-blue-500;
+  @apply normal-case;
+}
+
+.link:hover {
+  @apply text-blue-700;
+  @apply underline;
+}
+
+.link:visited {
+  @apply text-purple-700;
+}
+
+.link:visited:hover {
+  @apply text-purple-500;
+}
+
+.layout-container {
+  @apply px-3;
+  @apply mx-auto;
+  max-width: 80rem;
+}
+
+.markdown * {
+  @apply body-text-normal;
+  @apply text-xl;
+}
+
+.markdown h1 {
+  @apply headline-1;
+}
+
+.markdown h2 {
+  @apply headline-2;
+}
+
+.markdown h3 {
+  @apply headline-3;
+}
+
+.markdown h4 {
+  @apply headline-4;
+}
+
+.markdown h5 {
+  @apply headline-5;
+}
+
+.markdown h6 {
+  @apply headline-6;
+}
+
+.markdown * + * {
+  @apply mt-6;
+}
+
+.markdown ul {
+  @apply list-disc;
+  @apply list-inside;
+  @apply pl-8;
+}
+
+.markdown ul li + li {
+  @apply mt-1;
+}
+
+.markdown * + ul,
+.markdown ul + * {
+  @apply mt-6;
+}
+
+.markdown ol {
+  @apply list-decimal;
+  @apply list-inside;
+  @apply pl-8;
+}
+
+.markdown ol li + li {
+  @apply mt-1;
+}
+
+.markdown * + ol,
+.markdown ol + * {
+  @apply mt-6;
+}
+
+.markdown strong {
+  @apply body-text-primary;
+}
+
+.markdown blockquote {
+  @apply italic;
+  @apply relative;
+  @apply bg-gray-100;
+  @apply border-l-4;
+  @apply border-blue-500;
+  @apply p-4;
+}

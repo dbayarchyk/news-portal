@@ -47,6 +47,15 @@ services:
       - ./client:/usr/src/app
     command: ["npm", "run", "dev"]
 
+  admin:
+    build: ./admin/.
+    depends_on:
+      - api-auth-service
+      - api-article-service
+    volumes:
+      - ./admin:/usr/src/app
+    command: ["npm", "run", "dev"]
+
   nginx:
     restart: always
     build: ./nginx/.
@@ -56,3 +65,4 @@ services:
       - api-auth-service
       - api-article-service
       - client
+      - admin
