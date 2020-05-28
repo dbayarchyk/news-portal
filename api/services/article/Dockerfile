@@ -1,5 +1,8 @@
 FROM python:3.7-alpine
 
+# Specifies that we need to expose this port when running the container e.g docker run -p 5000:5000.
+EXPOSE 5000
+
 WORKDIR /usr/src/app
 
 ENV FLASK_APP app.py
