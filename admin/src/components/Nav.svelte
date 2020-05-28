@@ -5,6 +5,14 @@
     {
       title: "Home",
       href: "."
+    },
+    {
+      title: "Articles",
+      href: "./articles"
+    },
+    {
+      title: "Users",
+      href: "./users"
     }
   ];
 </script>
