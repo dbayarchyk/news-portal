@@ -13,7 +13,7 @@ DB_NAME = 'itdog_database'
 DB_USER = 'admin'
 DB_PASSWORD = 'admin'
 ACCESS_TOKEN_SECRET = 'secret_access_token'
-AUTH_SERVICE_ENDPOINT = 'http://api-services-auth:5000'
+AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
 
 def get_visitor_permissions():
     try:

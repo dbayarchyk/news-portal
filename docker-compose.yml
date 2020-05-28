@@ -1,18 +1,18 @@
 version: "3"
 services:
-  api-services-auth:
+  api-auth-service:
     build: ./api/services/auth/.
-    ports:
-      - "5000:5000"
+    depends_on:
+      - postgres
     volumes:
       - ./api/services/auth:/usr/src/app
     environment:
       FLASK_ENV: development
 
-  api-services-article:
+  api-article-service:
     build: ./api/services/article/.
-    ports:
-      - "5001:5000"
+    depends_on:
+      - postgres
     volumes:
       - ./api/services/article:/usr/src/app
     environment:
@@ -20,8 +20,6 @@ services:
 
   postgres:
     build: ./database/.
-    ports:
-      - "5432:5432"
     volumes:
       # persist data even if container shuts down
       - ./database/data:/var/lib/postgresql/data/
@@ -42,8 +40,19 @@ services:
 
   client:
     build: ./client/.
-    ports:
-      - "3000:3000"
+    depends_on:
+      - api-auth-service
+      - api-article-service
     volumes:
       - ./client:/usr/src/app
-    command: ["npm", "run", "dev", "&&", "npm", "run", "watch:tailwind"]
+    command: ["npm", "run", "dev"]
+
+  nginx:
+    restart: always
+    build: ./nginx/.
+    ports:
+      - "4000:80"
+    depends_on:
+      - api-auth-service
+      - api-article-service
+      - client
