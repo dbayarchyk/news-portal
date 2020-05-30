@@ -19,6 +19,10 @@ export function getAuthHeaders() {
   };
 }
 
+export function isAuthenticated() {
+  return inMemoryToken && inMemoryToken.access_token;
+}
+
 export async function signIn(requestData) {
   const response = await fetch(`${AUTH_SERVICE_URL}/v1/signin`, {
     method: "POST",

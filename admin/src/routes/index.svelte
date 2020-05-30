@@ -1,10 +1,7 @@
-<script>
-  import { onMount } from "svelte";
-  import { goto } from "@sapper/app";
+<script context="module">
+  import { isAuthenticated } from "../services/auth";
 
-  onMount(async () => {
-    // TODO: check if the user is not signed it and redirect to signin page.
-
-    await goto(`${process.baseURL}/app`);
-  });
+  export async function preload() {
+    return this.redirect(308, "/app");
+  }
 </script>

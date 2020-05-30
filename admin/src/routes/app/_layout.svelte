@@ -1,3 +1,13 @@
+<script context="module">
+  import { isAuthenticated } from "../../services/auth";
+
+  export async function preload() {
+    if (!isAuthenticated()) {
+      return this.redirect(307, "/signin");
+    }
+  }
+</script>
+
 <script>
   import Header from "../../components/Header.svelte";
   import Nav from "../../components/Nav.svelte";
