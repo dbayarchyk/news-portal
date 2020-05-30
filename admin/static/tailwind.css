@@ -63,6 +63,52 @@
   @apply text-gray-500;
 }
 
+.error-text {
+  @apply body-text-primary;
+  @apply text-red-500;
+}
+
+.input {
+  @apply bg-gray-200;
+  @apply appearance-none;
+  @apply border-2;
+  @apply border-gray-200;
+  @apply rounded;
+  @apply py-2;
+  @apply px-4;
+  @apply text-gray-700;
+  @apply leading-tight;
+}
+
+.form-field + .form-field {
+  @apply mt-4;
+}
+
+.input:focus {
+  @apply outline-none;
+  @apply bg-white;
+  @apply border-purple-500;
+}
+
+.button {
+  @apply shadow;
+  @apply bg-purple-500;
+  @apply text-white;
+  @apply font-bold;
+  @apply py-2;
+  @apply px-4;
+  @apply rounded;
+}
+
+.button:hover {
+  @apply bg-purple-400;
+}
+
+.button:focus {
+  @apply shadow-outline;
+  @apply outline-none;
+}
+
 .text-cropped::before {
   content: "";
   display: block;

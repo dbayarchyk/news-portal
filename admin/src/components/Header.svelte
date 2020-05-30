@@ -8,7 +8,7 @@
       {nowDate.toLocaleDateString()}
     </a>
 
-    <a class="text-4xl font-semibold leading-generic no-underline" href=".">
+    <a class="text-4xl font-semibold leading-generic no-underline" href="./app">
       It Dog Admin
     </a>
 

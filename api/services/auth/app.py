@@ -71,25 +71,25 @@ def signin_handler_v1():
 
     if request_body['email'] is None:
         return make_response({
-            'message': 'Please provide an email.'
+            'email': 'Please provide an email.'
         }, 400)
 
     if request_body['password'] is None:
         return make_response({
-            'message': 'Please provide a password.'
+            'password': 'Please provide a password.'
         }, 400)
 
     user = find_user_by_email(request_body['email'])
 
     if user is None:
         return make_response({
-            'message': 'There is no user with such an email.'
-        }, 401)
+            'email': 'There is no user with such an email.'
+        }, 400)
 
     if user['password'] != request_body['password']:
         return make_response({
-            'message': 'The password is incorrect.'
-        }, 401)
+            'password': 'The password is incorrect.'
+        }, 400)
 
     access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),

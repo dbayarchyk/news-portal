@@ -4,15 +4,15 @@
   const items = [
     {
       title: "Home",
-      href: "."
+      href: "./app"
     },
     {
       title: "Articles",
-      href: "./articles"
+      href: "./app/articles"
     },
     {
       title: "Users",
-      href: "./users"
+      href: "./app/users"
     }
   ];
 </script>
