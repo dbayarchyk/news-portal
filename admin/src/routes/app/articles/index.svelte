@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-  <title>IT Dog Admin | All articles</title>
+  <title>All articles | IT Dog Admin</title>
 </svelte:head>
 
 <table>

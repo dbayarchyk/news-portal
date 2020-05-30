@@ -4,7 +4,7 @@
 
 <header class="py-4">
   <div class="layout-container flex items-center justify-between">
-    <a class="body-text-secondary cursor-default" href=".">
+    <a class="body-text-secondary cursor-default" href="./app">
       {nowDate.toLocaleDateString()}
     </a>
 

@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>{status}</title>
+  <title>{status} | ItDog Admin</title>
 </svelte:head>
 
 <div class="flex flex-col items-center justify-center">

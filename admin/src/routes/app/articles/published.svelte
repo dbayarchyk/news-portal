@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>IT Dog Admin | Published articles</title>
+  <title>Published articles | IT Dog Admin</title>
 </svelte:head>
 
 <table>
