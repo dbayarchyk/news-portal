@@ -1,5 +1,8 @@
+import jwtDecode from "jwt-decode";
+
 import ValidationErrors from "../errors/validationErrors";
 import UnknownError from "../errors/unknownError";
+import AccessDeniedError from "../errors/accessDeniedError";
 
 const AUTH_SERVICE_URL = process.browser
   ? "api/auth"
@@ -42,6 +45,12 @@ class AuthHttpService {
       case 200: {
         if (!responseData.access_token) {
           throw new UnknownError();
+        }
+
+        const accessTokenPayload = jwtDecode(responseData.access_token);
+
+        if (!["WRITER", "ADMIN"].includes(accessTokenPayload.role)) {
+          throw new AccessDeniedError();
         }
 
         if (process.browser) {

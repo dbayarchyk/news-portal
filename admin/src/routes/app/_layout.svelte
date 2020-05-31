@@ -1,14 +1,22 @@
 <script context="module">
+  import jwtDecode from "jwt-decode";
+
   import AccessTokenService from "../../services/accessTokenService";
 
   export async function preload(page, session) {
     const accessTokenService = new AccessTokenService(session);
 
-    if (!accessTokenService.getToken()) {
+    const accessToken = accessTokenService.getToken();
+    const accessTokenPayload = jwtDecode(accessToken);
+
+    if (
+      !accessToken ||
+      !["WRITER", "ADMIN"].includes(accessTokenPayload.role)
+    ) {
       return this.redirect(307, "./signin");
     }
 
-    return { serverAccessToken: accessTokenService.getToken() };
+    return { serverAccessToken: accessToken };
   }
 </script>
 

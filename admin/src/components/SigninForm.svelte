@@ -6,6 +6,7 @@
   import AccessTokenService from "../services/accessTokenService";
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
+  import AccessDeniedError from "../errors/accessDeniedError";
 
   const authService = new AuthService(fetch, new AccessTokenService());
 
@@ -29,10 +30,12 @@
 
       await goto(`${process.baseURL}/app`);
     } catch (err) {
-      if (err instanceof UnknownError) {
-        formError = err.message;
-      } else if (err instanceof ValidationErrors) {
+      validationErrors = {};
+
+      if (err instanceof ValidationErrors) {
         validationErrors = err.errors;
+      } else {
+        formError = err.message;
       }
     } finally {
       loading = false;
