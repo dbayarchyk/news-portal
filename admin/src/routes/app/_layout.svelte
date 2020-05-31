@@ -1,18 +1,32 @@
 <script context="module">
-  import { isAuthenticated } from "../../services/auth";
+  import AccessTokenService from "../../services/accessTokenService";
 
-  export async function preload() {
-    if (!isAuthenticated()) {
-      return this.redirect(307, "/signin");
+  export async function preload(page, session) {
+    const accessTokenService = new AccessTokenService(session);
+
+    if (!accessTokenService.getToken()) {
+      return this.redirect(307, "./signin");
     }
+
+    return { serverAccessToken: accessTokenService.getToken() };
   }
 </script>
 
 <script>
+  import { onMount } from "svelte";
+
   import Header from "../../components/Header.svelte";
   import Nav from "../../components/Nav.svelte";
+  import ClientAccessTokenService from "../../services/accessTokenService";
 
   export let segment;
+  export let serverAccessToken;
+
+  onMount(() => {
+    const accessTokenService = new AccessTokenService();
+
+    accessTokenService.setInMemoryToken(serverAccessToken);
+  });
 </script>
 
 <div class="divide-y divide-gray-400">

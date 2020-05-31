@@ -1,8 +1,10 @@
 <script context="module">
-  import { getArticles } from "../../../services/article";
+  import ArticleService from "../../../services/articleService";
 
-  export async function preload({ params, query }) {
-    const response = await getArticles();
+  export async function preload(page, session) {
+    const articleService = new ArticleService(this.fetch, session);
+
+    const response = await articleService.getArticles();
     const responseData = await response.json();
 
     return { articles: responseData.items };

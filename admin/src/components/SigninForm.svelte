@@ -1,8 +1,13 @@
 <script>
   import { goto } from "@sapper/app";
-  import { signIn } from "../services/auth";
+  import fetch from "isomorphic-fetch";
+
+  import AuthService from "../services/authService";
+  import AccessTokenService from "../services/accessTokenService";
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
+
+  const authService = new AuthService(fetch, new AccessTokenService());
 
   let email = "";
   let password = "";
@@ -14,7 +19,7 @@
     loading = true;
 
     try {
-      await signIn({
+      await authService.signIn({
         email,
         password
       });
