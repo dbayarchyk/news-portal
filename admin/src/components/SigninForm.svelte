@@ -28,7 +28,7 @@
       validationErrors = {};
       formError = "";
 
-      await goto(`${process.baseURL}/app`);
+      await goto(`${process.env.BASE_URL}/app`);
     } catch (err) {
       validationErrors = {};
 

@@ -40,7 +40,7 @@ async function initServerAccessToken(req, res, next) {
 
 polka() // You can also use Express
   .use(
-    process.baseURL,
+    process.env.BASE_URL,
     compression({ threshold: 0 }),
     sirv("static", { dev }),
     initServerAccessToken,

@@ -55,6 +55,8 @@ services:
     volumes:
       - ./admin:/usr/src/app
     command: ["npm", "run", "dev"]
+    environment:
+      BASE_URL: /admin
 
   nginx:
     restart: always

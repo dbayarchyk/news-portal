@@ -7,7 +7,7 @@ import { terser } from "rollup-plugin-terser";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 
-const baseURL = "/admin";
+const baseURL = process.env.BASE_URL;
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
@@ -23,7 +23,7 @@ export default {
     output: config.client.output(),
     plugins: [
       replace({
-        "process.baseURL": JSON.stringify(baseURL),
+        "process.env.BASE_URL": JSON.stringify(baseURL),
         "process.browser": true,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
@@ -77,7 +77,7 @@ export default {
     output: config.server.output(),
     plugins: [
       replace({
-        "process.baseURL": JSON.stringify(baseURL),
+        "process.env.BASE_URL": JSON.stringify(baseURL),
         "process.browser": false,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
