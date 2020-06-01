@@ -19,6 +19,7 @@
     "jwt-decode": "^2.2.0",
     "marked": "^1.1.0",
     "polka": "next",
+    "query-string": "^6.12.1",
     "reading-time": "^1.2.0",
     "sirv": "^0.4.0"
   },

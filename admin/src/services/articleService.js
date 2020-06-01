@@ -1,3 +1,5 @@
+import queryString from "query-string";
+
 import AuthService from "./authService";
 import AccessTokenService from "./accessTokenService";
 
@@ -14,12 +16,17 @@ class ArticleService {
     );
   }
 
-  async getArticles() {
-    return this.fetch(`${ARTICLE_SERVICE_URL}/v1/articles`, {
-      headers: {
-        ...this.authService.getAuthHeaders(),
-      },
-    });
+  async getArticles(queryParams = {}) {
+    return this.fetch(
+      `${ARTICLE_SERVICE_URL}/v1/articles?${queryString.stringify(
+        queryParams
+      )}`,
+      {
+        headers: {
+          ...this.authService.getAuthHeaders(),
+        },
+      }
+    );
   }
 
   async getArticleById(id) {

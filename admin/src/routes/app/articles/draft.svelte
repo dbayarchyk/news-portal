@@ -4,7 +4,7 @@
   export async function preload(page, session) {
     const articleService = new ArticleService(this.fetch, session);
 
-    const response = await articleService.getArticles();
+    const response = await articleService.getArticles({ status: "DRAFT" });
     const responseData = await response.json();
 
     return { articles: responseData.items };
@@ -20,7 +20,7 @@
 </svelte:head>
 
 <div class="table-container">
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <td class="table-head-cell body-text-secondary" aria-label="Index">

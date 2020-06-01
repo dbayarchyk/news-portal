@@ -14581,6 +14581,10 @@ video {
   border-color: rgba(237, 242, 247, var(--border-opacity));
 }
 
+.table {
+  width: 100%;
+}
+
 .table-head-cell {
   padding-left: 1.5rem;
   padding-right: 1.5rem;

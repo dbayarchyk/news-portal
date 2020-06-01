@@ -184,6 +184,10 @@
   @apply border-gray-200;
 }
 
+.table {
+  @apply w-full;
+}
+
 .table-head-cell {
   @apply px-6;
   @apply py-3;

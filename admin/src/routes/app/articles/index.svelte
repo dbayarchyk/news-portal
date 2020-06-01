@@ -20,7 +20,7 @@
 </svelte:head>
 
 <div class="table-container">
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <td class="table-head-cell body-text-secondary" aria-label="Index">
