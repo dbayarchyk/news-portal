@@ -19,28 +19,34 @@
   <title>All articles | IT Dog Admin</title>
 </svelte:head>
 
-<table>
-  <thead>
-    <tr>
-      <td class="body-text-primary">#</td>
-      <td class="body-text-primary">Title</td>
-      <td class="body-text-primary">Status</td>
-      <td class="body-text-primary">Author</td>
-      <td class="body-text-primary text-right">Views</td>
-      <td class="body-text-primary">Created Date</td>
-    </tr>
-  </thead>
-
-  <tbody>
-    {#each articles as article}
+<div class="table-container">
+  <table>
+    <thead>
       <tr>
-        <td class="body-text-secondary">{article.id}</td>
-        <td class="body-text-primary">{article.title}</td>
-        <td class="body-text-normal">{article.status}</td>
-        <td class="body-text-normal">{article.author_id}</td>
-        <td class="body-text-secondary text-right">0</td>
-        <td class="body-text-normal">{article.created_date}</td>
+        <td class="table-head-cell body-text-secondary" aria-label="Index">
+          #
+        </td>
+        <td class="table-head-cell">Title</td>
+        <td class="table-head-cell">Status</td>
+        <td class="table-head-cell">Author</td>
+        <td class="table-head-cell text-right">Views</td>
+        <td class="table-head-cell">Created Date</td>
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      {#each articles as article}
+        <tr>
+          <td class="table-cell body-text-secondary">{article.id}</td>
+          <td class="table-cell body-text-primary">{article.title}</td>
+          <td class="table-cell">{article.status}</td>
+          <td class="table-cell">{article.author_id}</td>
+          <td class="table-cell text-right">0</td>
+          <td class="table-cell">
+            {new Date(article.created_date).toLocaleDateString()}
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>

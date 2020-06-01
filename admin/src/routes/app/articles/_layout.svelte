@@ -1,23 +1,47 @@
+<script>
+  export let segment;
+</script>
+
 <section class="py-3">
   <section class="mt-4 flex">
-    <div>
-      <ul class="list-inside list-disc">
-        <li class="body-text-normal">
-          <a class="link" href="./app/articles">All</a>
+    <div class="w-1/5">
+      <ul>
+        <li>
+          <a
+            class="sidebar-link"
+            href="./app/articles"
+            class:sidebar-link-active={!segment}>
+            All
+          </a>
         </li>
-        <li class="body-text-normal">
-          <a class="link" href="./app/articles/published">Published</a>
+        <li>
+          <a
+            class="sidebar-link"
+            href="./app/articles/draft"
+            class:sidebar-link-active={segment === 'draft'}>
+            Draft
+          </a>
         </li>
-        <li class="body-text-normal">
-          <a class="link" href="./app/articles/draft">Draft</a>
+        <li>
+          <a
+            class="sidebar-link"
+            href="./app/articles/published"
+            class:sidebar-link-active={segment === 'published'}>
+            Published
+          </a>
         </li>
-        <li class="body-text-normal">
-          <a class="link" href="./app/articles/archived">Archived</a>
+        <li>
+          <a
+            class="sidebar-link"
+            href="./app/articles/archived"
+            class:sidebar-link-active={segment === 'archived'}>
+            Archived
+          </a>
         </li>
       </ul>
     </div>
 
-    <div>
+    <div class="w-4/5 pl-6">
       <slot />
     </div>
   </section>
