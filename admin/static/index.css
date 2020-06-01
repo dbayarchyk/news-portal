@@ -14619,6 +14619,54 @@ video {
   color: rgba(0, 0, 0, var(--text-opacity));
 }
 
+.badge {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: inline-flex;
+  font-size: 0.75rem;
+  line-height: calc(5px + 2ex + 5px);
+  font-weight: 600;
+  border-radius: 9999px;
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #2d3748;
+  color: rgba(45, 55, 72, var(--text-opacity));
+}
+
+.badge-green {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: inline-flex;
+  font-size: 0.75rem;
+  line-height: calc(5px + 2ex + 5px);
+  font-weight: 600;
+  border-radius: 9999px;
+  --bg-opacity: 1;
+  background-color: #f0fff4;
+  background-color: rgba(240, 255, 244, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #276749;
+  color: rgba(39, 103, 73, var(--text-opacity));
+}
+
+.badge-red {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: inline-flex;
+  font-size: 0.75rem;
+  line-height: calc(5px + 2ex + 5px);
+  font-weight: 600;
+  border-radius: 9999px;
+  --bg-opacity: 1;
+  background-color: #fff5f5;
+  background-color: rgba(255, 245, 245, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #9b2c2c;
+  color: rgba(155, 44, 44, var(--text-opacity));
+}
+
 .markdown * {
   font-size: 1rem;
   line-height: calc(5px + 2ex + 5px);

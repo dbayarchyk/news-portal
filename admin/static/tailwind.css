@@ -202,6 +202,39 @@
   @apply body-text-normal;
 }
 
+.badge {
+  @apply px-2;
+  @apply inline-flex;
+  @apply text-xs;
+  @apply leading-generic;
+  @apply font-semibold;
+  @apply rounded-full;
+  @apply bg-gray-100;
+  @apply text-gray-800;
+}
+
+.badge-green {
+  @apply px-2;
+  @apply inline-flex;
+  @apply text-xs;
+  @apply leading-generic;
+  @apply font-semibold;
+  @apply rounded-full;
+  @apply bg-green-100;
+  @apply text-green-800;
+}
+
+.badge-red {
+  @apply px-2;
+  @apply inline-flex;
+  @apply text-xs;
+  @apply leading-generic;
+  @apply font-semibold;
+  @apply rounded-full;
+  @apply bg-red-100;
+  @apply text-red-800;
+}
+
 .markdown * {
   @apply body-text-normal;
   @apply text-xl;

@@ -39,7 +39,14 @@
         <tr>
           <td class="table-cell body-text-secondary">{article.id}</td>
           <td class="table-cell body-text-primary">{article.title}</td>
-          <td class="table-cell">{article.status}</td>
+          <td class="table-cell">
+            <span
+              class:badge={article.status === 'DRAFT'}
+              class:badge-green={article.status === 'PUBLISHED'}
+              class:badge-red={article.status === 'ARCHIVED'}>
+              {article.status}
+            </span>
+          </td>
           <td class="table-cell">{article.author_id}</td>
           <td class="table-cell text-right">0</td>
           <td class="table-cell">
