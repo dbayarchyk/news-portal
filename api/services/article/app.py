@@ -91,6 +91,13 @@ def get_articles_count(**options):
                         ELSE FALSE
                     END
             ) AS allowed_articles
+            WHERE
+                CASE
+                    -- Has status filter?
+                    WHEN %s
+                        THEN allowed_articles.status = %s
+                        ELSE TRUE
+                END
         """, (
             options['are_draft_allowed'],
             options['are_draft_allowed_for_current_user_id'],
@@ -101,6 +108,8 @@ def get_articles_count(**options):
             options['are_archived_allowed'],
             options['are_archived_allowed_for_current_user_id'],
             options['current_user_id'],
+            options['status'] is not None,
+            options['status']
         ))
 
         result = cursor.fetchone()
@@ -178,6 +187,13 @@ def get_articles(**options):
                         ELSE FALSE
                     END
             ) AS allowed_articles
+            WHERE
+                CASE
+                    -- Has status filter?
+                    WHEN %s
+                        THEN allowed_articles.status = %s
+                        ELSE TRUE
+                END
             LIMIT %s
             OFFSET %s;
         """, (
@@ -190,6 +206,8 @@ def get_articles(**options):
             options['are_archived_allowed'],
             options['are_archived_allowed_for_current_user_id'],
             options['current_user_id'],
+            options['status'] is not None,
+            options['status'],
             options['page_size'],
             start_from,
         ))
@@ -237,6 +255,7 @@ def articles_handler_v1():
 
     page = int(request.args.get('page', 1))
     page_size = int(request.args.get('page_size', 20))
+    status = request.args.get('status', None)
 
     items_count = get_articles_count(
         are_draft_allowed = are_draft_allowed,
@@ -246,6 +265,7 @@ def articles_handler_v1():
         are_published_allowed_for_current_user_id = are_published_allowed_for_current_user_id,
         are_archived_allowed = are_archived_allowed,
         are_archived_allowed_for_current_user_id = are_archived_allowed_for_current_user_id,
+        status = status,
     )
     items = get_articles(
         are_draft_allowed = are_draft_allowed,
@@ -255,6 +275,7 @@ def articles_handler_v1():
         are_published_allowed_for_current_user_id = are_published_allowed_for_current_user_id,
         are_archived_allowed = are_archived_allowed,
         are_archived_allowed_for_current_user_id = are_archived_allowed_for_current_user_id,
+        status = status,
         page = page,
         page_size = page_size,
     )
@@ -264,6 +285,7 @@ def articles_handler_v1():
         'page_size': page_size,
         'items_count': items_count,
         'items': items,
+        'status': status
     }, 200)
 
 def get_article_by_id(**options):
