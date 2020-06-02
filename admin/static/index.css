@@ -14671,6 +14671,80 @@ video {
   color: rgba(155, 44, 44, var(--text-opacity));
 }
 
+.pagination {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pagination-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-width: 1px;
+  --border-opacity: 1;
+  border-color: #e2e8f0;
+  border-color: rgba(226, 232, 240, var(--border-opacity));
+  --bg-opacity: 1;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, var(--bg-opacity));
+  font-size: 0.875rem;
+  line-height: 1.25;
+  font-weight: 500;
+  --text-opacity: 1;
+  color: #4a5568;
+  color: rgba(74, 85, 104, var(--text-opacity));
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.pagination-item[aria-selected="true"] {
+  --text-opacity: 1;
+  color: #9f7aea;
+  color: rgba(159, 122, 234, var(--text-opacity));
+  --border-opacity: 1;
+  border-color: #9f7aea;
+  border-color: rgba(159, 122, 234, var(--border-opacity));
+}
+
+.pagination-item:first-child {
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.pagination-item:last-child {
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+.pagination-item:hover {
+  --text-opacity: 1;
+  color: #a0aec0;
+  color: rgba(160, 174, 192, var(--text-opacity));
+}
+
+.pagination-item:focus {
+  z-index: 10;
+  --border-opacity: 1;
+  border-color: #d6bcfa;
+  border-color: rgba(214, 188, 250, var(--border-opacity));
+}
+
+.pagination-item:active {
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #a0aec0;
+  color: rgba(160, 174, 192, var(--text-opacity));
+}
+
 .markdown * {
   font-size: 1rem;
   line-height: calc(5px + 2ex + 5px);

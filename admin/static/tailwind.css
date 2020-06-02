@@ -239,6 +239,58 @@
   @apply text-red-800;
 }
 
+.pagination {
+  @apply relative;
+  @apply z-0;
+  @apply inline-flex;
+  @apply shadow-sm;
+}
+
+.pagination-item {
+  @apply relative;
+  @apply inline-flex;
+  @apply items-center;
+  @apply px-4;
+  @apply py-2;
+  @apply border;
+  @apply border-gray-300;
+  @apply bg-white;
+  @apply text-sm;
+  @apply leading-tight;
+  @apply font-medium;
+  @apply text-gray-700;
+  @apply transition;
+  @apply ease-in-out;
+  @apply duration-150;
+}
+
+.pagination-item[aria-selected="true"] {
+  @apply text-purple-500;
+  @apply font-bold;
+}
+
+.pagination-item:first-child {
+  @apply rounded-l-md;
+}
+
+.pagination-item:last-child {
+  @apply rounded-r-md;
+}
+
+.pagination-item:hover {
+  @apply text-gray-500;
+}
+
+.pagination-item:focus {
+  @apply z-10;
+  @apply border-purple-300;
+}
+
+.pagination-item:active {
+  @apply bg-gray-100;
+  @apply text-gray-500;
+}
+
 .markdown * {
   @apply body-text-normal;
   @apply text-xl;
@@ -314,3 +366,19 @@
   @apply border-blue-500;
   @apply p-4;
 }
+
+/* .markdown table {
+  @apply table;
+}
+
+.markdown th {
+  @apply table-head-cell;
+}
+
+.markdown td {
+  @apply px-6;
+  @apply py-4;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply body-text-normal;
+} */

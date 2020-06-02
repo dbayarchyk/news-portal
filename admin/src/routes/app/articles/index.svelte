@@ -4,15 +4,51 @@
   export async function preload(page, session) {
     const articleService = new ArticleService(this.fetch, session);
 
-    const response = await articleService.getArticles();
+    const response = await articleService.getArticles({
+      page: 1,
+      page_size: 10
+    });
     const responseData = await response.json();
 
-    return { articles: responseData.items };
+    return {
+      items: responseData.items,
+      itemsCount: responseData.items_count,
+      pageSize: responseData.page_size,
+      page: responseData.page
+    };
   }
 </script>
 
 <script>
-  export let articles = [];
+  import fetch from "isomorphic-fetch";
+
+  import Pagination from "../../../components/Pagination.svelte";
+
+  export let items = [];
+  export let itemsCount = 0;
+  export let pageSize = 0;
+  export let page = 0;
+
+  let tableEl;
+
+  async function hanldePageChange(event) {
+    const articleService = new ArticleService(fetch);
+
+    const response = await articleService.getArticles({
+      page: event.detail.page,
+      page_size: event.detail.pageSize
+    });
+    const responseData = await response.json();
+
+    items = responseData.items;
+    itemsCount = responseData.items_count;
+    pageSize = responseData.page_size;
+    page = responseData.page;
+
+    if (tableEl) {
+      tableEl.focus();
+    }
+  }
 </script>
 
 <svelte:head>
@@ -20,7 +56,7 @@
 </svelte:head>
 
 <div class="table-container">
-  <table class="table">
+  <table class="table" tabindex="-1" bind:this={tableEl}>
     <thead>
       <tr>
         <td class="table-head-cell body-text-secondary" aria-label="Index">
@@ -35,7 +71,7 @@
     </thead>
 
     <tbody>
-      {#each articles as article}
+      {#each items as article}
         <tr>
           <td class="table-cell body-text-secondary">{article.id}</td>
           <td class="table-cell body-text-primary">{article.title}</td>
@@ -56,4 +92,6 @@
       {/each}
     </tbody>
   </table>
+
+  <Pagination {page} {pageSize} {itemsCount} on:change={hanldePageChange} />
 </div>
