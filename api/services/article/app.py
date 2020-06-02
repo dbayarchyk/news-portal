@@ -285,7 +285,6 @@ def articles_handler_v1():
         'page_size': page_size,
         'items_count': items_count,
         'items': items,
-        'status': status
     }, 200)
 
 def get_article_by_id(**options):
