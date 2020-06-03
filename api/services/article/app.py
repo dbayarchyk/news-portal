@@ -1,8 +1,11 @@
 import psycopg2
 import psycopg2.extras
 import jwt
-import requests
 from flask import Flask, request, make_response
+
+from utils.access_token import decode_access_token
+from utils.headers import get_authorization_header
+from utils.permissions import check_permission, get_permissions
 
 app = Flask(__name__)
 
@@ -10,23 +13,6 @@ DB_HOST = 'postgres'
 DB_NAME = 'itdog_database'
 DB_USER = 'admin'
 DB_PASSWORD = 'admin'
-ACCESS_TOKEN_SECRET = 'secret_access_token'
-AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
-
-def get_visitor_permissions():
-    try:
-        result = requests.get(
-            url = AUTH_SERVICE_ENDPOINT + '/v1/permissions/visitor'
-        )
-
-        if result.status_code != 200:
-            return [result.status_code]
-
-        data = result.json()
-
-        return data['permissions'] if data is not None else []
-    except Exception:
-        return []
 
 def get_articles_count(**options):
     db_connection = None
@@ -221,27 +207,30 @@ def get_articles(**options):
 
 @app.route('/v1/articles', methods=['GET'])
 def articles_handler_v1():
-    permissions = None
-    access_token_payload = None
+    access_token = get_authorization_header(request.headers)
 
-    if 'Authorization' in request.headers:
-        try:
-            access_token_payload = jwt.decode(
-                request.headers['Authorization'].split(' ')[1],
-                ACCESS_TOKEN_SECRET,
-                algorithms=['HS256'],
-            )
-            permissions = access_token_payload['permissions']
-        except (Exception, jwt.ExpiredSignatureError) as error:
-            if error is jwt.ExpiredSignatureError:
-                return make_response('', 401)
-    else:
-        permissions = get_visitor_permissions()
-
-    if permissions is None:
+    try:
+        access_token_payload = decode_access_token(access_token) if access_token is not None else None
+        permissions = get_permissions(access_token_payload)
+    except (Exception, jwt.ExpiredSignatureError):
         return make_response({
-            'message': 'Something went wrong.'
-        }, 500)
+            'message': 'Please provide a valid authorization token.'
+        }, 401)
+    
+    if check_permission(
+        permissions,
+        [
+            'ARTICLE_VIEW_ALL_DRAFT',
+            'ARTICLE_VIEW_OWN_DRAFT',
+            'ARTICLE_VIEW_ALL_PUBLISHED',
+            'ARTICLE_VIEW_OWN_PUBLISHED',
+            'ARTICLE_VIEW_ALL_ARCHIVED',
+            'ARTICLE_VIEW_OWN_ARCHIVED',
+        ]
+    ) is False:
+        return make_response({
+            'message': 'You don\'t have permissions to perform that action.'
+        }, 403)
 
     are_draft_allowed = 'ARTICLE_VIEW_ALL_DRAFT' in permissions or 'ARTICLE_VIEW_OWN_DRAFT' in permissions,
     are_draft_allowed_for_current_user_id = 'ARTICLE_VIEW_ALL_DRAFT' not in permissions
@@ -372,27 +361,30 @@ def get_article_by_id(**options):
 
 @app.route('/v1/articles/<id>', methods=['GET'])
 def article_by_id_handler_v1(id):
-    permissions = None
-    access_token_payload = None
+    access_token = get_authorization_header(request.headers)
 
-    if 'Authorization' in request.headers:
-        try:
-            access_token_payload = jwt.decode(
-                request.headers['Authorization'].split(' ')[1],
-                ACCESS_TOKEN_SECRET,
-                algorithms=['HS256'],
-            )
-            permissions = access_token_payload['permissions']
-        except (Exception, jwt.ExpiredSignatureError) as error:
-            if error is jwt.ExpiredSignatureError:
-                return make_response('', 401)
-    else:
-        permissions = get_visitor_permissions()
-
-    if permissions is None:
+    try:
+        access_token_payload = decode_access_token(access_token) if access_token is not None else None
+        permissions = get_permissions(access_token_payload)
+    except (Exception, jwt.ExpiredSignatureError):
         return make_response({
-            'message': 'Something went wrong.'
-        }, 500)
+            'message': 'Please provide a valid authorization token.'
+        }, 401)
+    
+    if check_permission(
+        permissions,
+        [
+            'ARTICLE_VIEW_ALL_DRAFT',
+            'ARTICLE_VIEW_OWN_DRAFT',
+            'ARTICLE_VIEW_ALL_PUBLISHED',
+            'ARTICLE_VIEW_OWN_PUBLISHED',
+            'ARTICLE_VIEW_ALL_ARCHIVED',
+            'ARTICLE_VIEW_OWN_ARCHIVED',
+        ]
+    ) is False:
+        return make_response({
+            'message': 'You don\'t have permissions to perform that action.'
+        }, 403)
 
     id = int(id)
     are_draft_allowed = 'ARTICLE_VIEW_ALL_DRAFT' in permissions or 'ARTICLE_VIEW_OWN_DRAFT' in permissions,
