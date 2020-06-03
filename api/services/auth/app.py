@@ -5,6 +5,8 @@ import datetime
 from flask import Flask, request, make_response
 from flask_cors import CORS
 
+from utils import validators
+
 app = Flask(__name__)
 CORS(app)
 
@@ -69,15 +71,20 @@ def signin_handler_v1():
             'message': 'Provide an email and a password in a body'
         }, 400)
 
-    if request_body['email'] is None:
-        return make_response({
-            'email': 'Please provide an email.'
-        }, 400)
+    validation_errors = {}
 
-    if request_body['password'] is None:
-        return make_response({
-            'password': 'Please provide a password.'
-        }, 400)
+    try:
+        validators.validate_email(request_body['email'], False)
+    except ValueError as err:
+        validation_errors['email'] = str(err)
+
+    try:
+        validators.validate_password(request_body['password'], False)
+    except ValueError as err:
+        validation_errors['password'] = str(err)
+
+    if len(validation_errors.keys()) != 0:
+        return make_response(validation_errors, 400)
 
     user = find_user_by_email(request_body['email'])
 
@@ -150,16 +157,20 @@ def signup_handler_v1():
             'message': 'Provide an email and a password in a body'
         }, 400)
 
-    if request_body['email'] is None:
-        return make_response({
-            'message': 'Please provide an email.'
-        }, 400)
+    validation_errors = {}
 
-    if request_body['password'] is None:
-        return make_response({
-            'message': 'Please provide a password.'
-        }, 400)
+    try:
+        validators.validate_email(request_body['email'])
+    except ValueError as err:
+        validation_errors['email'] = str(err)
 
+    try:
+        validators.validate_password(request_body['password'])
+    except ValueError as err:
+        validation_errors['password'] = str(err)
+
+    if len(validation_errors.keys()) != 0:
+        return make_response(validation_errors, 400)
 
     created_user = None
     
