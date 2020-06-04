@@ -351,7 +351,7 @@ def create_article_handler_v1():
 
     created_article = create_article(
         title = request_body['title'],
-        author_id = access_token_payload['sub'],
+        author_id = access_token_payload['sub'] if access_token_payload is not None else None,
         content = request_body['content'],
         status_id = 1,
         created_date = datetime.datetime.now()
@@ -502,3 +502,167 @@ def article_by_id_handler_v1(id):
         }, 404)
 
     return make_response(dict(article), 200)
+
+def get_article_with_status_by_id(article_id):
+    db_connection = None
+    article = None
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+        cursor.execute("""
+            SELECT
+                articles.id,
+                articles.author_id,
+                article_statuses.name AS status
+            FROM
+                articles
+            INNER JOIN
+                article_statuses
+                ON articles.status_id = article_statuses.id
+            WHERE articles.id = %s;
+
+        """, (article_id,))
+
+        article = cursor.fetchone()
+
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+    return article
+
+def check_permission_for_article_update(current_user_id, article_with_status, all_permissions):
+    is_own_article = article_with_status['author_id'] == current_user_id
+
+    if article_with_status['status'] == 'DRAFT':
+        if check_permission(all_permissions, ['ARTICLE_UPDATE_ALL_DRAFT']):
+            return True
+        else:
+            return check_permission(all_permissions, ['ARTICLE_UPDATE_OWN_DRAFT']) and is_own_article
+
+    if article_with_status['status'] == 'PUBLISHED':
+        if check_permission(all_permissions, ['ARTICLE_UPDATE_ALL_PUBLISHED']):
+            return True
+        else:
+            return check_permission(all_permissions, ['ARTICLE_UPDATE_OWN_PUBLISHED']) and is_own_article
+
+    if article_with_status['status'] == 'ARCHIVED':
+        if check_permission(all_permissions, ['ARTICLE_UPDATE_ALL_ARCHIVED']):
+            return True
+        else:
+            return check_permission(all_permissions, ['ARTICLE_UPDATE_OWN_ARCHIVED']) and is_own_article
+
+    return False
+
+def update_article(**options):
+    db_connection = None
+    updated_article = None
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+        cursor.execute("""
+            UPDATE
+                articles
+            SET
+                title = %s,
+                content = %s
+            WHERE
+                articles.id = %s
+            RETURNING
+                articles.id,
+                articles.title,
+                articles.author_id,
+                articles.content,
+                articles.status_id,
+                articles.created_date;
+        """, (
+            options['title'],
+            options['content'],
+            options['id']
+        ))
+
+        updated_article = cursor.fetchone()
+        db_connection.commit()
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+    return updated_article
+
+@app.route('/v1/articles/<id>', methods=['PUT'])
+def update_article_by_id_handler_v1(id):
+    access_token = get_authorization_header(request.headers)
+
+    try:
+        access_token_payload = decode_access_token(access_token) if access_token is not None else None
+        permissions = get_permissions(access_token_payload)
+    except (Exception, jwt.ExpiredSignatureError):
+        return make_response({
+            'message': 'Please provide a valid authorization token.'
+        }, 401)
+
+    id = int(id)
+    article_with_status = get_article_with_status_by_id(id)
+
+    if article_with_status is None:
+        return make_response({
+            'message': 'Article not found.'
+        }, 404)
+    
+    current_user_id = access_token_payload['sub'] if access_token_payload is not None else None
+
+    if check_permission_for_article_update(current_user_id, article_with_status, permissions) is False:
+        return make_response({
+            'message': 'You don\'t have permissions to perform that action.'
+        }, 403)
+
+    request_body = request.get_json()
+
+    if request_body is None:
+        return make_response({
+            'message': 'Provide a request body.'
+        }, 400)
+
+    validation_errors = {}
+
+    try:
+        validate_title(request_body['title'])
+    except ValueError as err:
+        validation_errors['title'] = str(err)
+
+    try:
+        validate_content(request_body['content'])
+    except ValueError as err:
+        validation_errors['content'] = str(err)
+
+    if len(validation_errors.keys()) != 0:
+        return make_response(validation_errors, 400)
+
+    updated_article = update_article(
+        id = id,
+        title = request_body['title'],
+        content = request_body['content'],
+    )
+
+    if updated_article is None:
+        return make_response({
+            'message': 'Something went wrong.'
+        }, 500)
+
+    return make_response(dict(updated_article), 200)

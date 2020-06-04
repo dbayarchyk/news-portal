@@ -55,7 +55,13 @@ VALUES
     (4, 'ARTICLE_VIEW_OWN_PUBLISHED'),
     (5, 'ARTICLE_VIEW_ALL_ARCHIVED'),
     (6, 'ARTICLE_VIEW_OWN_ARCHIVED'),
-    (7, 'ARTICLE_CREATE');
+    (7, 'ARTICLE_CREATE'),
+    (8, 'ARTICLE_UPDATE_ALL_DRAFT'),
+    (9, 'ARTICLE_UPDATE_OWN_DRAFT'),
+    (10, 'ARTICLE_UPDATE_ALL_PUBLISHED'),
+    (11, 'ARTICLE_UPDATE_OWN_PUBLISHED'),
+    (12, 'ARTICLE_UPDATE_ALL_ARCHIVED'),
+    (13, 'ARTICLE_UPDATE_OWN_ARCHIVED');
 
 -- Table: public.user_roles_to_permissions
 
@@ -101,7 +107,12 @@ VALUES
     (9, 4, 4),
     (10, 4, 5),
     (11, 3, 7),
-    (12, 4, 7);
+    (12, 4, 7),
+    (13, 4, 8),
+    (14, 3, 9),
+    (15, 4, 10),
+    (16, 3, 11),
+    (17, 4, 12);
 
 -- Table: public.users
 
