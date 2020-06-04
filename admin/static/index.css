@@ -14337,6 +14337,10 @@ video {
   transition-delay: 1000ms;
 }
 
+[tabindex="-1"] {
+  outline: none;
+}
+
 .leading-generic {
   line-height: calc(5px + 2ex + 5px);
 }
@@ -14708,9 +14712,7 @@ video {
   --text-opacity: 1;
   color: #9f7aea;
   color: rgba(159, 122, 234, var(--text-opacity));
-  --border-opacity: 1;
-  border-color: #9f7aea;
-  border-color: rgba(159, 122, 234, var(--border-opacity));
+  font-weight: 700;
 }
 
 .pagination-item:first-child {
@@ -14846,6 +14848,22 @@ video {
   border-color: rgba(66, 153, 225, var(--border-opacity));
   padding: 1rem;
 }
+
+/* .markdown table {
+  @apply table;
+}
+
+.markdown th {
+  @apply table-head-cell;
+}
+
+.markdown td {
+  @apply px-6;
+  @apply py-4;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply body-text-normal;
+} */
 
 @media (min-width: 640px) {
   .sm\:space-y-0 > :not(template) ~ :not(template) {
