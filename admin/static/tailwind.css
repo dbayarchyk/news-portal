@@ -271,6 +271,7 @@
 .pagination-item[aria-selected="true"] {
   @apply text-purple-500;
   @apply font-bold;
+  @apply bg-gray-200;
 }
 
 .pagination-item:first-child {
