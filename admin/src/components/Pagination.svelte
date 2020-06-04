@@ -24,10 +24,6 @@
   }
 
   function handlePageClick(newPage) {
-    if (page >= lastPage) {
-      return;
-    }
-
     dispatch("change", {
       page: newPage,
       pageSize
@@ -35,7 +31,7 @@
   }
 
   function handleNextClick() {
-    if (page < itemsCount) {
+    if (page >= lastPage) {
       return;
     }
 
