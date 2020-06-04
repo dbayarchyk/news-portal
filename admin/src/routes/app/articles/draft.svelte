@@ -52,32 +52,44 @@
   <title>Draft articles | IT Dog Admin</title>
 </svelte:head>
 
-<div class="table-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <td class="table-head-cell body-text-secondary" aria-label="Index">
-          #
-        </td>
-        <td class="table-head-cell">Title</td>
-        <td class="table-head-cell">Author</td>
-        <td class="table-head-cell">Created Date</td>
-      </tr>
-    </thead>
+<div>
+  <div class="flex items-center">
+    <h1 class="headline-4">Articles</h1>
 
-    <tbody>
-      {#each items as article}
+    <ul class="ml-auto">
+      <li>
+        <a href="./app/article/editor" class="link">Create Article</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="table-container mt-4">
+    <table class="table">
+      <thead>
         <tr>
-          <td class="table-cell body-text-secondary">{article.id}</td>
-          <td class="table-cell body-text-primary">{article.title}</td>
-          <td class="table-cell">{article.author_id}</td>
-          <td class="table-cell">
-            {new Date(article.created_date).toLocaleDateString()}
+          <td class="table-head-cell body-text-secondary" aria-label="Index">
+            #
           </td>
+          <td class="table-head-cell">Title</td>
+          <td class="table-head-cell">Author</td>
+          <td class="table-head-cell">Created Date</td>
         </tr>
-      {/each}
-    </tbody>
-  </table>
+      </thead>
 
-  <Pagination {page} {pageSize} {itemsCount} on:change={hanldePageChange} />
+      <tbody>
+        {#each items as article}
+          <tr>
+            <td class="table-cell body-text-secondary">{article.id}</td>
+            <td class="table-cell body-text-primary">{article.title}</td>
+            <td class="table-cell">{article.author_id}</td>
+            <td class="table-cell">
+              {new Date(article.created_date).toLocaleDateString()}
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+
+    <Pagination {page} {pageSize} {itemsCount} on:change={hanldePageChange} />
+  </div>
 </div>

@@ -1,5 +1,7 @@
 import queryString from "query-string";
 
+import ValidationErrors from "../errors/validationErrors";
+import UnknownError from "../errors/unknownError";
 import AuthService from "./authService";
 import AccessTokenService from "./accessTokenService";
 
@@ -35,6 +37,33 @@ class ArticleService {
         ...this.authService.getAuthHeaders(),
       },
     });
+  }
+
+  async createArticle(requestData) {
+    const response = await this.fetch(`${ARTICLE_SERVICE_URL}/v1/articles`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...this.authService.getAuthHeaders(),
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const responseData = await response.json();
+
+    switch (response.status) {
+      case 400: {
+        throw new ValidationErrors(responseData);
+      }
+
+      case 201: {
+        return responseData;
+      }
+
+      default: {
+        throw new UnknownError();
+      }
+    }
   }
 }
 
