@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 let inMemoryToken = null;
 
 class AccessTokenService {
@@ -14,9 +16,21 @@ class AccessTokenService {
   }
 
   getToken() {
-    return process.browser
-      ? inMemoryToken
-      : this.serverSession.serverAccessToken;
+    if (!process.browser) {
+      return this.serverSession.serverAccessToken;
+    }
+
+    return inMemoryToken;
+  }
+
+  getTokenPayload() {
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    return jwtDecode(token);
   }
 }
 

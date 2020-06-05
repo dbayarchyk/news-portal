@@ -1,40 +1,25 @@
 <script context="module">
-  import jwtDecode from "jwt-decode";
-
   import AccessTokenService from "../../services/accessTokenService";
 
   export async function preload(page, session) {
     const accessTokenService = new AccessTokenService(session);
 
-    const accessToken = accessTokenService.getToken();
-    const accessTokenPayload = jwtDecode(accessToken);
+    const accessTokenPayload = accessTokenService.getTokenPayload();
 
     if (
-      !accessToken ||
+      !accessTokenPayload ||
       !["WRITER", "ADMIN"].includes(accessTokenPayload.role)
     ) {
       return this.redirect(307, "./signin");
     }
-
-    return { serverAccessToken: accessToken };
   }
 </script>
 
 <script>
-  import { onMount } from "svelte";
-
   import Header from "../../components/Header.svelte";
   import Nav from "../../components/Nav.svelte";
-  import ClientAccessTokenService from "../../services/accessTokenService";
 
   export let segment;
-  export let serverAccessToken;
-
-  onMount(() => {
-    const accessTokenService = new AccessTokenService();
-
-    accessTokenService.setInMemoryToken(serverAccessToken);
-  });
 </script>
 
 <div class="divide-y divide-gray-400">

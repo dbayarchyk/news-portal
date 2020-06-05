@@ -20,11 +20,15 @@
   import fetch from "isomorphic-fetch";
 
   import Pagination from "../../../components/Pagination.svelte";
+  import AccessTokenService from "../../../services/accessTokenService";
+  import { canEditArticle } from "./_actionVisibilities";
 
   export let items = [];
   export let itemsCount = 0;
   export let pageSize = 0;
   export let page = 0;
+
+  const accessTokenService = new AccessTokenService();
 
   let tableEl;
 
@@ -74,6 +78,7 @@
           <td class="table-head-cell">Author</td>
           <td class="table-head-cell text-right">Views</td>
           <td class="table-head-cell">Created Date</td>
+          <td class="table-head-cell" aria-label="Actions" />
         </tr>
       </thead>
 
@@ -86,6 +91,13 @@
             <td class="table-cell text-right">0</td>
             <td class="table-cell">
               {new Date(article.created_date).toLocaleDateString()}
+            </td>
+            <td class="table-cell">
+              {#if canEditArticle(article, accessTokenService.getTokenPayload())}
+                <a class="link" href={`./app/article/editor/${article.id}`}>
+                  Edit
+                </a>
+              {/if}
             </td>
           </tr>
         {/each}
