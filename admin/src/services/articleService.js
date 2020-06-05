@@ -65,6 +65,36 @@ class ArticleService {
       }
     }
   }
+
+  async updateArticleById(id, requestData) {
+    const response = await this.fetch(
+      `${ARTICLE_SERVICE_URL}/v1/articles/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...this.authService.getAuthHeaders(),
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    const responseData = await response.json();
+
+    switch (response.status) {
+      case 400: {
+        throw new ValidationErrors(responseData);
+      }
+
+      case 200: {
+        return responseData;
+      }
+
+      default: {
+        throw new UnknownError();
+      }
+    }
+  }
 }
 
 export default ArticleService;

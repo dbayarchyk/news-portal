@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  export let headlineText = "";
   export let title = "";
   export let content = "";
   export let validationErrors = {};
@@ -28,7 +29,7 @@
 </style>
 
 <form class="article-form mx-auto" on:submit|preventDefault={handleSubmit}>
-  <h1 class="headline-1">New Article</h1>
+  <h1 class="headline-1">{headlineText}</h1>
 
   <div class="form-field mt-5">
     <label class="block body-text-primary" for="title">Title</label>

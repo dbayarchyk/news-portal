@@ -17,11 +17,13 @@
     isArticleCreating = true;
 
     try {
-      await articleService.createArticle(event.detail);
+      const createdArticle = await articleService.createArticle(event.detail);
 
       formValidationErrors = {};
 
-      await goto(`./app/articles`);
+      await goto(`./app/article/editor/${createdArticle.id}`, {
+        replaceState: true
+      });
     } catch (err) {
       formValidationErrors = {};
 
@@ -39,6 +41,7 @@
 <section class="py-3">
   <ArticleForm
     {formError}
+    headlineText="New Article"
     validationErrors={formValidationErrors}
     submitButtontext={isArticleCreating ? 'Creating ...' : 'Create Article'}
     on:submit={hanldeFormSubmit} />
