@@ -4,8 +4,7 @@ import compression from "compression";
 import * as sapper from "@sapper/server";
 import fetch from "isomorphic-fetch";
 
-import AuthService from "./services/authService";
-import AccessTokenService from "./services/accessTokenService";
+import { refresh } from "./utils/auth";
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
@@ -20,15 +19,10 @@ async function initServerAccessToken(req, res, next) {
       },
     });
 
-  const authService = new AuthService(
-    fetchWithCookies,
-    new AccessTokenService()
-  );
-
   let serverAccessToken;
 
   try {
-    serverAccessToken = await authService.refresh(fetchWithCookies);
+    serverAccessToken = await refresh(fetchWithCookies);
   } catch (err) {
     serverAccessToken = null;
   }

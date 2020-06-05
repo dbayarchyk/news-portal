@@ -1,10 +1,10 @@
 <script context="module">
-  import AccessTokenService from "../../services/accessTokenService";
+  import jwtDecode from 'jwt-decode';
 
-  export async function preload(page, session) {
-    const accessTokenService = new AccessTokenService(session);
+  import { getAccessToken } from "../../utils/accessToken";
 
-    const accessTokenPayload = accessTokenService.getTokenPayload();
+  export async function preload(page, serverSession) {
+    const accessTokenPayload = jwtDecode(getAccessToken(serverSession));
 
     if (
       !accessTokenPayload ||

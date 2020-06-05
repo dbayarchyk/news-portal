@@ -1,13 +1,20 @@
 <script context="module">
-  import ArticleService from "../../../services/articleService";
+  import { getArticles } from "../../../utils/article";
+  import extendFetchWithAuthHeaders from "../../../utils/extendFetchWithAuthHeaders";
 
-  export async function preload(page, session) {
-    const articleService = new ArticleService(this.fetch, session);
-
-    const response = await articleService.getArticles({ status: "PUBLISHED" });
+  export async function preload(page, serverSession) {
+    const response = await getArticles(
+      extendFetchWithAuthHeaders(this.fetch, serverSession),
+      {
+        page: 1,
+        page_size: 10,
+        status: "PUBLISHED"
+      }
+    );
     const responseData = await response.json();
 
     return {
+      serverSession,
       items: responseData.items,
       itemsCount: responseData.items_count,
       pageSize: responseData.page_size,
@@ -17,25 +24,25 @@
 </script>
 
 <script>
-  import fetch from "isomorphic-fetch";
+  import jwtDecode from "jwt-decode";
 
   import Pagination from "../../../components/Pagination.svelte";
-  import AccessTokenService from "../../../services/accessTokenService";
+  import { getAccessToken } from "../../../utils/accessToken";
   import { canEditArticle } from "./_actionVisibilities";
 
+  export let serverSession;
   export let items = [];
   export let itemsCount = 0;
   export let pageSize = 0;
   export let page = 0;
 
-  const accessTokenService = new AccessTokenService();
+  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
 
   let tableEl;
 
   async function hanldePageChange(event) {
-    const articleService = new ArticleService(fetch);
-
-    const response = await articleService.getArticles({
+    const response = await getArticles(extendFetchWithAuthHeaders(fetch), {
+      status: "PUBLISHED",
       page: event.detail.page,
       page_size: event.detail.pageSize
     });
@@ -93,7 +100,7 @@
               {new Date(article.created_date).toLocaleDateString()}
             </td>
             <td class="table-cell">
-              {#if canEditArticle(article, accessTokenService.getTokenPayload())}
+              {#if canEditArticle(article, accessTokenPayload)}
                 <a class="link" href={`./app/article/editor/${article.id}`}>
                   Edit
                 </a>

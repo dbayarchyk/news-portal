@@ -1,13 +1,11 @@
 <script>
   import { goto } from "@sapper/app";
-  import fetch from "isomorphic-fetch";
 
   import ValidationErrors from "../../../../errors/validationErrors";
   import UnknownError from "../../../../errors/unknownError";
   import ArticleForm from "../../../../components/ArticleForm.svelte";
-  import ArticleService from "../../../../services/articleService";
-
-  const articleService = new ArticleService(fetch);
+  import { createArticle } from "../../../../utils/article";
+  import extendFetchWithAuthHeaders from "../../../../utils/extendFetchWithAuthHeaders";
 
   let formValidationErrors = {};
   let formError = "";
@@ -17,7 +15,10 @@
     isArticleCreating = true;
 
     try {
-      const createdArticle = await articleService.createArticle(event.detail);
+      const createdArticle = await createArticle(
+        extendFetchWithAuthHeaders(fetch),
+        event.detail
+      );
 
       formValidationErrors = {};
 

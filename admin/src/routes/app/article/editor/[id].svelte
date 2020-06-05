@@ -1,10 +1,12 @@
 <script context="module">
-  import ArticleService from "../../../../services/articleService";
+  import { getArticleById } from "../../../../utils/article";
+  import extendFetchWithAuthHeaders from "../../../../utils/extendFetchWithAuthHeaders";
 
   export async function preload({ params }, session) {
-    const articleService = new ArticleService(this.fetch, session);
-
-    const response = await articleService.getArticleById(params.id);
+    const response = await getArticleById(
+      extendFetchWithAuthHeaders(this.fetch, session),
+      params.id
+    );
     const responseData = await response.json();
 
     if (response.status === 200) {
@@ -23,17 +25,14 @@
 </script>
 
 <script>
-  import fetch from "isomorphic-fetch";
-
   import ValidationErrors from "../../../../errors/validationErrors";
   import UnknownError from "../../../../errors/unknownError";
   import ArticleForm from "../../../../components/ArticleForm.svelte";
+  import { updateArticleById } from "../../../../utils/article";
 
   export let id;
   export let title;
   export let content;
-
-  const articleService = new ArticleService(fetch);
 
   let formValidationErrors = {};
   let formError = "";
@@ -43,7 +42,11 @@
     isArticleUpdating = true;
 
     try {
-      await articleService.updateArticleById(id, event.detail);
+      await updateArticleById(
+        extendFetchWithAuthHeaders(fetch),
+        id,
+        event.detail
+      );
 
       formValidationErrors = {};
     } catch (err) {

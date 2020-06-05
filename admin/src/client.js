@@ -1,12 +1,10 @@
 import * as sapper from "@sapper/app";
 
-import AccessTokenService from "./services/accessTokenService";
+import { setInMemoryAccessToken } from "./utils/accessToken";
 
-const accessTokenService = new AccessTokenService();
-
-accessTokenService.setInMemoryToken(
-  window.__SAPPER__.session.serverAccessToken
-);
+if (window.__SAPPER__) {
+  setInMemoryAccessToken(window.__SAPPER__.session.serverAccessToken);
+}
 
 sapper.start({
   target: document.querySelector("#sapper"),

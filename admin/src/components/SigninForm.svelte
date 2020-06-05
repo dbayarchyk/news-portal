@@ -1,14 +1,11 @@
 <script>
   import { goto } from "@sapper/app";
-  import fetch from "isomorphic-fetch";
 
-  import AuthService from "../services/authService";
-  import AccessTokenService from "../services/accessTokenService";
+  import { signIn } from "../utils/auth";
+  import extendFetchWithAuthHeaders from "../utils/extendFetchWithAuthHeaders";
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
   import AccessDeniedError from "../errors/accessDeniedError";
-
-  const authService = new AuthService(fetch, new AccessTokenService());
 
   let email = "";
   let password = "";
@@ -20,7 +17,7 @@
     loading = true;
 
     try {
-      await authService.signIn({
+      await signIn(extendFetchWithAuthHeaders(fetch), {
         email,
         password
       });
