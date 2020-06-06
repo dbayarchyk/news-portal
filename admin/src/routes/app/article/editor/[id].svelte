@@ -63,6 +63,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>{title} | IT Dog Admin</title>
+</svelte:head>
+
 <section class="py-3">
   <ArticleForm
     {id}

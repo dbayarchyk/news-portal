@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>IT Dog Admin | Sign In</title>
+  <title>Sign In | IT Dog Admin</title>
 </svelte:head>
 
 <section class="layout-container py-3 flex justify-center items-center">

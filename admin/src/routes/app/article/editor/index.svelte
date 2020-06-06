@@ -39,6 +39,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>New Article | IT Dog Admin</title>
+</svelte:head>
+
 <section class="py-3">
   <ArticleForm
     {formError}
