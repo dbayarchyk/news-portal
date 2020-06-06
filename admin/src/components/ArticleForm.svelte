@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import readingTime from "reading-time";
 
   import ResizableTextarea from "./ResizableTextarea.svelte";
 
@@ -43,7 +44,13 @@
     {/if}
   </div>
 
-  <div class="form-field">
+  <p class="body-text-secondary text-center mt-5">
+    <span>
+      {Math.round(readingTime(content).minutes)} min read ☕️
+    </span>
+  </p>
+
+  <div class="form-field mt-5">
     <label class="visually-hidden" for="content">Content</label>
     <ResizableTextarea
       placeholder="Type your content here..."
