@@ -1,7 +1,8 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  export let headlineText = "";
+  import ResizableTextarea from "./ResizableTextarea.svelte";
+
   export let title = "";
   export let content = "";
   export let validationErrors = {};
@@ -22,40 +23,36 @@
   .article-form {
     max-width: 75ch;
   }
-
-  .article-content {
-    min-height: 22.5em;
-  }
 </style>
 
 <form class="article-form mx-auto" on:submit|preventDefault={handleSubmit}>
-  <h1 class="headline-1">{headlineText}</h1>
-
   <div class="form-field mt-5">
-    <label class="block body-text-primary" for="title">Title</label>
-    <input
-      class="input w-full"
+    <label class="visually-hidden" for="title">Title</label>
+    <ResizableTextarea
+      placeholder="Type your headline here..."
+      inputClassName="headline-1 outline-none w-full text-center"
       name="title"
       id="title"
       bind:value={title}
-      aria-invalid={validationErrors.title}
-      aria-describedby="title-error" />
+      ariaInvalid={validationErrors.title}
+      ariaDescribedby="title-error" />
     {#if validationErrors.title}
-      <p class="error-text" id="title-error" aria-live="assertive" role="alert">
+      <p class="error-text text-center" id="title-error" aria-live="assertive" role="alert">
         {validationErrors.title}
       </p>
     {/if}
   </div>
 
   <div class="form-field">
-    <label class="block body-text-primary" for="content">Content</label>
-    <textarea
-      class="input article-content w-full"
+    <label class="visually-hidden" for="content">Content</label>
+    <ResizableTextarea
+      placeholder="Type your content here..."
+      inputClassName="outline-none body-text-normal"
       name="content"
       id="content"
       bind:value={content}
-      aria-invalid={validationErrors.content}
-      aria-describedby="content-error" />
+      ariaInvalid={validationErrors.content}
+      ariaDescribedby="content-error" />
     {#if validationErrors.content}
       <p
         class="error-text"
