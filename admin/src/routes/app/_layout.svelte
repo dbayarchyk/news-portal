@@ -1,5 +1,5 @@
 <script context="module">
-  import jwtDecode from 'jwt-decode';
+  import jwtDecode from "jwt-decode";
 
   import { getAccessToken } from "../../utils/accessToken";
 
@@ -16,10 +16,39 @@
 </script>
 
 <script>
+  import { onMount } from "svelte";
+  import { goto } from "@sapper/app";
+
   import Header from "../../components/Header.svelte";
   import Nav from "../../components/Nav.svelte";
+  import { refresh } from "../../utils/auth";
 
   export let segment;
+
+  function setNextRefreshTokenUpdate() {
+    const accessTokenPayload = jwtDecode(getAccessToken());
+
+    if (!accessTokenPayload || !accessTokenPayload["sub"]) {
+      return;
+    }
+
+    const expDateInMiliseconds = accessTokenPayload["exp"] * 1000;
+    const nowInMiliseconds = Date.now();
+    const expInMiliseconds = expDateInMiliseconds - nowInMiliseconds;
+    const nextRefreshTimeInMiliseconds = Math.round((expInMiliseconds * 3) / 4);
+
+    return setTimeout(async () => {
+      try {
+        await refresh(fetch);
+      } catch {
+        await goto(`./signin`);
+      }
+
+      setNextRefreshTokenUpdate();
+    }, nextRefreshTimeInMiliseconds);
+  }
+
+  onMount(setNextRefreshTokenUpdate);
 </script>
 
 <div class="divide-y divide-gray-400">
