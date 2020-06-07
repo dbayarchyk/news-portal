@@ -745,11 +745,92 @@ def publish_article_by_id_handler_v1(id):
 
     try:
         publish_article(id)
-    except Exception as err:
+    except Exception:
         return make_response({
             'message': 'Something went wrong.'
         }, 500)
 
     return make_response({
         'message': "The article has been published."
+    }, 200)
+
+def check_permission_for_article_archive(current_user_id, article_with_status, all_permissions):
+    is_own_article = article_with_status['author_id'] == current_user_id
+
+    if article_with_status['status'] == 'PUBLISHED':
+        if check_permission(all_permissions, ['ARTICLE_ARCHIVE_ALL_PUBLISHED']):
+            return True
+        else:
+            return check_permission(all_permissions, ['ARTICLE_ARCHIVE_OWN_PUBLISHED']) and is_own_article
+
+    return False
+
+def archive_article(article_id):
+    db_connection = None
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor()
+
+        cursor.execute("""
+            UPDATE
+                articles
+            SET
+                status_id = 3
+            WHERE
+                id = %s;
+        """, (article_id,))
+
+        db_connection.commit()
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+@app.route('/v1/articles/<id>/archive', methods=['POST'])
+def archive_article_by_id_handler_v1(id):
+    access_token = get_authorization_header(request.headers)
+
+    try:
+        access_token_payload = decode_access_token(access_token) if access_token is not None else None
+        permissions = get_permissions(access_token_payload)
+    except (Exception, jwt.ExpiredSignatureError):
+        return make_response({
+            'message': 'Please provide a valid authorization token.'
+        }, 401)
+
+    id = int(id)
+    article_with_status = get_article_with_status_by_id(id)
+
+    if article_with_status is None:
+        return make_response({
+            'message': 'Article not found.'
+        }, 404)
+
+    current_user_id = access_token_payload['sub'] if access_token_payload is not None else None
+
+    if article_with_status['status'] == 'ARCHIVED':
+        return make_response({
+            'message': 'This article is already archived.'
+        }, 400)
+
+    if check_permission_for_article_archive(current_user_id, article_with_status, permissions) is False:
+        return make_response({
+            'message': 'You don\'t have permissions to perform that action.'
+        }, 403)
+
+    try:
+        archive_article(id)
+    except Exception:
+        return make_response({
+            'message': 'Something went wrong.'
+        }, 500)
+
+    return make_response({
+        'message': "The article has been archived."
     }, 200)
