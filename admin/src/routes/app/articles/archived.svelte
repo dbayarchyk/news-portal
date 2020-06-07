@@ -4,7 +4,9 @@
 
   export async function preload(page, serverSession) {
     const response = await getArticles(
-      extendFetchWithAuthHeaders(this.fetch, serverSession),{ status: "ARCHIVED", page: 1, page_size: 10 });
+      extendFetchWithAuthHeaders(this.fetch, serverSession),
+      { status: "ARCHIVED", page: 1, page_size: 10 }
+    );
     const responseData = await response.json();
 
     return {
@@ -22,7 +24,7 @@
 
   import Pagination from "../../../components/Pagination.svelte";
   import { getAccessToken } from "../../../utils/accessToken";
-  import { canEditArticle } from "./_actionVisibilities";
+  import { canEditArticle } from "../../../utils/actionPermissions";
 
   export let serverSession;
   export let items = [];
@@ -35,11 +37,14 @@
   let tableEl;
 
   async function hanldePageChange(event) {
-    const response = await await getArticles(extendFetchWithAuthHeaders(fetch), {
-      status: "ARCHIVED",
-      page: event.detail.page,
-      page_size: event.detail.pageSize
-    });
+    const response = await await getArticles(
+      extendFetchWithAuthHeaders(fetch),
+      {
+        status: "ARCHIVED",
+        page: event.detail.page,
+        page_size: event.detail.pageSize
+      }
+    );
     const responseData = await response.json();
 
     items = responseData.items;

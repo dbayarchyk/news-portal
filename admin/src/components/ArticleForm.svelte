@@ -8,7 +8,6 @@
   export let content = "";
   export let validationErrors = {};
   export let formError = "";
-  export let submitButtontext = "";
 
   const dispatch = createEventDispatcher();
 
@@ -38,16 +37,18 @@
       ariaInvalid={validationErrors.title}
       ariaDescribedby="title-error" />
     {#if validationErrors.title}
-      <p class="error-text text-center" id="title-error" aria-live="assertive" role="alert">
+      <p
+        class="error-text text-center"
+        id="title-error"
+        aria-live="assertive"
+        role="alert">
         {validationErrors.title}
       </p>
     {/if}
   </div>
 
   <p class="body-text-secondary text-center mt-5">
-    <span>
-      {Math.round(readingTime(content).minutes)} min read ☕️
-    </span>
+    <span>{Math.round(readingTime(content).minutes)} min read ☕️</span>
   </p>
 
   <div class="form-field mt-5">
@@ -78,6 +79,8 @@
   {/if}
 
   <div class="mt-4">
-    <button class="button" type="submit">{submitButtontext}</button>
+    <slot name="form-buttons">
+      <button class="button" type="submit">Save Changes</button>
+    </slot>
   </div>
 </form>

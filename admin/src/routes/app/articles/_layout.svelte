@@ -13,7 +13,7 @@
     canViewDraftArticles,
     canViewPublishedArticles,
     canViewArchivedArticles
-  } from "./_actionVisibilities";
+  } from "../../../utils/actionPermissions";
   import { getAccessToken } from "../../../utils/accessToken";
 
   export let serverSession;

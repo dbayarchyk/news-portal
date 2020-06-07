@@ -68,3 +68,28 @@ export async function updateArticleById(fetch, id, requestData) {
     }
   }
 }
+
+export async function publishArticleById(fetch, id) {
+  const response = await fetch(
+    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/publish`,
+    {
+      method: "POST",
+    }
+  );
+
+  const responseData = await response.json();
+
+  switch (response.status) {
+    case 200: {
+      return responseData;
+    }
+
+    default: {
+      if (responseData.message) {
+        throw new Error(responseData.message);
+      }
+
+      throw new UnknownError();
+    }
+  }
+}

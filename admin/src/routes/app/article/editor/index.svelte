@@ -49,5 +49,9 @@
     headlineText="New Article"
     validationErrors={formValidationErrors}
     submitButtontext={isArticleCreating ? 'Creating ...' : 'Create Article'}
-    on:submit={hanldeFormSubmit} />
+    on:submit={hanldeFormSubmit}>
+    <button slot="form-buttons" type="submit" class="button">
+      {isArticleCreating ? 'Creating ...' : 'Create Article'}
+    </button>
+  </ArticleForm>
 </section>

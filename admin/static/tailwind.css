@@ -102,6 +102,8 @@
   @apply py-2;
   @apply px-4;
   @apply rounded;
+  @apply border;
+  @apply border-transparent;
 }
 
 .button:hover {
@@ -109,6 +111,29 @@
 }
 
 .button:focus {
+  @apply shadow-outline;
+  @apply outline-none;
+}
+
+.button-outline {
+  @apply shadow;
+  @apply bg-transparent;
+  @apply text-purple-700;
+  @apply font-semibold;
+  @apply py-2;
+  @apply px-4;
+  @apply border;
+  @apply border-purple-500;
+  @apply rounded;
+}
+
+.button-outline:hover {
+  @apply bg-purple-200;
+  @apply text-purple-800;
+  @apply border-transparent;
+}
+
+.button-outline:focus {
   @apply shadow-outline;
   @apply outline-none;
 }

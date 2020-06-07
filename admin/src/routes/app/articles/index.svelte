@@ -27,7 +27,7 @@
 
   import Pagination from "../../../components/Pagination.svelte";
   import { getAccessToken } from "../../../utils/accessToken";
-  import { canEditArticle } from "./_actionVisibilities";
+  import { canEditArticle } from "../../../utils/actionPermissions";
 
   export let serverSession;
   export let items = [];
