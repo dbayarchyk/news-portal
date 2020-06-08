@@ -1,0 +1,46 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@1.2.1
+workflows:
+  build-and-publish-docker-images:
+    jobs:
+      - docker/publish:
+          name: Publish api auth service docker image
+          image: dbayarchyk/itdog-api-auth-service
+          path: ~/project/api/services/auth
+          dockerfile: Dockerfile
+          docker-context: ~/project/api/services/auth
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
+          name: Publish api article service docker image
+          image: dbayarchyk/itdog-api-article-service
+          path: ~/project/api/services/article
+          dockerfile: Dockerfile
+          docker-context: ~/project/api/services/article
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
+          name: Publish admin docker image
+          image: dbayarchyk/itdog-admin
+          path: ~/project/admin
+          dockerfile: Dockerfile
+          docker-context: ~/project/admin
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
+          name: Publish client docker image
+          image: dbayarchyk/itdog-client
+          path: ~/project/client
+          dockerfile: Dockerfile
+          docker-context: ~/project/client
+          filters:
+            branches:
+              only:
+                - master
