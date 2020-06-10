@@ -332,74 +332,119 @@
   overflow: hidden;
 }
 
-.markdown * {
+.markdown *,
+.editor-preview * {
   @apply body-text-normal;
   @apply text-xl;
 }
 
-.markdown h1 {
+.markdown h1,
+.editor-preview h1 {
   @apply headline-1;
 }
 
-.markdown h2 {
+.markdown h2,
+.editor-preview h2 {
   @apply headline-2;
 }
 
-.markdown h3 {
+.markdown h3,
+.editor-preview h3 {
   @apply headline-3;
 }
 
-.markdown h4 {
+.markdown h4,
+.editor-preview h4 {
   @apply headline-4;
 }
 
-.markdown h5 {
+.markdown h5,
+.editor-preview h5 {
   @apply headline-5;
 }
 
-.markdown h6 {
+.markdown h6,
+.editor-preview h6 {
   @apply headline-6;
 }
 
-.markdown * + * {
+.markdown * + *,
+.editor-preview * + * {
   @apply mt-6;
 }
 
-.markdown ul {
+.markdown ul,
+.editor-preview ul {
   @apply list-disc;
   @apply list-inside;
   @apply pl-8;
 }
 
-.markdown ul li + li {
+.markdown ul li + li,
+.editor-preview ul li + li {
   @apply mt-1;
 }
 
 .markdown * + ul,
-.markdown ul + * {
+.editor-preview * + ul,
+.markdown ul + *,
+.editor-preview ul + * {
   @apply mt-6;
 }
 
-.markdown ol {
+.markdown ol,
+.editor-preview ol {
   @apply list-decimal;
   @apply list-inside;
   @apply pl-8;
 }
 
-.markdown ol li + li {
+.markdown ol li + li,
+.editor-preview ol li + li {
   @apply mt-1;
 }
 
 .markdown * + ol,
-.markdown ol + * {
+.editor-preview * + ol,
+.markdown ol + *,
+.editor-preview ol + * {
   @apply mt-6;
 }
 
-.markdown strong {
+.markdown strong,
+.editor-preview strong {
   @apply body-text-primary;
 }
 
-.markdown blockquote {
+.markdown em,
+.editor-preview em {
+  @apply body-text-normal;
+  @apply italic;
+}
+
+.markdown a,
+.editor-preview a {
+  @apply link;
+}
+
+.markdown a:hover,
+.editor-preview a:hover {
+  @apply text-blue-700;
+  @apply underline;
+}
+
+.markdown a:visited,
+.editor-preview a:visited {
+  @apply text-purple-700;
+}
+
+.markdown a:visited:hover,
+.editor-preview a:visited:hover {
+  @apply text-purple-500;
+}
+
+.markdown blockquote,
+.editor-preview blockquote {
   @apply italic;
   @apply relative;
   @apply bg-gray-100;
@@ -408,18 +453,43 @@
   @apply p-4;
 }
 
-/* .markdown table {
-  @apply table;
+.CodeMirror .cm-header-1 {
+  @apply headline-1;
 }
 
-.markdown th {
-  @apply table-head-cell;
+.CodeMirror .cm-header-2 {
+  @apply headline-2;
 }
 
-.markdown td {
-  @apply px-6;
-  @apply py-4;
-  @apply border-b;
-  @apply border-gray-200;
+.CodeMirror .cm-header-3 {
+  @apply headline-3;
+}
+
+.CodeMirror .cm-header-4 {
+  @apply headline-4;
+}
+
+.CodeMirror .cm-header-5 {
+  @apply headline-5;
+}
+
+.CodeMirror .cm-header-6 {
+  @apply headline-6;
+}
+
+.CodeMirror .CodeMirror-line {
   @apply body-text-normal;
-} */
+}
+
+.CodeMirror .cm-strong {
+  @apply body-text-primary;
+}
+
+.CodeMirror .cm-em {
+  @apply body-text-normal;
+  @apply italic;
+}
+
+.CodeMirror .cm-link {
+  @apply link;
+}

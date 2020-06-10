@@ -14796,7 +14796,8 @@ video {
   overflow: hidden;
 }
 
-.markdown * {
+.markdown *,
+.editor-preview * {
   font-size: 1rem;
   line-height: calc(5px + 2ex + 5px);
   text-transform: none;
@@ -14806,77 +14807,93 @@ video {
   font-size: 1.25rem;
 }
 
-.markdown h1 {
+.markdown h1,
+.editor-preview h1 {
   font-weight: 600;
   font-size: 3rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown h2 {
+.markdown h2,
+.editor-preview h2 {
   font-weight: 600;
   font-size: 2.25rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown h3 {
+.markdown h3,
+.editor-preview h3 {
   font-weight: 600;
   font-size: 1.875rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown h4 {
+.markdown h4,
+.editor-preview h4 {
   font-weight: 600;
   font-size: 1.5rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown h5 {
+.markdown h5,
+.editor-preview h5 {
   font-weight: 600;
   font-size: 1.25rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown h6 {
+.markdown h6,
+.editor-preview h6 {
   font-weight: 600;
   font-size: 1.125rem;
   line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown * + * {
+.markdown * + *,
+.editor-preview * + * {
   margin-top: 1.5rem;
 }
 
-.markdown ul {
+.markdown ul,
+.editor-preview ul {
   list-style-type: disc;
   list-style-position: inside;
   padding-left: 2rem;
 }
 
-.markdown ul li + li {
+.markdown ul li + li,
+.editor-preview ul li + li {
   margin-top: 0.25rem;
 }
 
 .markdown * + ul,
-.markdown ul + * {
+.editor-preview * + ul,
+.markdown ul + *,
+.editor-preview ul + * {
   margin-top: 1.5rem;
 }
 
-.markdown ol {
+.markdown ol,
+.editor-preview ol {
   list-style-type: decimal;
   list-style-position: inside;
   padding-left: 2rem;
 }
 
-.markdown ol li + li {
+.markdown ol li + li,
+.editor-preview ol li + li {
   margin-top: 0.25rem;
 }
 
 .markdown * + ol,
-.markdown ol + * {
+.editor-preview * + ol,
+.markdown ol + *,
+.editor-preview ol + * {
   margin-top: 1.5rem;
 }
 
-.markdown strong {
+.markdown strong,
+.editor-preview strong {
   font-weight: 600;
   line-height: calc(5px + 2ex + 5px);
   text-transform: none;
@@ -14885,7 +14902,51 @@ video {
   color: rgba(0, 0, 0, var(--text-opacity));
 }
 
-.markdown blockquote {
+.markdown em,
+.editor-preview em {
+  font-size: 1rem;
+  line-height: calc(5px + 2ex + 5px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+  font-style: italic;
+}
+
+.markdown a,
+.editor-preview a {
+  font-size: 1rem;
+  line-height: calc(5px + 2ex + 5px);
+  --text-opacity: 1;
+  color: #4299e1;
+  color: rgba(66, 153, 225, var(--text-opacity));
+  text-transform: none;
+}
+
+.markdown a:hover,
+.editor-preview a:hover {
+  --text-opacity: 1;
+  color: #2b6cb0;
+  color: rgba(43, 108, 176, var(--text-opacity));
+  text-decoration: underline;
+}
+
+.markdown a:visited,
+.editor-preview a:visited {
+  --text-opacity: 1;
+  color: #6b46c1;
+  color: rgba(107, 70, 193, var(--text-opacity));
+}
+
+.markdown a:visited:hover,
+.editor-preview a:visited:hover {
+  --text-opacity: 1;
+  color: #9f7aea;
+  color: rgba(159, 122, 234, var(--text-opacity));
+}
+
+.markdown blockquote,
+.editor-preview blockquote {
   font-style: italic;
   position: relative;
   --bg-opacity: 1;
@@ -14898,21 +14959,78 @@ video {
   padding: 1rem;
 }
 
-/* .markdown table {
-  @apply table;
+.CodeMirror .cm-header-1 {
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown th {
-  @apply table-head-cell;
+.CodeMirror .cm-header-2 {
+  font-weight: 600;
+  font-size: 2.25rem;
+  line-height: calc(5px + 2ex + 5px);
 }
 
-.markdown td {
-  @apply px-6;
-  @apply py-4;
-  @apply border-b;
-  @apply border-gray-200;
-  @apply body-text-normal;
-} */
+.CodeMirror .cm-header-3 {
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: calc(5px + 2ex + 5px);
+}
+
+.CodeMirror .cm-header-4 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: calc(5px + 2ex + 5px);
+}
+
+.CodeMirror .cm-header-5 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: calc(5px + 2ex + 5px);
+}
+
+.CodeMirror .cm-header-6 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: calc(5px + 2ex + 5px);
+}
+
+.CodeMirror .CodeMirror-line {
+  font-size: 1rem;
+  line-height: calc(5px + 2ex + 5px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+}
+
+.CodeMirror .cm-strong {
+  font-weight: 600;
+  line-height: calc(5px + 2ex + 5px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+}
+
+.CodeMirror .cm-em {
+  font-size: 1rem;
+  line-height: calc(5px + 2ex + 5px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+  font-style: italic;
+}
+
+.CodeMirror .cm-link {
+  font-size: 1rem;
+  line-height: calc(5px + 2ex + 5px);
+  --text-opacity: 1;
+  color: #4299e1;
+  color: rgba(66, 153, 225, var(--text-opacity));
+  text-transform: none;
+}
 
 @media (min-width: 640px) {
   .sm\:space-y-0 > :not(template) ~ :not(template) {

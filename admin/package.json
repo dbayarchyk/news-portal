@@ -21,6 +21,7 @@
     "polka": "next",
     "query-string": "^6.12.1",
     "reading-time": "^1.2.0",
+    "simplemde": "^1.11.2",
     "sirv": "^0.4.0"
   },
   "devDependencies": {

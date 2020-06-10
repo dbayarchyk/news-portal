@@ -3,6 +3,7 @@
   import readingTime from "reading-time";
 
   import ResizableTextarea from "./ResizableTextarea.svelte";
+  import MarkdownEditor from "./MarkdownEditor.svelte";
 
   export let title = "";
   export let content = "";
@@ -53,14 +54,7 @@
 
   <div class="form-field mt-5">
     <label class="visually-hidden" for="content">Content</label>
-    <ResizableTextarea
-      placeholder="Type your content here..."
-      inputClassName="outline-none body-text-normal"
-      name="content"
-      id="content"
-      bind:value={content}
-      ariaInvalid={validationErrors.content}
-      ariaDescribedby="content-error" />
+    <MarkdownEditor bind:value={content} name="content" />
     {#if validationErrors.content}
       <p
         class="error-text"
