@@ -36,10 +36,16 @@
   import ArticleForm from "../../../../components/ArticleForm.svelte";
   import {
     updateArticleById,
-    publishArticleById
+    publishArticleById,
+    archiveArticleById
   } from "../../../../utils/article";
   import { getAccessToken } from "../../../../utils/accessToken";
-  import { canPublishArticle } from "../../../../utils/actionPermissions";
+  import {
+    canPublishArticle,
+    canArchiveArticle,
+    canViewArchivedArticles,
+    canViewPublishedArticles
+  } from "../../../../utils/actionPermissions";
 
   export let serverSession;
   export let id;
@@ -54,6 +60,7 @@
   let formError = "";
   let isArticleUpdating = false;
   let isArticlePublishing = false;
+  let isArticleArchiving = false;
 
   async function saveChanges(id, data) {
     try {
@@ -92,12 +99,42 @@
 
       if (!formError && Object.keys(formValidationErrors).length === 0) {
         await publishArticleById(extendFetchWithAuthHeaders(fetch), id);
-        await goto("./app/articles/published");
+
+        if (canViewPublishedArticles(accessTokenPayload)) {
+          await goto("./app/articles/published");
+        } else {
+          await goto("./app/articles");
+        }
       }
     } catch (err) {
       formError = err.message;
     } finally {
       isArticlePublishing = false;
+    }
+  }
+
+  async function hanldeArticleArchiving() {
+    isArticleArchiving = true;
+
+    try {
+      await saveChanges(id, {
+        title,
+        content
+      });
+
+      if (!formError && Object.keys(formValidationErrors).length === 0) {
+        await archiveArticleById(extendFetchWithAuthHeaders(fetch), id);
+
+        if (canViewArchivedArticles(accessTokenPayload)) {
+          await goto("./app/articles/archived");
+        } else {
+          await goto("./app/articles");
+        }
+      }
+    } catch (err) {
+      formError = err.message;
+    } finally {
+      isArticleArchiving = false;
     }
   }
 </script>
@@ -125,6 +162,14 @@
           class="button ml-2"
           on:click={hanldeArticlePublishing}>
           {isArticlePublishing ? 'Publishing ...' : 'Publish'}
+        </button>
+      {/if}
+      {#if canArchiveArticle({ status, author_id: author_id }, accessTokenPayload)}
+        <button
+          type="button"
+          class="button ml-2"
+          on:click={hanldeArticleArchiving}>
+          {isArticleArchiving ? 'Archiving ...' : 'Archive'}
         </button>
       {/if}
     </div>

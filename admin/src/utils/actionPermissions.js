@@ -72,6 +72,39 @@ export function canPublishArticle(article, tokenPayload) {
   }
 }
 
+export function canArchiveArticle(article, tokenPayload) {
+  if (
+    !tokenPayload ||
+    !tokenPayload.permissions ||
+    !tokenPayload.sub ||
+    !article
+  ) {
+    return false;
+  }
+
+  switch (article.status) {
+    case "DRAFT": {
+      return (
+        tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_DRAFT") ||
+        (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_DRAFT") &&
+          article.author_id === tokenPayload.sub)
+      );
+    }
+
+    case "PUBLISHED": {
+      return (
+        tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_PUBLISHED") ||
+        (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_PUBLISHED") &&
+          article.author_id === tokenPayload.sub)
+      );
+    }
+
+    default: {
+      return false;
+    }
+  }
+}
+
 export function canViewDraftArticles(tokenPayload) {
   if (!tokenPayload || !tokenPayload.permissions) {
     return false;

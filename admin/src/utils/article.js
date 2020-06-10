@@ -93,3 +93,28 @@ export async function publishArticleById(fetch, id) {
     }
   }
 }
+
+export async function archiveArticleById(fetch, id) {
+  const response = await fetch(
+    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/archive`,
+    {
+      method: "POST",
+    }
+  );
+
+  const responseData = await response.json();
+
+  switch (response.status) {
+    case 200: {
+      return responseData;
+    }
+
+    default: {
+      if (responseData.message) {
+        throw new Error(responseData.message);
+      }
+
+      throw new UnknownError();
+    }
+  }
+}
