@@ -35,3 +35,6 @@ def validate_password(password, checkFormat = True):
 
         raise ValueError('Please provide a password that matches the following rules:\n{}'.format(unmatched_rules_str))
 
+def validate_username(username):
+    if username is None or len(username) == 0:
+        raise ValueError('Please provide a username.')

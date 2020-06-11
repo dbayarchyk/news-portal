@@ -139,8 +139,10 @@ CREATE TABLE public.users
     email character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
     role_id bigint NOT NULL DEFAULT 2,
+    username character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_unique_email UNIQUE (email),
+    CONSTRAINT users_unique_username UNIQUE (username),
     CONSTRAINT users_fkey_role_id FOREIGN KEY (role_id)
         REFERENCES public.user_roles (id) MATCH SIMPLE
         ON UPDATE NO ACTION

@@ -152,7 +152,7 @@ def signup_handler_v1():
 
     if request_body is None:
         return make_response({
-            'message': 'Provide an email and a password in a body'
+            'message': 'Provide an email, username and a password in the request body'
         }, 400)
 
     validation_errors = {}
@@ -166,6 +166,11 @@ def signup_handler_v1():
         validators.validate_password(request_body['password'])
     except ValueError as err:
         validation_errors['password'] = str(err)
+
+    try:
+        validators.validate_username(request_body['username'])
+    except ValueError as err:
+        validation_errors['username'] = str(err)
 
     if len(validation_errors.keys()) != 0:
         return make_response(validation_errors, 400)
@@ -206,6 +211,7 @@ def find_user_by_id(id):
                 users.id,
                 users.email,
                 users.password,
+                users.username,
                 user_roles.role AS role,
                 ARRAY_AGG(permissions.name) AS permissions
             FROM
@@ -330,6 +336,23 @@ def get_visitor_permissions():
 
     response = make_response({
         'permissions': permissions
+    }, 200)
+
+    return response
+
+# TODO: create a separate user service?
+@app.route('/v1/users/<id>', methods=['GET'])
+def get_user_by_id(id):
+    user = find_user_by_id(int(id))
+
+    if user is None:
+        return make_response({
+            'message': 'User is not found.',
+        }, 404)
+
+    response = make_response({
+        'id': user['id'],
+        'username': user['username'],
     }, 200)
 
     return response
