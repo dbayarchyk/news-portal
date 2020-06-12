@@ -6,7 +6,7 @@ import { setInMemoryAccessToken } from "./accessToken";
 
 const AUTH_SERVICE_URL = process.browser
   ? "api/auth"
-  : "http://api-auth-service:5000";
+  : "http://api-gateway-service:5000/auth";
 
 export async function signIn(fetch, requestData) {
   const response = await fetch(`${AUTH_SERVICE_URL}/v1/signin`, {

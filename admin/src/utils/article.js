@@ -5,7 +5,7 @@ import UnknownError from "../errors/unknownError";
 
 const ARTICLE_SERVICE_URL = process.browser
   ? "api/article"
-  : "http://api-article-service:5000";
+  : "http://api-gateway-service:5000/article";
 
 export function getArticles(fetch, queryParams = {}) {
   return fetch(
