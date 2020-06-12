@@ -51,8 +51,10 @@
     <h1 class="headline-1 text-center mt-5">{article.title}</h1>
 
     <p class="body-text-secondary text-center mt-5">
-      <span>Dzmitry Bayarchyk</span>
-      |
+      {#if article.author && article.author.username}
+        <span>{article.author.username}</span>
+        |
+      {/if}
       <span>{new Date(article.created_date).toLocaleDateString()}</span>
       |
       <span>
