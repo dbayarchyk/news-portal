@@ -25,6 +25,16 @@ workflows:
               only:
                 - master
       - docker/publish:
+          name: Publish api gateway service docker image
+          image: dbayarchyk/itdog-api-gateway-service
+          path: ~/project/api/services/gateway
+          dockerfile: Dockerfile
+          docker-context: ~/project/api/services/gateway
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
           name: Publish admin docker image
           image: dbayarchyk/itdog-admin
           path: ~/project/admin

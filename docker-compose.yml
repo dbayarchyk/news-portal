@@ -18,6 +18,16 @@ services:
     environment:
       FLASK_ENV: development
 
+  api-gateway-service:
+    build: ./api/services/gateway/.
+    depends_on:
+      - api-auth-service
+      - api-article-service
+    volumes:
+      - ./api/services/gateway:/usr/src/app
+    environment:
+      FLASK_ENV: development
+
   postgres:
     build: ./database/.
     volumes:
