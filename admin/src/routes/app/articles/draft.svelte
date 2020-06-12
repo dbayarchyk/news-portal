@@ -89,7 +89,9 @@
           <tr>
             <td class="table-cell body-text-secondary">{article.id}</td>
             <td class="table-cell body-text-primary">{article.title}</td>
-            <td class="table-cell">{article.author_id}</td>
+            <td class="table-cell">
+              {article.author && article.author.username ? article.author.username : 'Uknown'}
+            </td>
             <td class="table-cell">
               {new Date(article.created_date).toLocaleDateString()}
             </td>

@@ -101,7 +101,9 @@
                 {article.status}
               </span>
             </td>
-            <td class="table-cell">{article.author_id}</td>
+            <td class="table-cell">
+              {article.author && article.author.username ? article.author.username : 'Uknown'}
+            </td>
             <td class="table-cell text-right">0</td>
             <td class="table-cell">
               {new Date(article.created_date).toLocaleDateString()}

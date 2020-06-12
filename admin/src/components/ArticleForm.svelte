@@ -7,6 +7,7 @@
 
   export let title = "";
   export let content = "";
+  export let authorUsername = "";
   export let validationErrors = {};
   export let formError = "";
 
@@ -49,6 +50,10 @@
   </div>
 
   <p class="body-text-secondary text-center mt-5">
+    {#if authorUsername}
+      <span>{authorUsername}</span>
+      |
+    {/if}
     <span>{Math.round(readingTime(content).minutes)} min read ☕️</span>
   </p>
 

@@ -16,7 +16,7 @@
         title: responseData.title,
         content: responseData.content,
         status: responseData.status,
-        author_id: responseData.author_id
+        author: responseData.author
       };
     }
 
@@ -52,7 +52,7 @@
   export let title;
   export let content;
   export let status;
-  export let author_id;
+  export let author;
 
   $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
 
@@ -148,6 +148,7 @@
     {id}
     bind:title
     bind:content
+    authorUsername={(author && author.username) || ''}
     {formError}
     headlineText="Edit Article"
     validationErrors={formValidationErrors}
@@ -156,7 +157,7 @@
       <button type="submit" class="button-outline">
         {isArticleUpdating ? 'Updating ...' : status === 'PUBLISHED' ? 'Save and Publish' : 'Save Changes'}
       </button>
-      {#if canPublishArticle({ status, author_id: author_id }, accessTokenPayload)}
+      {#if canPublishArticle({ status, author }, accessTokenPayload)}
         <button
           type="button"
           class="button ml-2"
@@ -164,7 +165,7 @@
           {isArticlePublishing ? 'Publishing ...' : 'Publish'}
         </button>
       {/if}
-      {#if canArchiveArticle({ status, author_id: author_id }, accessTokenPayload)}
+      {#if canArchiveArticle({ status, author }, accessTokenPayload)}
         <button
           type="button"
           class="button ml-2"

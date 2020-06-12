@@ -54,7 +54,8 @@ export function canPublishArticle(article, tokenPayload) {
       return (
         tokenPayload.permissions.includes("ARTICLE_PUBLISH_ALL_DRAFT") ||
         (tokenPayload.permissions.includes("ARTICLE_PUBLISH_OWN_DRAFT") &&
-          article.author_id === tokenPayload.sub)
+          article.author &&
+          article.author.id === tokenPayload.sub)
       );
     }
 
@@ -62,7 +63,8 @@ export function canPublishArticle(article, tokenPayload) {
       return (
         tokenPayload.permissions.includes("ARTICLE_PUBLISH_ALL_ARCHIVED") ||
         (tokenPayload.permissions.includes("ARTICLE_PUBLISH_OWN_ARCHIVED") &&
-          article.author_id === tokenPayload.sub)
+          article.author &&
+          article.author.id === tokenPayload.sub)
       );
     }
 
@@ -87,7 +89,8 @@ export function canArchiveArticle(article, tokenPayload) {
       return (
         tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_DRAFT") ||
         (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_DRAFT") &&
-          article.author_id === tokenPayload.sub)
+          article.author &&
+          article.author.id === tokenPayload.sub)
       );
     }
 
@@ -95,7 +98,8 @@ export function canArchiveArticle(article, tokenPayload) {
       return (
         tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_PUBLISHED") ||
         (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_PUBLISHED") &&
-          article.author_id === tokenPayload.sub)
+          article.author &&
+          article.author.id === tokenPayload.sub)
       );
     }
 
