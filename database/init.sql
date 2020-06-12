@@ -215,3 +215,37 @@ ALTER SEQUENCE articles_id_seq
 
 ALTER TABLE public.articles
     OWNER to admin;
+
+-- Table: public.comments
+
+-- DROP TABLE public.comments;
+
+CREATE SEQUENCE comments_id_seq1;
+
+CREATE TABLE public.comments
+(
+    id bigint NOT NULL DEFAULT nextval('comments_id_seq1'::regclass),
+    author_id bigint NOT NULL,
+    article_id bigint NOT NULL,
+    content character varying COLLATE pg_catalog."default" NOT NULL,
+    parent_comment_id bigint,
+    CONSTRAINT comments_pkey1 PRIMARY KEY (id),
+    CONSTRAINT comments_fkey_article_id FOREIGN KEY (article_id)
+        REFERENCES public.articles (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT comments_fkey_author_id FOREIGN KEY (author_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT comments_fkey_parent_comment_id FOREIGN KEY (parent_comment_id)
+        REFERENCES public.comments (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+ALTER SEQUENCE comments_id_seq1
+    OWNED BY public.comments.id;
+
+ALTER TABLE public.comments
+    OWNER to admin;
