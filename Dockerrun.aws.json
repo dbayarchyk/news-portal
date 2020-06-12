@@ -1,0 +1,56 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "admin",
+      "image": "dbayarchyk/itdog-admin",
+      "hostname": "admin",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "client",
+      "image": "dbayarchyk/itdog-client",
+      "hostname": "client",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "api-auth-service",
+      "image": "dbayarchyk/itdog-api-auth-service",
+      "hostname": "api-auth-service",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "api-article-service",
+      "image": "dbayarchyk/itdog-api-article-service",
+      "hostname": "api-article-service",
+      "essential": false,
+      "memory": 128,
+      "links": ["api-auth-service"]
+    },
+    {
+      "name": "api-gateway-service",
+      "image": "dbayarchyk/itdog-api-gateway-service",
+      "hostname": "api-gateway-service",
+      "essential": false,
+      "memory": 128,
+      "links": ["api-auth-service", "api-article-service"]
+    },
+    {
+      "name": "nginx",
+      "image": "dbayarchyk/itdog-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["admin", "client", "api-gateway-service"]
+    }
+  ]
+}
