@@ -9,7 +9,7 @@ def get_visitor_permissions():
         )
 
         if result.status_code != 200:
-            return [result.status_code]
+            return []
 
         data = result.json()
 
