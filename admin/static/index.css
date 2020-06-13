@@ -14337,6 +14337,16 @@ video {
   transition-delay: 1000ms;
 }
 
+html {
+  font-size: 87.5%;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 100%;
+  }
+}
+
 [tabindex="-1"] {
   outline: none;
 }
