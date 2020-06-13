@@ -29,7 +29,7 @@
   }
 </style>
 
-<article class="relative inline-flex flex-col">
+<article class="relative inline-flex flex-col w-full">
   <div class="inline-flex flex-col-reverse">
     <a
       class="article-link hover:underline mt-1"
@@ -40,7 +40,7 @@
 
     <div class="article-image-wrapper">
       <img
-        class="article-image"
+        class="article-image w-full"
         src={imageSrc}
         alt=""
         width="300"

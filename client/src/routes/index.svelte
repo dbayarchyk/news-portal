@@ -34,10 +34,12 @@
 {#if error}
   <Error status={error.status} message={error.message} />
 {:else}
-  <section class="py-3">
+  <section>
     <h1 class="headline-1">News</h1>
 
-    <ul class="grid grid-cols-4 gap-2 mt-2">
+    <ul
+      class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 md:gap-4 gap-8
+      mt-2">
       {#each articles as article}
         <li>
           <ArticleCard articleId={article.id} title={article.title} />

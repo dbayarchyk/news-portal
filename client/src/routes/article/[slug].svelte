@@ -48,7 +48,7 @@
   <Error status={error.status} message={error.message} />
 {:else}
   <article class="article mx-auto">
-    <h1 class="headline-1 text-center mt-5">{article.title}</h1>
+    <h1 class="headline-1 text-center">{article.title}</h1>
 
     <p class="body-text-secondary text-center mt-5">
       {#if article.author && article.author.username}
