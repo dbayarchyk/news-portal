@@ -1,8 +1,12 @@
 <script context="module">
-  import { getArticleById } from "../../services/article";
+  import { getArticleById } from "../../utils/article";
+  import extendFetchWithAuthHeaders from "../../utils/extendFetchWithAuthHeaders";
 
-  export async function preload({ params, query }) {
-    const articleResponse = await getArticleById(params.slug);
+  export async function preload(page, session) {
+    const articleResponse = await getArticleById(
+      extendFetchWithAuthHeaders(this.fetch, session),
+      page.params.slug
+    );
     const data = await articleResponse.json();
 
     if (articleResponse.ok) {

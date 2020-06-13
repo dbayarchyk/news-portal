@@ -1,8 +1,12 @@
 <script context="module">
-  import { getArticles } from "../services/article";
+  import { getArticles } from "../utils/article";
+  import extendFetchWithAuthHeaders from "../utils/extendFetchWithAuthHeaders";
 
-  export async function preload({ params, query }) {
-    const articlesResult = await getArticles();
+  export async function preload(page, session) {
+    const articlesResult = await getArticles(
+      extendFetchWithAuthHeaders(this.fetch, session),
+      { status: "PUBLISHED" }
+    );
 
     if (articlesResult.ok) {
       const data = await articlesResult.json();
