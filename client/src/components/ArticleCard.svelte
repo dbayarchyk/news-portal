@@ -29,24 +29,22 @@
   }
 </style>
 
-<article class="relative inline-flex flex-col w-full">
-  <div class="inline-flex flex-col-reverse">
+<article
+  class="relative flex sm:flex-col-reverse sm:justify-start flex-row-reverse
+  justify-end">
+  <div class="block sm:mt-1 sl:ml-0 ml-2">
     <a
-      class="article-link hover:underline mt-1"
+      class="article-link hover:underline"
       rel="prefetch"
       href="article/{articleId}">
       <h2 class="body-text-primary">{title}</h2>
     </a>
 
-    <div class="article-image-wrapper">
-      <img
-        class="article-image w-full"
-        src={imageSrc}
-        alt=""
-        width="300"
-        height="200" />
-    </div>
+    <p class="body-text-secondary text-cropped">Hello there</p>
   </div>
 
-  <p class="body-text-secondary text-cropped">Hello there</p>
+  <div
+    class="article-image-wrapper sm:h-auto sm:w-auto h-20 w-32 flex-shrink-0">
+    <img class="article-image w-full h-full" src={imageSrc} alt="" />
+  </div>
 </article>
