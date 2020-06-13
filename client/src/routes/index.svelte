@@ -46,7 +46,10 @@
       mt-2">
       {#each articles as article}
         <li>
-          <ArticleCard articleId={article.id} title={article.title} />
+          <ArticleCard
+            articleId={article.id}
+            title={article.title}
+            commentsCount={article.comments_count} />
         </li>
       {/each}
     </ul>

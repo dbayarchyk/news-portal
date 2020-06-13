@@ -1,6 +1,7 @@
 <script>
   export let articleId;
   export let title;
+  export let commentsCount;
 
   $: imageSrc = `https://picsum.photos/300/200?random=${articleId}`;
 </script>
@@ -40,7 +41,9 @@
       <h2 class="body-text-primary">{title}</h2>
     </a>
 
-    <p class="body-text-secondary text-cropped">Hello there</p>
+    <p class="body-text-secondary text-cropped">
+      {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
+    </p>
   </div>
 
   <div
