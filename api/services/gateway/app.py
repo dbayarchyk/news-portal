@@ -50,6 +50,20 @@ def get_user_by_id(id):
     
     return response.json()
 
+def get_comments_count(article_id):
+    response = requests.get(
+        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments?page_size=0&article_id={article_id}',
+        params = request.args,
+        headers = request.headers
+    )
+
+    if response.status_code != 200:
+        return None
+
+    response_data = response.json()
+    
+    return response_data['items_count']
+
 def aggregate_article_with_author(article):
     author_id = article.pop('author_id', None)
 
@@ -60,6 +74,22 @@ def aggregate_article_with_author(article):
     aggregated_article['author'] = user
 
     return aggregated_article
+
+def aggregate_article_with_comments_count(article):
+    comments_count = get_comments_count(article['id'])
+
+    aggregated_article = article.copy()
+    aggregated_article['comments_count'] = comments_count
+
+    return aggregated_article
+
+def aggregate_article(article):
+    aggregated_article_with_author = aggregate_article_with_author(article)
+    aggregated_article_with_author_and_comments_count = aggregate_article_with_comments_count(
+        aggregated_article_with_author
+    )
+
+    return aggregated_article_with_author_and_comments_count
 
 @app.route('/article/v1/articles', methods=['GET'])
 def get_articles_handler():
@@ -80,7 +110,7 @@ def get_articles_handler():
     aggregated_response_data = articles_response_data.copy()
 
     aggregated_response_data['items'] = list(map(
-        aggregate_article_with_author,
+        aggregate_article,
         articles_response_data['items'],
     ))
 
@@ -109,7 +139,7 @@ def get_article_by_id_handler(id):
         )
 
     article_response_data = article_response.json()
-    aggregated_response_data = aggregate_article_with_author(article_response_data.copy())
+    aggregated_response_data = aggregate_article(article_response_data.copy())
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in article_response.headers.items() if name.lower() not in excluded_headers]
