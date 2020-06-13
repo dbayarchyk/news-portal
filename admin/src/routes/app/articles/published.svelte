@@ -83,6 +83,7 @@
           </td>
           <td class="table-head-cell">Title</td>
           <td class="table-head-cell">Author</td>
+          <td class="table-head-cell text-right">Comments</td>
           <td class="table-head-cell text-right">Views</td>
           <td class="table-head-cell">Created Date</td>
           <td class="table-head-cell" aria-label="Actions" />
@@ -97,6 +98,7 @@
             <td class="table-cell">
               {article.author && article.author.username ? article.author.username : 'Uknown'}
             </td>
+            <td class="table-cell text-right">{article.comments_count}</td>
             <td class="table-cell text-right">0</td>
             <td class="table-cell">
               {new Date(article.created_date).toLocaleDateString()}
