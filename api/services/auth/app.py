@@ -33,6 +33,7 @@ def find_user_by_email(email):
                 users.id,
                 users.email,
                 users.password,
+                users.username,
                 user_roles.role AS role,
                 ARRAY_AGG(permissions.name) AS permissions
             FROM
@@ -99,6 +100,7 @@ def signin_handler_v1():
     access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
         'sub': user['id'],
+        'username': user['username'],
         'role': user['role'],
         'permissions': user['permissions'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
@@ -266,6 +268,7 @@ def refresh_handler_v1():
     new_access_token = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
         'sub': user['id'],
+        'username': user['username'],
         'role': user['role'],
         'permissions': user['permissions'],
     }, ACCESS_TOKEN_SECRET, algorithm='HS256').decode('utf-8')
