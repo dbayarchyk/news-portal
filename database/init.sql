@@ -67,7 +67,8 @@ VALUES
     (16, 'ARTICLE_PUBLISH_ALL_ARCHIVED'),
     (17, 'ARTICLE_PUBLISH_OWN_ARCHIVED'),
     (18, 'ARTICLE_ARCHIVE_ALL_PUBLISHED'),
-    (19, 'ARTICLE_ARCHIVE_OWN_PUBLISHED');
+    (19, 'ARTICLE_ARCHIVE_OWN_PUBLISHED'),
+    (20, 'COMMENT_VIEW_ALL');
 
 -- Table: public.user_roles_to_permissions
 
@@ -125,7 +126,11 @@ VALUES
     (21, 3, 17),
     (22, 4, 16),
     (23, 3, 19),
-    (24, 4, 18);
+    (24, 4, 18),
+    (25, 1, 20),
+    (26, 2, 20),
+    (27, 3, 20),
+    (28, 4, 20);
 
 -- Table: public.users
 
@@ -229,6 +234,7 @@ CREATE TABLE public.comments
     article_id bigint NOT NULL,
     content character varying COLLATE pg_catalog."default" NOT NULL,
     parent_comment_id bigint,
+    created_date date NOT NULL,
     CONSTRAINT comments_pkey1 PRIMARY KEY (id),
     CONSTRAINT comments_fkey_article_id FOREIGN KEY (article_id)
         REFERENCES public.articles (id) MATCH SIMPLE

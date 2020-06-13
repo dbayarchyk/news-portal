@@ -25,6 +25,16 @@ workflows:
               only:
                 - master
       - docker/publish:
+          name: Publish api comment service docker image
+          image: dbayarchyk/itdog-api-comment-service
+          path: ~/project/api/services/comment
+          dockerfile: Dockerfile
+          docker-context: ~/project/api/services/comment
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
           name: Publish api gateway service docker image
           image: dbayarchyk/itdog-api-gateway-service
           path: ~/project/api/services/gateway

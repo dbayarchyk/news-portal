@@ -3,6 +3,7 @@ import requests
 
 AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
 ARTICLE_SERVICE_ENDPOINT = 'http://api-article-service:5000'
+COMMENT_SERVICE_ENDPOINT = 'http://api-comment-service:5000'
 
 app = Flask(__name__)
 
@@ -32,6 +33,10 @@ def auth_proxy(path):
 @app.route('/article/<path:path>', methods = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])
 def article_proxy(path):
     return proxy_request(f'{ARTICLE_SERVICE_ENDPOINT}/{path}')
+
+@app.route('/comment/<path:path>', methods = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])
+def comment_proxy(path):
+    return proxy_request(f'{COMMENT_SERVICE_ENDPOINT}/{path}')
 
 def get_user_by_id(id):
     response = requests.get(

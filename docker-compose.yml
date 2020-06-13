@@ -18,11 +18,21 @@ services:
     environment:
       FLASK_ENV: development
 
+  api-comment-service:
+    build: ./api/services/comment/.
+    depends_on:
+      - postgres
+    volumes:
+      - ./api/services/comment:/usr/src/app
+    environment:
+      FLASK_ENV: development
+
   api-gateway-service:
     build: ./api/services/gateway/.
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-comment-service
     volumes:
       - ./api/services/gateway:/usr/src/app
     environment:

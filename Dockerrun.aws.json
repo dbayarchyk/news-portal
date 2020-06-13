@@ -31,6 +31,14 @@
       "links": ["api-auth-service"]
     },
     {
+      "name": "api-comment-service",
+      "image": "dbayarchyk/itdog-api-comment-service",
+      "hostname": "api-comment-service",
+      "essential": false,
+      "memory": 128,
+      "links": ["api-auth-service"]
+    },
+    {
       "name": "api-gateway-service",
       "image": "dbayarchyk/itdog-api-gateway-service",
       "hostname": "api-gateway-service",
