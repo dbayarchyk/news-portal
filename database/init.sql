@@ -68,7 +68,8 @@ VALUES
     (17, 'ARTICLE_PUBLISH_OWN_ARCHIVED'),
     (18, 'ARTICLE_ARCHIVE_ALL_PUBLISHED'),
     (19, 'ARTICLE_ARCHIVE_OWN_PUBLISHED'),
-    (20, 'COMMENT_VIEW_ALL');
+    (20, 'COMMENT_VIEW_ALL'),
+    (21, 'COMMENT_CREATE');
 
 -- Table: public.user_roles_to_permissions
 
@@ -130,7 +131,10 @@ VALUES
     (25, 1, 20),
     (26, 2, 20),
     (27, 3, 20),
-    (28, 4, 20);
+    (28, 4, 20),
+    (29, 2, 21),
+    (30, 3, 21),
+    (31, 4, 21);
 
 -- Table: public.users
 
