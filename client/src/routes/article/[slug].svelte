@@ -18,6 +18,7 @@
 
     if (articleResponse.ok) {
       return {
+        serverSession: session,
         article: articleResponseData,
         comments: commentsResponseData.items || []
       };
@@ -25,6 +26,7 @@
 
     return {
       error: {
+        serverSession: session,
         status: articleResponse.status,
         message: data.message
       }
@@ -37,10 +39,16 @@
   import readingTime from "reading-time";
 
   import Error from "../../components/Error.svelte";
+  import CommentForm from "../../components/CommentForm.svelte";
 
   export let article;
   export let comments;
   export let error;
+  export let serverSession;
+
+  function handleCreateComment(event) {
+    comments = [...comments, event.detail];
+  }
 </script>
 
 <style>
@@ -102,6 +110,11 @@
           </li>
         {/each}
       </ul>
+
+      <CommentForm
+        {serverSession}
+        articleId={article.id}
+        on:create={handleCreateComment} />
     </div>
   </article>
 {/if}
