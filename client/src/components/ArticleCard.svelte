@@ -41,9 +41,9 @@
       <h2 class="body-text-primary">{title}</h2>
     </a>
 
-    <p class="body-text-secondary text-cropped">
+    <a href="article/{articleId}#comments" class="link text-cropped relative z-10">
       {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
-    </p>
+    </a>
   </div>
 
   <div
