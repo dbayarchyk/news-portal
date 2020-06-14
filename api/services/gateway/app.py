@@ -197,3 +197,33 @@ def get_comments_handler():
         comments_response.status_code,
         dict(headers)
     )
+
+@app.route('/comment/v1/comments', methods=['POST'])
+def create_comment_handler_v1():
+    create_comment_response = requests.request(
+        'POST',
+        url = f'{COMMENT_SERVICE_ENDPOINT}/v1/comments',
+        params = request.args,
+        headers = request.headers,
+        data = request.data
+    )
+
+    if create_comment_response.status_code != 201:
+        return make_response(
+            create_comment_response.content,
+            create_comment_response.status_code,
+            dict(create_comment_response.headers)
+        )
+
+    create_comment_response_data = create_comment_response.json()
+
+    aggregated_response_data = aggregate_comment(create_comment_response_data.copy())
+
+    excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+    headers = [(name, value) for (name, value) in create_comment_response.headers.items() if name.lower() not in excluded_headers]
+
+    return make_response(
+        aggregated_response_data,
+        create_comment_response.status_code,
+        dict(headers)
+    )
