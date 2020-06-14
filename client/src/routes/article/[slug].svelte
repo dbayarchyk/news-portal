@@ -1,17 +1,25 @@
 <script context="module">
   import { getArticleById } from "../../utils/article";
+  import { getComments } from "../../utils/comment";
   import extendFetchWithAuthHeaders from "../../utils/extendFetchWithAuthHeaders";
 
   export async function preload(page, session) {
-    const articleResponse = await getArticleById(
-      extendFetchWithAuthHeaders(this.fetch, session),
-      page.params.slug
-    );
-    const data = await articleResponse.json();
+    const [articleResponse, commentsResponse] = await Promise.all([
+      getArticleById(
+        extendFetchWithAuthHeaders(this.fetch, session),
+        page.params.slug
+      ),
+      getComments(extendFetchWithAuthHeaders(this.fetch, session), {
+        article_id: page.params.slug
+      })
+    ]);
+    const articleResponseData = await articleResponse.json();
+    const commentsResponseData = await commentsResponse.json();
 
     if (articleResponse.ok) {
       return {
-        article: data
+        article: articleResponseData,
+        comments: commentsResponseData.items || []
       };
     }
 
@@ -31,6 +39,7 @@
   import Error from "../../components/Error.svelte";
 
   export let article;
+  export let comments;
   export let error;
 </script>
 
@@ -73,6 +82,26 @@
 
     <div class="markdown mt-5">
       {@html marked(article.content)}
+    </div>
+
+    <div class="mt-5">
+      <h2 class="headline-2" id="comments">Comments</h2>
+
+      <ul class="mt-2" aria-labelledby="comments">
+        {#each comments as comment, commentIndex}
+          <li class:mt-3={commentIndex !== 0}>
+            <p>
+              {#if comment.author && comment.author.username}
+                <span class="body-text-primary">{comment.author.username}</span>
+              {/if}
+              <span class="body-text-secondary">
+                • {new Date(comment.created_date).toLocaleDateString()}
+              </span>
+            </p>
+            <p class="body-text-normal">{comment.content}</p>
+          </li>
+        {/each}
+      </ul>
     </div>
   </article>
 {/if}
