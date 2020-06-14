@@ -150,7 +150,50 @@ def get_article_by_id_handler(id):
         dict(headers)
     )
 
-    
+def aggregate_comment_with_author(comment):
+    author_id = comment.pop('author_id', None)
 
+    # TODO: fetch all users at once.
+    user = get_user_by_id(author_id)
 
+    aggregated_comment = comment.copy()
+    aggregated_comment['author'] = user
 
+    return aggregated_comment
+
+def aggregate_comment(comment):
+    aggregated_comment_with_author = aggregate_comment_with_author(comment)
+
+    return aggregated_comment_with_author
+
+@app.route('/comment/v1/comments', methods=['GET'])
+def get_comments_handler():
+    comments_response = requests.get(
+        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments',
+        params = request.args,
+        headers = request.headers
+    )
+
+    if comments_response.status_code != 200:
+        return make_response(
+            comments_response.content,
+            comments_response.status_code,
+            dict(comments_response.headers)
+        )
+
+    comments_response_data = comments_response.json()
+    aggregated_response_data = comments_response_data.copy()
+
+    aggregated_response_data['items'] = list(map(
+        aggregate_comment,
+        comments_response_data['items'],
+    ))
+
+    excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+    headers = [(name, value) for (name, value) in comments_response.headers.items() if name.lower() not in excluded_headers]
+
+    return make_response(
+        aggregated_response_data,
+        comments_response.status_code,
+        dict(headers)
+    )
