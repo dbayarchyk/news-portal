@@ -259,3 +259,57 @@ ALTER SEQUENCE comments_id_seq1
 
 ALTER TABLE public.comments
     OWNER to admin;
+
+-- Table: public.event_categories
+
+-- DROP TABLE public.event_categories;
+
+CREATE SEQUENCE event_categories_id_seq;
+
+CREATE TABLE public.event_categories
+(
+    id integer NOT NULL DEFAULT nextval('event_categories_id_seq'::regclass),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT event_categories_pkey PRIMARY KEY (id)
+);
+
+ALTER SEQUENCE event_categories_id_seq
+    OWNED BY public.event_categories.id;
+
+ALTER TABLE public.event_categories
+    OWNER to admin;
+
+INSERT INTO public.event_categories
+  ( id, name )
+VALUES
+  (1, 'TRAINING'), 
+  (2, 'CONFERENCE'), 
+  (3, 'WEBINAR'),
+  (4, 'MITAP'),
+  (5, 'SEMINAR'),
+  (6, 'OTHER');
+
+-- Table: public.events
+
+-- DROP TABLE public.events;
+
+CREATE SEQUENCE events_id_seq;
+
+CREATE TABLE public.events
+(
+    id bigint NOT NULL DEFAULT nextval('events_id_seq'::regclass),
+    title character varying COLLATE pg_catalog."default" NOT NULL,
+    content character varying COLLATE pg_catalog."default" NOT NULL,
+    category_id integer NOT NULL,
+    CONSTRAINT events_pkey PRIMARY KEY (id),
+    CONSTRAINT events_fkey_category_id FOREIGN KEY (category_id)
+        REFERENCES public.event_categories (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+ALTER SEQUENCE events_id_seq
+    OWNED BY public.events.id;
+
+ALTER TABLE public.events
+    OWNER to admin;
