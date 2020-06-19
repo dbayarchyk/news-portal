@@ -459,7 +459,7 @@ html {
   @apply relative;
   @apply bg-gray-100;
   @apply border-l-4;
-  @apply border-blue-500;
+  @apply border-purple-500;
   @apply p-4;
 }
 
