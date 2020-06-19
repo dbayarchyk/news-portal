@@ -62,9 +62,9 @@
 
 <svelte:head>
   {#if article}
-    <title>{article.title}</title>
+    <title>{article.title} | IT Dog</title>
   {:else}
-    <title>{error.status}</title>
+    <title>{error.status} | IT Dog</title>
   {/if}
 </svelte:head>
 
