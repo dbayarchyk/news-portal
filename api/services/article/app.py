@@ -180,6 +180,7 @@ def get_articles(**options):
                         THEN allowed_articles.status = %s
                         ELSE TRUE
                 END
+            ORDER BY allowed_articles.created_date DESC
             LIMIT %s
             OFFSET %s;
         """, (
