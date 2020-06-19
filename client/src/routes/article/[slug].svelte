@@ -47,6 +47,8 @@
   export let error;
   export let serverSession;
 
+  let commentsTreeEl;
+
   function handleCreateComment(event) {
     comments = [...comments, event.detail];
   }
@@ -96,22 +98,11 @@
     <div class="mt-5">
       <h2 class="headline-2" id="comments">Comments</h2>
 
-      <CommentsTree {comments} ariaLabelledby="comments" />
-      <!-- <ul class="mt-2" aria-labelledby="comments">
-        {#each comments as comment, commentIndex}
-          <li class:mt-3={commentIndex !== 0}>
-            <p>
-              {#if comment.author && comment.author.username}
-                <span class="body-text-primary">{comment.author.username}</span>
-              {/if}
-              <span class="body-text-secondary">
-                • {new Date(comment.created_date).toLocaleDateString()}
-              </span>
-            </p>
-            <p class="body-text-normal">{comment.content}</p>
-          </li>
-        {/each}
-      </ul> -->
+      <CommentsTree
+        id="comments-list"
+        {comments}
+        ariaLabelledby="comments"
+        on:create={handleCreateComment} />
 
       <CommentForm
         {serverSession}

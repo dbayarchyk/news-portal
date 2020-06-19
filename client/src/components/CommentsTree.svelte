@@ -1,6 +1,7 @@
 <script>
   import CommentsList from "./CommentsList.svelte";
 
+  export let id;
   export let comments = [];
 
   function buildCommentsMap(commentsList) {
@@ -42,4 +43,8 @@
   $: commentsTree = buildCommentsTree(comments);
 </script>
 
-<CommentsList comments={commentsTree} ariaLabelledby="comments" />
+<CommentsList
+  comments={commentsTree}
+  {id}
+  ariaLabelledby="comments"
+  on:create />

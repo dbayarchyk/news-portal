@@ -56,7 +56,9 @@
 {:else if accessTokenPayload.permissions && accessTokenPayload.permissions.includes('COMMENT_CREATE')}
   <form class="mt-3" on:submit|preventDefault={handleSubmit}>
     <div class="form-field mt-5">
-      <label class="visually-hidden" for="comment">Comment</label>
+      <label class="visually-hidden" for="comment">
+        <div>Comment</div>
+      </label>
       <textarea
         placeholder="Type your comment here..."
         class="input block w-full resize-none h-32"
@@ -76,6 +78,8 @@
     </div>
 
     <div class="mt-2">
+      <slot name="additional-buttons" />
+
       <button class="button" type="submit">
         {isCreatingArticle ? 'Posting the comment ...' : 'Leave a comment'}
       </button>
