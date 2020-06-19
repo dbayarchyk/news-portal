@@ -101,6 +101,7 @@
       <CommentsTree
         id="comments-list"
         {comments}
+        {serverSession}
         ariaLabelledby="comments"
         on:create={handleCreateComment} />
 

@@ -1,9 +1,13 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import jwtDecode from "jwt-decode";
+
   import CommentsList from "./CommentsList.svelte";
   import CommentForm from "./CommentForm.svelte";
+  import { getAccessToken } from "../utils/accessToken";
 
   export let comment;
+  export let serverSession;
 
   const dispatch = createEventDispatcher();
 
@@ -22,6 +26,8 @@
     hideCommentForm();
   }
 
+  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
+  $: canReply = accessTokenPayload && accessTokenPayload.permissions && accessTokenPayload.permissions.includes('COMMENT_CREATE');
   $: authorElementId = `comment-${comment.id}-author`;
   $: createdDateElementId = `comment-${comment.id}-created-date`;
   $: contentElementId = `comment-${comment.id}-content`;
@@ -41,7 +47,7 @@
   </p>
   <p class="body-text-normal" id={contentElementId}>{comment.content}</p>
 
-  {#if !isCommentFormVisible}
+  {#if !isCommentFormVisible && canReply}
     <button
       type="button"
       class="link"
@@ -58,6 +64,7 @@
       <CommentForm
         articleId={comment.article_id}
         parentCommentId={comment.id}
+        {serverSession}
         on:create={handleCreateComment}>
         <button
           slot="additional-buttons"
@@ -72,6 +79,7 @@
     <div class:mt-4={isCommentFormVisible}>
       <CommentsList
         comments={comment.childrenComments}
+        {serverSession}
         ariaLabelledby={contentElementId}
         on:create />
     </div>
