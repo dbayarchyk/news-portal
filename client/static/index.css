@@ -14964,8 +14964,8 @@ html {
   background-color: rgba(247, 250, 252, var(--bg-opacity));
   border-left-width: 4px;
   --border-opacity: 1;
-  border-color: #4299e1;
-  border-color: rgba(66, 153, 225, var(--border-opacity));
+  border-color: #9f7aea;
+  border-color: rgba(159, 122, 234, var(--border-opacity));
   padding: 1rem;
 }
 
