@@ -40,6 +40,7 @@
 
   import Error from "../../components/Error.svelte";
   import CommentForm from "../../components/CommentForm.svelte";
+  import CommentsTree from "../../components/CommentsTree.svelte";
 
   export let article;
   export let comments;
@@ -95,7 +96,8 @@
     <div class="mt-5">
       <h2 class="headline-2" id="comments">Comments</h2>
 
-      <ul class="mt-2" aria-labelledby="comments">
+      <CommentsTree {comments} ariaLabelledby="comments" />
+      <!-- <ul class="mt-2" aria-labelledby="comments">
         {#each comments as comment, commentIndex}
           <li class:mt-3={commentIndex !== 0}>
             <p>
@@ -109,7 +111,7 @@
             <p class="body-text-normal">{comment.content}</p>
           </li>
         {/each}
-      </ul>
+      </ul> -->
 
       <CommentForm
         {serverSession}
