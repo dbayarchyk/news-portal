@@ -90,6 +90,7 @@ def get_comments(**options):
                         THEN comments.article_id = %s
                         ELSE TRUE
                 END
+            ORDER BY comments.created_date ASC
             LIMIT %s
             OFFSET %s;
         """, (
