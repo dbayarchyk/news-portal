@@ -25,7 +25,9 @@
     hideCommentForm();
   }
 
-  $: canReply = $session.currentUser && $session.currentUser.permissions.includes('COMMENT_CREATE');
+  $: canReply =
+    $session.currentUser &&
+    $session.currentUser.permissions.includes("COMMENT_CREATE");
   $: authorElementId = `comment-${comment.id}-author`;
   $: createdDateElementId = `comment-${comment.id}-created-date`;
   $: contentElementId = `comment-${comment.id}-content`;
@@ -39,7 +41,7 @@
       </span>
     {/if}
     <span class="body-text-secondary" id={createdDateElementId}>
-      <span aria-hidden="trues">•</span>
+      <span aria-hidden="true">•</span>
       {new Date(comment.created_date).toLocaleDateString()}
     </span>
   </p>
