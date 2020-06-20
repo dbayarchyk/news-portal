@@ -1,31 +1,28 @@
 <script>
+  import { stores } from "@sapper/app";
   import { createEventDispatcher } from "svelte";
-  import jwtDecode from "jwt-decode";
+  import { get } from "svelte/store";
 
   import ValidationErrors from "../errors/validationErrors";
-  import { getAccessToken } from "../utils/accessToken";
   import { createComment } from "../utils/comment";
-  import extendFetchWithAuthHeaders from "../utils/extendFetchWithAuthHeaders";
+  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
 
-  export let serverSession;
   export let articleId;
   export let parentCommentId = null;
 
+  const { session } = stores();
   const dispatch = createEventDispatcher();
 
   let isCreatingArticle = false;
   let commnet = "";
   let formError = "";
 
-  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
-  $: isSignedIn = !!accessTokenPayload;
-
   async function handleSubmit() {
     isCreatingArticle = true;
 
     try {
       const createdArticle = await createComment(
-        extendFetchWithAuthHeaders(fetch),
+        extendFetchWithAuth(fetch, get(session)),
         {
           content: commnet,
           article_id: articleId,
@@ -49,11 +46,11 @@
   }
 </script>
 
-{#if !isSignedIn}
+{#if !$session.currentUser}
   <a href="./signin" class="button-outline block text-center w-full mt-3">
     Sign in to leave a comment
   </a>
-{:else if accessTokenPayload.permissions && accessTokenPayload.permissions.includes('COMMENT_CREATE')}
+{:else if $session.currentUser.permissions && $session.currentUser.permissions.includes('COMMENT_CREATE')}
   <form class="mt-3" on:submit|preventDefault={handleSubmit}>
     <div class="form-field mt-5">
       <label class="visually-hidden" for="comment">

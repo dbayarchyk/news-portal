@@ -1,15 +1,15 @@
 <script context="module">
   import { getArticleById } from "../../utils/article";
   import { getComments } from "../../utils/comment";
-  import extendFetchWithAuthHeaders from "../../utils/extendFetchWithAuthHeaders";
+  import extendFetchWithAuth from "../../utils/extendFetchWithAuth";
 
   export async function preload(page, session) {
     const [articleResponse, commentsResponse] = await Promise.all([
       getArticleById(
-        extendFetchWithAuthHeaders(this.fetch, session),
+        extendFetchWithAuth(this.fetch, session),
         page.params.slug
       ),
-      getComments(extendFetchWithAuthHeaders(this.fetch, session), {
+      getComments(extendFetchWithAuth(this.fetch, session), {
         article_id: page.params.slug
       })
     ]);
@@ -18,7 +18,6 @@
 
     if (articleResponse.ok) {
       return {
-        serverSession: session,
         article: articleResponseData,
         comments: commentsResponseData.items || []
       };
@@ -26,7 +25,6 @@
 
     return {
       error: {
-        serverSession: session,
         status: articleResponse.status,
         message: data.message
       }
@@ -45,7 +43,6 @@
   export let article;
   export let comments;
   export let error;
-  export let serverSession;
 
   let commentsTreeEl;
 
@@ -101,14 +98,10 @@
       <CommentsTree
         id="comments-list"
         {comments}
-        {serverSession}
         ariaLabelledby="comments"
         on:create={handleCreateComment} />
 
-      <CommentForm
-        {serverSession}
-        articleId={article.id}
-        on:create={handleCreateComment} />
+      <CommentForm articleId={article.id} on:create={handleCreateComment} />
     </div>
   </article>
 {/if}

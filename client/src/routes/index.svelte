@@ -1,10 +1,10 @@
 <script context="module">
   import { getArticles } from "../utils/article";
-  import extendFetchWithAuthHeaders from "../utils/extendFetchWithAuthHeaders";
+  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
 
   export async function preload(page, session) {
     const articlesResult = await getArticles(
-      extendFetchWithAuthHeaders(this.fetch, session),
+      extendFetchWithAuth(this.fetch, session),
       { status: "PUBLISHED" }
     );
 

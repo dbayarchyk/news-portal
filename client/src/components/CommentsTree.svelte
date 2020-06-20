@@ -3,7 +3,6 @@
 
   export let id;
   export let comments = [];
-  export let serverSession;
 
   function buildCommentsMap(commentsList) {
     const commentsChildrenMap = new Map();
@@ -47,6 +46,5 @@
 <CommentsList
   comments={commentsTree}
   {id}
-  {serverSession}
   ariaLabelledby="comments"
   on:create />

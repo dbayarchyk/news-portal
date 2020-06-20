@@ -1,8 +1,10 @@
 <script>
-  import { goto } from "@sapper/app";
+  import { stores, goto } from "@sapper/app";
+  import { get } from "svelte/store";
 
   import { signIn } from "../utils/auth";
-  import extendFetchWithAuthHeaders from "../utils/extendFetchWithAuthHeaders";
+  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
+  import deriveSessionFromAccessToken from "../utils/deriveSessionFromAccessToken";
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
 
@@ -12,17 +14,27 @@
   let validationErrors = {};
   let formError = "";
 
+  const { session } = stores();
+
   async function handleSubmit() {
     loading = true;
 
     try {
-      await signIn(extendFetchWithAuthHeaders(fetch), {
-        email,
-        password
-      });
+      const accessToken = await signIn(
+        extendFetchWithAuth(fetch, get(session)),
+        {
+          email,
+          password
+        }
+      );
 
       validationErrors = {};
       formError = "";
+
+      session.update(oldSession => ({
+        ...oldSession,
+        ...deriveSessionFromAccessToken(accessToken)
+      }));
 
       await goto("./");
     } catch (err) {

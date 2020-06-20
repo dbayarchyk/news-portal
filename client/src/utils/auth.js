@@ -1,8 +1,5 @@
-import jwtDecode from "jwt-decode";
-
 import ValidationErrors from "../errors/validationErrors";
 import UnknownError from "../errors/unknownError";
-import { setInMemoryAccessToken } from "./accessToken";
 
 const AUTH_SERVICE_URL = process.browser
   ? "api/auth"
@@ -30,13 +27,7 @@ export async function signIn(fetch, requestData) {
         throw new UnknownError();
       }
 
-      const accessTokenPayload = jwtDecode(data.access_token);
-
-      if (process.browser) {
-        setInMemoryAccessToken(data.access_token);
-      }
-
-      break;
+      return data.access_token;
     }
 
     default: {
@@ -56,14 +47,9 @@ export async function refresh(fetch) {
     throw new UnknownError();
   }
 
-  if (process.browser) {
-    setInMemoryAccessToken(responseData.access_token);
-  }
-
   return responseData.access_token;
 }
 
 export async function singOut(fetch) {
-  await fetch(`${AUTH_SERVICE_URL}/v1/signout`);
-  setInMemoryToken(null);
+  return fetch(`${AUTH_SERVICE_URL}/v1/signout`);
 }
