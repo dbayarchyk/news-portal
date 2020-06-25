@@ -5,7 +5,8 @@
 
   import ValidationErrors from "../errors/validationErrors";
   import { createComment } from "../api/comment";
-  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../utils/auth/extendFetchWithAuth";
+  import canCreateComment from "../utils/permissions/canCreateComment";
 
   export let articleId;
   export let parentCommentId = null;
@@ -50,7 +51,7 @@
   <a href="./signin" class="button-outline block text-center w-full mt-3">
     Sign in to leave a comment
   </a>
-{:else if $session.currentUser.permissions && $session.currentUser.permissions.includes('COMMENT_CREATE')}
+{:else if canCreateComment($session.currentUser)}
   <form class="mt-3" on:submit|preventDefault={handleSubmit}>
     <div class="form-field mt-5">
       <label class="visually-hidden" for="comment">

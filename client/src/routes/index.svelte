@@ -1,6 +1,6 @@
 <script context="module">
   import { getArticles } from "../api/article";
-  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../utils/auth/extendFetchWithAuth";
 
   export async function preload(page, session) {
     const articlesResult = await getArticles(

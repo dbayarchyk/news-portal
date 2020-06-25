@@ -4,6 +4,7 @@
 
   import CommentsList from "./CommentsList.svelte";
   import CommentForm from "./CommentForm.svelte";
+  import canCreateComment from "../utils/permissions/canCreateComment";
 
   export let comment;
 
@@ -25,9 +26,6 @@
     hideCommentForm();
   }
 
-  $: canReply =
-    $session.currentUser &&
-    $session.currentUser.permissions.includes("COMMENT_CREATE");
   $: authorElementId = `comment-${comment.id}-author`;
   $: createdDateElementId = `comment-${comment.id}-created-date`;
   $: contentElementId = `comment-${comment.id}-content`;
@@ -47,7 +45,7 @@
   </p>
   <p class="body-text-normal" id={contentElementId}>{comment.content}</p>
 
-  {#if !isCommentFormVisible && canReply}
+  {#if !isCommentFormVisible && canCreateComment($session.currentUser)}
     <button
       type="button"
       class="link"

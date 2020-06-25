@@ -1,7 +1,7 @@
 <script context="module">
   import { getArticleById } from "../../api/article";
   import { getComments } from "../../api/comment";
-  import extendFetchWithAuth from "../../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../../utils/auth/extendFetchWithAuth";
 
   export async function preload(page, session) {
     const [articleResponse, commentsResponse] = await Promise.all([
