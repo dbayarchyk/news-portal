@@ -3,8 +3,8 @@
   import { get } from "svelte/store";
 
   import { signIn } from "../api/auth";
-  import extendFetchWithAuth from "../utils/extendFetchWithAuth";
-  import deriveSessionFromAccessToken from "../utils/deriveSessionFromAccessToken";
+  import extendFetchWithAuth from "../utils/auth/extendFetchWithAuth";
+  import deriveSessionFromAccessToken from "../utils/auth/deriveSessionFromAccessToken";
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
   import AccessDeniedError from "../errors/accessDeniedError";

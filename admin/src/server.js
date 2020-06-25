@@ -5,7 +5,7 @@ import * as sapper from "@sapper/server";
 import fetch from "isomorphic-fetch";
 
 import { refresh } from "./api/auth";
-import deriveSessionFromAccessToken from "./utils/deriveSessionFromAccessToken";
+import deriveSessionFromAccessToken from "./utils/auth/deriveSessionFromAccessToken";
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";

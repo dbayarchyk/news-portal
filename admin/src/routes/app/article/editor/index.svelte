@@ -6,7 +6,7 @@
   import UnknownError from "../../../../errors/unknownError";
   import ArticleForm from "../../../../components/ArticleForm.svelte";
   import { createArticle } from "../../../../api/article";
-  import extendFetchWithAuth from "../../../../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../../../../utils/auth/extendFetchWithAuth";
 
   const { session } = stores();
 

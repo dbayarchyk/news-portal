@@ -1,6 +1,6 @@
 <script context="module">
   import { getArticles } from "../../../api/article";
-  import extendFetchWithAuth from "../../../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../../../utils/auth/extendFetchWithAuth";
 
   export async function preload(page, session) {
     const response = await getArticles(
@@ -25,7 +25,7 @@
   import { stores } from "@sapper/app";
 
   import Pagination from "../../../components/Pagination.svelte";
-  import { canEditArticle } from "../../../utils/actionPermissions";
+  import canEditArticle from "../../../utils/permissions/canEditArticle";
 
   export let items = [];
   export let itemsCount = 0;

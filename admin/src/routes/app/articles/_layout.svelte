@@ -1,11 +1,9 @@
 <script>
   import { stores } from "@sapper/app";
 
-  import {
-    canViewDraftArticles,
-    canViewPublishedArticles,
-    canViewArchivedArticles
-  } from "../../../utils/actionPermissions";
+  import canViewDraftArticles from "../../../utils/permissions/canViewDraftArticles";
+  import canViewPublishedArticles from "../../../utils/permissions/canViewPublishedArticles";
+  import canViewArchivedArticles from "../../../utils/permissions/canViewArchivedArticles";
 
   export let segment;
 

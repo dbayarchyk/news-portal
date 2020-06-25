@@ -1,6 +1,6 @@
 <script context="module">
   import { getArticleById } from "../../../../api/article";
-  import extendFetchWithAuth from "../../../../utils/extendFetchWithAuth";
+  import extendFetchWithAuth from "../../../../utils/auth/extendFetchWithAuth";
 
   export async function preload({ params }, session) {
     const response = await getArticleById(
@@ -38,12 +38,10 @@
     publishArticleById,
     archiveArticleById
   } from "../../../../api/article";
-  import {
-    canPublishArticle,
-    canArchiveArticle,
-    canViewArchivedArticles,
-    canViewPublishedArticles
-  } from "../../../../utils/actionPermissions";
+  import canPublishArticle from "../../../../utils/permissions/canPublishArticle";
+  import canArchiveArticle from "../../../../utils/permissions/canArchiveArticle";
+  import canViewArchivedArticles from "../../../../utils/permissions/canViewArchivedArticles";
+  import canViewPublishedArticles from "../../../../utils/permissions/canViewPublishedArticles";
 
   export let id;
   export let title;
