@@ -1,11 +1,14 @@
 <script>
-  import { goto } from "@sapper/app";
+  import { stores, goto } from "@sapper/app";
+  import { get } from "svelte/store";
 
   import ValidationErrors from "../../../../errors/validationErrors";
   import UnknownError from "../../../../errors/unknownError";
   import ArticleForm from "../../../../components/ArticleForm.svelte";
-  import { createArticle } from "../../../../utils/article";
-  import extendFetchWithAuthHeaders from "../../../../utils/extendFetchWithAuthHeaders";
+  import { createArticle } from "../../../../api/article";
+  import extendFetchWithAuth from "../../../../utils/extendFetchWithAuth";
+
+  const { session } = stores();
 
   let formValidationErrors = {};
   let formError = "";
@@ -16,7 +19,7 @@
 
     try {
       const createdArticle = await createArticle(
-        extendFetchWithAuthHeaders(fetch),
+        extendFetchWithAuth(fetch, get(session)),
         event.detail
       );
 

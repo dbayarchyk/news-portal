@@ -1,35 +1,30 @@
-export function canEditArticle(article, tokenPayload) {
-  if (
-    !tokenPayload ||
-    !tokenPayload.permissions ||
-    !tokenPayload.sub ||
-    !article
-  ) {
+export function canEditArticle(article, currentUser) {
+  if (!currentUser || !currentUser.permissions || !currentUser.id || !article) {
     return false;
   }
 
   switch (article.status) {
     case "DRAFT": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_UPDATE_ALL_DRAFT") ||
-        (tokenPayload.permissions.includes("ARTICLE_UPDATE_OWN_DRAFT") &&
-          article.author_id === tokenPayload.sub)
+        currentUser.permissions.includes("ARTICLE_UPDATE_ALL_DRAFT") ||
+        (currentUser.permissions.includes("ARTICLE_UPDATE_OWN_DRAFT") &&
+          article.author_id === currentUser.id)
       );
     }
 
     case "PUBLISHED": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_UPDATE_ALL_PUBLISHED") ||
-        (tokenPayload.permissions.includes("ARTICLE_UPDATE_OWN_PUBLISHED") &&
-          article.author_id === tokenPayload.sub)
+        currentUser.permissions.includes("ARTICLE_UPDATE_ALL_PUBLISHED") ||
+        (currentUser.permissions.includes("ARTICLE_UPDATE_OWN_PUBLISHED") &&
+          article.author_id === currentUser.id)
       );
     }
 
     case "ARCHIVED": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_UPDATE_ALL_ARCHIVED") ||
-        (tokenPayload.permissions.includes("ARTICLE_UPDATE_OWN_ARCHIVED") &&
-          article.author_id === tokenPayload.sub)
+        currentUser.permissions.includes("ARTICLE_UPDATE_ALL_ARCHIVED") ||
+        (currentUser.permissions.includes("ARTICLE_UPDATE_OWN_ARCHIVED") &&
+          article.author_id === currentUser.id)
       );
     }
 
@@ -39,32 +34,27 @@ export function canEditArticle(article, tokenPayload) {
   }
 }
 
-export function canPublishArticle(article, tokenPayload) {
-  if (
-    !tokenPayload ||
-    !tokenPayload.permissions ||
-    !tokenPayload.sub ||
-    !article
-  ) {
+export function canPublishArticle(article, currentUser) {
+  if (!currentUser || !currentUser.permissions || !currentUser.id || !article) {
     return false;
   }
 
   switch (article.status) {
     case "DRAFT": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_PUBLISH_ALL_DRAFT") ||
-        (tokenPayload.permissions.includes("ARTICLE_PUBLISH_OWN_DRAFT") &&
+        currentUser.permissions.includes("ARTICLE_PUBLISH_ALL_DRAFT") ||
+        (currentUser.permissions.includes("ARTICLE_PUBLISH_OWN_DRAFT") &&
           article.author &&
-          article.author.id === tokenPayload.sub)
+          article.author.id === currentUser.id)
       );
     }
 
     case "ARCHIVED": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_PUBLISH_ALL_ARCHIVED") ||
-        (tokenPayload.permissions.includes("ARTICLE_PUBLISH_OWN_ARCHIVED") &&
+        currentUser.permissions.includes("ARTICLE_PUBLISH_ALL_ARCHIVED") ||
+        (currentUser.permissions.includes("ARTICLE_PUBLISH_OWN_ARCHIVED") &&
           article.author &&
-          article.author.id === tokenPayload.sub)
+          article.author.id === currentUser.id)
       );
     }
 
@@ -74,32 +64,27 @@ export function canPublishArticle(article, tokenPayload) {
   }
 }
 
-export function canArchiveArticle(article, tokenPayload) {
-  if (
-    !tokenPayload ||
-    !tokenPayload.permissions ||
-    !tokenPayload.sub ||
-    !article
-  ) {
+export function canArchiveArticle(article, currentUser) {
+  if (!currentUser || !currentUser.permissions || !currentUser.id || !article) {
     return false;
   }
 
   switch (article.status) {
     case "DRAFT": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_DRAFT") ||
-        (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_DRAFT") &&
+        currentUser.permissions.includes("ARTICLE_ARCHIVE_ALL_DRAFT") ||
+        (currentUser.permissions.includes("ARTICLE_ARCHIVE_OWN_DRAFT") &&
           article.author &&
-          article.author.id === tokenPayload.sub)
+          article.author.id === currentUser.id)
       );
     }
 
     case "PUBLISHED": {
       return (
-        tokenPayload.permissions.includes("ARTICLE_ARCHIVE_ALL_PUBLISHED") ||
-        (tokenPayload.permissions.includes("ARTICLE_ARCHIVE_OWN_PUBLISHED") &&
+        currentUser.permissions.includes("ARTICLE_ARCHIVE_ALL_PUBLISHED") ||
+        (currentUser.permissions.includes("ARTICLE_ARCHIVE_OWN_PUBLISHED") &&
           article.author &&
-          article.author.id === tokenPayload.sub)
+          article.author.id === currentUser.id)
       );
     }
 
@@ -109,35 +94,35 @@ export function canArchiveArticle(article, tokenPayload) {
   }
 }
 
-export function canViewDraftArticles(tokenPayload) {
-  if (!tokenPayload || !tokenPayload.permissions) {
+export function canViewDraftArticles(currentUser) {
+  if (!currentUser || !currentUser.permissions) {
     return false;
   }
 
   return (
-    tokenPayload.permissions.includes("ARTICLE_VIEW_ALL_DRAFT") ||
-    tokenPayload.permissions.includes("ARTICLE_VIEW_OWN_DRAFT")
+    currentUser.permissions.includes("ARTICLE_VIEW_ALL_DRAFT") ||
+    currentUser.permissions.includes("ARTICLE_VIEW_OWN_DRAFT")
   );
 }
 
-export function canViewPublishedArticles(tokenPayload) {
-  if (!tokenPayload || !tokenPayload.permissions) {
+export function canViewPublishedArticles(currentUser) {
+  if (!currentUser || !currentUser.permissions) {
     return false;
   }
 
   return (
-    tokenPayload.permissions.includes("ARTICLE_VIEW_ALL_PUBLISHED") ||
-    tokenPayload.permissions.includes("ARTICLE_VIEW_OWN_PUBLISHED")
+    currentUser.permissions.includes("ARTICLE_VIEW_ALL_PUBLISHED") ||
+    currentUser.permissions.includes("ARTICLE_VIEW_OWN_PUBLISHED")
   );
 }
 
-export function canViewArchivedArticles(tokenPayload) {
-  if (!tokenPayload || !tokenPayload.permissions) {
+export function canViewArchivedArticles(currentUser) {
+  if (!currentUser || !currentUser.permissions) {
     return false;
   }
 
   return (
-    tokenPayload.permissions.includes("ARTICLE_VIEW_ALL_ARCHIVED") ||
-    tokenPayload.permissions.includes("ARTICLE_VIEW_OWN_ARCHIVED")
+    currentUser.permissions.includes("ARTICLE_VIEW_ALL_ARCHIVED") ||
+    currentUser.permissions.includes("ARTICLE_VIEW_OWN_ARCHIVED")
   );
 }

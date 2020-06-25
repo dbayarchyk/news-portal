@@ -1,17 +1,16 @@
 <script context="module">
-  import { getArticleById } from "../../../../utils/article";
-  import extendFetchWithAuthHeaders from "../../../../utils/extendFetchWithAuthHeaders";
+  import { getArticleById } from "../../../../api/article";
+  import extendFetchWithAuth from "../../../../utils/extendFetchWithAuth";
 
-  export async function preload({ params }, serverSession) {
+  export async function preload({ params }, session) {
     const response = await getArticleById(
-      extendFetchWithAuthHeaders(this.fetch, serverSession),
+      extendFetchWithAuth(this.fetch, session),
       params.id
     );
     const responseData = await response.json();
 
     if (response.status === 200) {
       return {
-        serverSession: serverSession,
         id: responseData.id,
         title: responseData.title,
         content: responseData.content,
@@ -28,8 +27,8 @@
 </script>
 
 <script>
-  import { goto } from "@sapper/app";
-  import jwtDecode from "jwt-decode";
+  import { stores, goto } from "@sapper/app";
+  import { get } from "svelte/store";
 
   import ValidationErrors from "../../../../errors/validationErrors";
   import UnknownError from "../../../../errors/unknownError";
@@ -38,8 +37,7 @@
     updateArticleById,
     publishArticleById,
     archiveArticleById
-  } from "../../../../utils/article";
-  import { getAccessToken } from "../../../../utils/accessToken";
+  } from "../../../../api/article";
   import {
     canPublishArticle,
     canArchiveArticle,
@@ -47,14 +45,13 @@
     canViewPublishedArticles
   } from "../../../../utils/actionPermissions";
 
-  export let serverSession;
   export let id;
   export let title;
   export let content;
   export let status;
   export let author;
 
-  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
+  const { session } = stores();
 
   let formValidationErrors = {};
   let formError = "";
@@ -64,7 +61,11 @@
 
   async function saveChanges(id, data) {
     try {
-      await updateArticleById(extendFetchWithAuthHeaders(fetch), id, data);
+      await updateArticleById(
+        extendFetchWithAuth(fetch, get(session)),
+        id,
+        data
+      );
 
       formValidationErrors = {};
     } catch (err) {
@@ -98,9 +99,9 @@
       });
 
       if (!formError && Object.keys(formValidationErrors).length === 0) {
-        await publishArticleById(extendFetchWithAuthHeaders(fetch), id);
+        await publishArticleById(extendFetchWithAuth(fetch, get(session)), id);
 
-        if (canViewPublishedArticles(accessTokenPayload)) {
+        if (canViewPublishedArticles(get(session).currentUser)) {
           await goto("./app/articles/published");
         } else {
           await goto("./app/articles");
@@ -123,9 +124,12 @@
       });
 
       if (!formError && Object.keys(formValidationErrors).length === 0) {
-        await archiveArticleById(extendFetchWithAuthHeaders(fetch), id);
+        await archiveArticleById(
+          extendFetchWithAuth(fetch, get(session).currentUser),
+          id
+        );
 
-        if (canViewArchivedArticles(accessTokenPayload)) {
+        if (canViewArchivedArticles(get(session).currentUser)) {
           await goto("./app/articles/archived");
         } else {
           await goto("./app/articles");
@@ -157,7 +161,7 @@
       <button type="submit" class="button-outline">
         {isArticleUpdating ? 'Updating ...' : status === 'PUBLISHED' ? 'Save and Publish' : 'Save Changes'}
       </button>
-      {#if canPublishArticle({ status, author }, accessTokenPayload)}
+      {#if canPublishArticle({ status, author }, $session.currentUser)}
         <button
           type="button"
           class="button ml-2"
@@ -165,7 +169,7 @@
           {isArticlePublishing ? 'Publishing ...' : 'Publish'}
         </button>
       {/if}
-      {#if canArchiveArticle({ status, author }, accessTokenPayload)}
+      {#if canArchiveArticle({ status, author }, $session.currentUser)}
         <button
           type="button"
           class="button ml-2"

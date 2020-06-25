@@ -1,25 +1,15 @@
-<script context="module">
-  export async function preload(page, serverSession) {
-    return {
-      serverSession
-    };
-  }
-</script>
-
 <script>
-  import jwtDecode from "jwt-decode";
+  import { stores } from "@sapper/app";
 
   import {
     canViewDraftArticles,
     canViewPublishedArticles,
     canViewArchivedArticles
   } from "../../../utils/actionPermissions";
-  import { getAccessToken } from "../../../utils/accessToken";
 
-  export let serverSession;
   export let segment;
 
-  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
+  const { session } = stores();
 </script>
 
 <section class="py-3">
@@ -34,7 +24,7 @@
             All
           </a>
         </li>
-        {#if canViewDraftArticles(accessTokenPayload)}
+        {#if canViewDraftArticles($session.currentUser)}
           <li>
             <a
               class="sidebar-link"
@@ -44,7 +34,7 @@
             </a>
           </li>
         {/if}
-        {#if canViewPublishedArticles(accessTokenPayload)}
+        {#if canViewPublishedArticles($session.currentUser)}
           <li>
             <a
               class="sidebar-link"
@@ -54,7 +44,7 @@
             </a>
           </li>
         {/if}
-        {#if canViewArchivedArticles(accessTokenPayload)}
+        {#if canViewArchivedArticles($session.currentUser)}
           <li>
             <a
               class="sidebar-link"

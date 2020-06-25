@@ -1,16 +1,15 @@
 <script context="module">
-  import { getArticles } from "../../../utils/article";
-  import extendFetchWithAuthHeaders from "../../../utils/extendFetchWithAuthHeaders";
+  import { getArticles } from "../../../api/article";
+  import extendFetchWithAuth from "../../../utils/extendFetchWithAuth";
 
-  export async function preload(page, serverSession) {
+  export async function preload(page, session) {
     const response = await getArticles(
-      extendFetchWithAuthHeaders(this.fetch, serverSession),
+      extendFetchWithAuth(this.fetch, session),
       { status: "ARCHIVED", page: 1, page_size: 10 }
     );
     const responseData = await response.json();
 
     return {
-      serverSession,
       items: responseData.items,
       itemsCount: responseData.items_count,
       pageSize: responseData.page_size,
@@ -20,31 +19,26 @@
 </script>
 
 <script>
-  import jwtDecode from "jwt-decode";
+  import { stores } from "@sapper/app";
 
   import Pagination from "../../../components/Pagination.svelte";
-  import { getAccessToken } from "../../../utils/accessToken";
   import { canEditArticle } from "../../../utils/actionPermissions";
 
-  export let serverSession;
   export let items = [];
   export let itemsCount = 0;
   export let pageSize = 0;
   export let page = 0;
 
-  $: accessTokenPayload = jwtDecode(getAccessToken(serverSession));
+  const { session } = stores();
 
   let tableEl;
 
   async function hanldePageChange(event) {
-    const response = await await getArticles(
-      extendFetchWithAuthHeaders(fetch),
-      {
-        status: "ARCHIVED",
-        page: event.detail.page,
-        page_size: event.detail.pageSize
-      }
-    );
+    const response = await await getArticles(extendFetchWithAuth(fetch), {
+      status: "ARCHIVED",
+      page: event.detail.page,
+      page_size: event.detail.pageSize
+    });
     const responseData = await response.json();
 
     items = responseData.items;
@@ -101,7 +95,7 @@
               {new Date(article.created_date).toLocaleDateString()}
             </td>
             <td class="table-cell">
-              {#if canEditArticle(article, accessTokenPayload)}
+              {#if canEditArticle(article, $session.currentUser)}
                 <a class="link" href={`./app/article/editor/${article.id}`}>
                   Edit
                 </a>
