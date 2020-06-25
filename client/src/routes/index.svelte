@@ -1,5 +1,5 @@
 <script context="module">
-  import { getArticles } from "../utils/article";
+  import { getArticles } from "../api/article";
   import extendFetchWithAuth from "../utils/extendFetchWithAuth";
 
   export async function preload(page, session) {

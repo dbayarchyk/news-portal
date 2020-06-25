@@ -4,7 +4,7 @@ import compression from "compression";
 import * as sapper from "@sapper/server";
 import fetch from "isomorphic-fetch";
 
-import { refresh } from "./utils/auth";
+import { refresh } from "./api/auth";
 import deriveSessionFromAccessToken from "./utils/deriveSessionFromAccessToken";
 
 const { PORT, NODE_ENV } = process.env;

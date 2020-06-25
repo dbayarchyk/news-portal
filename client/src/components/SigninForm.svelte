@@ -2,7 +2,7 @@
   import { stores, goto } from "@sapper/app";
   import { get } from "svelte/store";
 
-  import { signIn } from "../utils/auth";
+  import { signIn } from "../api/auth";
   import extendFetchWithAuth from "../utils/extendFetchWithAuth";
   import deriveSessionFromAccessToken from "../utils/deriveSessionFromAccessToken";
   import UnknownError from "../errors/unknownError";

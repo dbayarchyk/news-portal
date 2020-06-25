@@ -1,6 +1,6 @@
 <script context="module">
-  import { getArticleById } from "../../utils/article";
-  import { getComments } from "../../utils/comment";
+  import { getArticleById } from "../../api/article";
+  import { getComments } from "../../api/comment";
   import extendFetchWithAuth from "../../utils/extendFetchWithAuth";
 
   export async function preload(page, session) {

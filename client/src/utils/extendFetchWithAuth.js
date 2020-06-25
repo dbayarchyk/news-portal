@@ -3,7 +3,7 @@ import { stores } from "@sapper/app";
 import isAccessTokenValidOrUndefined from "./isAccessTokenValidOrUndefined";
 import extendHeadersWithAuthToken from "./extendHeadersWithAuthToken";
 import deriveSessionFromAccessToken from "./deriveSessionFromAccessToken";
-import { refresh } from "./auth";
+import { refresh } from "../api/auth";
 
 function extendFetchWithAuth(originalFetch, session) {
   return async function extendedFetchWithAuth(url, options = {}) {

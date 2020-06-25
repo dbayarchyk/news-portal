@@ -4,7 +4,7 @@
   import { get } from "svelte/store";
 
   import ValidationErrors from "../errors/validationErrors";
-  import { createComment } from "../utils/comment";
+  import { createComment } from "../api/comment";
   import extendFetchWithAuth from "../utils/extendFetchWithAuth";
 
   export let articleId;
