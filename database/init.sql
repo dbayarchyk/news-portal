@@ -407,6 +407,63 @@ ALTER SEQUENCE cities_id_seq
 ALTER TABLE public.cities
     OWNER to admin;
 
+INSERT INTO public.cities
+  ( name )
+VALUES
+  ('Berlin'),
+  ('München'),
+  ('Hamburg'),
+  ('Frankfurt'),
+  ('Main'),
+  ('Köln'),
+  ('Leipzig'),
+  ('Düsseldorf'),
+  ('Nürnberg'),
+  ('Stuttgart'),
+  ('Dresden'),
+  ('Heidelberg'),
+  ('Bremen'),
+  ('Bonn'),
+  ('Regensburg'),
+  ('Hannover'),
+  ('Essen'),
+  ('Freiburg im'),
+  ('Breisgau'),
+  ('Lübeck'),
+  ('Dortmund'),
+  ('Potsdam'),
+  ('Erfurt'),
+  ('Aachen'),
+  ('Trier'),
+  ('Wiesbaden'),
+  ('Koblenz'),
+  ('Würzburg'),
+  ('Augsburg'),
+  ('Mainz'),
+  ('Mannheim'),
+  ('Bamberg'),
+  ('Duisburg'),
+  ('Ulm'),
+  ('Weimar'),
+  ('Münster'),
+  ('Bochum'),
+  ('Wolfsburg'),
+  ('Gelsenkirchen'),
+  ('Karlsruhe'),
+  ('Schwerin'),
+  ('Kiel'),
+  ('Rostock'),
+  ('Darmstadt'),
+  ('Bielefeld'),
+  ('Erlangen'),
+  ('Wuppertal'),
+  ('Ingolstadt'),
+  ('Paderborn'),
+  ('Bremerhaven'),
+  ('Magdeburg'),
+  ('Oldenburg'),
+  ('Chemnitz');
+
 -- Table: public.programming_languages
 
 -- DROP TABLE public.programming_languages;
