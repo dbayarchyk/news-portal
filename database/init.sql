@@ -333,6 +333,61 @@ ALTER SEQUENCE positions_id_seq
 ALTER TABLE public.positions
     OWNER to admin;
 
+INSERT INTO public.positions
+  ( name )
+VALUES
+  ('Technical Writer'),
+  ('Software Engineer'),
+  ('QA Engineer / Tester'),
+  ('Project Manager'),
+  ('Senior Software Engineer'),
+  ('Marketing Manager (IT)'),
+  ('Junior Software Engineer'),
+  ('Lead Software Engineer'),
+  ('Senior QA Engineer / Tester'),
+  ('Team Leader'),
+  ('Junior QA Engineer / Tester'),
+  ('HTML Coder'),
+  ('Business Analyst'),
+  ('System Administrator'),
+  ('Senior Project Manager'),
+  ('QA Team Leader'),
+  ('HR'),
+  ('GUI Designer'),
+  ('Web Designer'),
+  ('Software Maintenance Engineer'),
+  ('SEO Specialist'),
+  ('Copywriter'),
+  ('Support Engineer'),
+  ('Department Manager'),
+  ('PR Manager (IT)'),
+  ('Content Manager'),
+  ('Solution Architect'),
+  ('Support Specialist'),
+  ('Data Analyst'),
+  ('Chief Technical Officer'),
+  ('Data Scientist'),
+  ('QA Automation Engineer'),
+  ('DevOps Engineer'),
+  ('Product Manager'),
+  ('Solution Engineer'),
+  ('System Analyst'),
+  ('Solution Engineer'),
+  ('Support Specialist'),
+  ('3D Artist'),
+  ('Support Engineer'),
+  ('ETL Developer'),
+  ('CTO'),
+  ('Performance Analyst'),
+  ('Content Manager'),
+  ('Data Analyst'),
+  ('Solution Architect'),
+  ('Sales Manager'),
+  ('Data Engineer'),
+  ('Recruiter'),
+  ('Motion Designer'),
+  ('UA Manager');
+
 -- Table: public.cities
 
 -- DROP TABLE public.cities;
