@@ -371,6 +371,24 @@ ALTER SEQUENCE programming_languages_id_seq
 ALTER TABLE public.programming_languages
     OWNER to admin;
 
+INSERT INTO public.programming_languages
+  ( name )
+VALUES
+  ('C\'C++'),
+  ('Python'),
+  ('Java'),
+  ('SAP'),
+  ('.NET'),
+  ('HTML / CSS / JavaScript'),
+  ('Delphi'),
+  ('Oracle'),
+  ('Objective C / MacOS / Iphone'),
+  ('Android'),
+  ('PHP'),
+  ('Ruby'),
+  ('MySQL'),
+  ('BI');
+
 -- Table: public.salaries
 
 -- DROP TABLE public.salaries;
