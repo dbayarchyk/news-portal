@@ -313,3 +313,96 @@ ALTER SEQUENCE events_id_seq
 
 ALTER TABLE public.events
     OWNER to admin;
+
+-- Table: public.positions
+
+-- DROP TABLE public.positions;
+
+CREATE SEQUENCE positions_id_seq;
+
+CREATE TABLE public.positions
+(
+    id integer NOT NULL DEFAULT nextval('positions_id_seq'::regclass),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT positions_pkey PRIMARY KEY (id)
+);
+
+ALTER SEQUENCE positions_id_seq
+    OWNED BY public.positions.id;
+
+ALTER TABLE public.positions
+    OWNER to admin;
+
+-- Table: public.cities
+
+-- DROP TABLE public.cities;
+
+CREATE SEQUENCE cities_id_seq;
+
+CREATE TABLE public.cities
+(
+    id integer NOT NULL DEFAULT nextval('cities_id_seq'::regclass),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT cities_pkey PRIMARY KEY (id)
+);
+
+ALTER SEQUENCE cities_id_seq
+    OWNED BY public.cities.id;
+
+ALTER TABLE public.cities
+    OWNER to admin;
+
+-- Table: public.programming_languages
+
+-- DROP TABLE public.programming_languages;
+
+CREATE SEQUENCE programming_languages_id_seq;
+
+CREATE TABLE public.programming_languages
+(
+    id integer NOT NULL DEFAULT nextval('programming_languages_id_seq'::regclass),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT programming_languages_pkey PRIMARY KEY (id)
+);
+
+ALTER SEQUENCE programming_languages_id_seq
+    OWNED BY public.programming_languages.id;
+
+ALTER TABLE public.programming_languages
+    OWNER to admin;
+
+-- Table: public.salaries
+
+-- DROP TABLE public.salaries;
+
+CREATE SEQUENCE salaries_id_seq;
+
+CREATE TABLE public.salaries
+(
+    id bigint NOT NULL DEFAULT nextval('salaries_id_seq'::regclass),
+    position_id integer NOT NULL,
+    city_id integer NOT NULL,
+    programming_language_id integer NOT NULL,
+    created_date date NOT NULL,
+    annual_salary integer NOT NULL,
+    work_experience smallint NOT NULL,
+    CONSTRAINT salaries_pkey PRIMARY KEY (id),
+    CONSTRAINT salaries_fkey_city_id FOREIGN KEY (city_id)
+        REFERENCES public.cities (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT salaries_fkey_position_id FOREIGN KEY (position_id)
+        REFERENCES public.positions (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT salaries_fkey_programming_language_id FOREIGN KEY (programming_language_id)
+        REFERENCES public.programming_languages (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+ALTER SEQUENCE salaries_id_seq
+    OWNED BY public.salaries.id;
+
+ALTER TABLE public.salaries
+    OWNER to admin;
