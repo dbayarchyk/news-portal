@@ -1,7 +1,7 @@
 <script>
-  import CITIES from "../constants/cities";
-  import PROGRAMMING_LANGUAGES from "../constants/programmingLanguages";
-  import POSITIONS from "../constants/positions";
+  export let positions = [];
+  export let cities = [];
+  export let programmingLanguages = [];
 
   let position = "";
   let basicProgrammingLanguage = "";
@@ -39,8 +39,8 @@
       aria-invalid={validationErrors.position}
       aria-describedby="position-error">
       <option value disabled>-- Please choose --</option>
-      {#each POSITIONS as position}
-        <option value={position.id}>{position.label}</option>
+      {#each positions as position}
+        <option value={position.id}>{position.name}</option>
       {/each}
     </select>
     {#if validationErrors.position}
@@ -66,8 +66,8 @@
       aria-invalid={validationErrors.basicProgrammingLanguage}
       aria-describedby="basicProgrammingLanguage-error">
       <option value disabled>-- Please choose --</option>
-      {#each PROGRAMMING_LANGUAGES as language}
-        <option value={language.id}>{language.label}</option>
+      {#each programmingLanguages as language}
+        <option value={language.id}>{language.name}</option>
       {/each}
     </select>
     {#if validationErrors.basicProgrammingLanguage}
@@ -91,8 +91,8 @@
       aria-invalid={validationErrors.city}
       aria-describedby="city-error">
       <option value disabled>-- Please choose --</option>
-      {#each CITIES as city}
-        <option value={city.id}>{city.label}</option>
+      {#each cities as city}
+        <option value={city.id}>{city.name}</option>
       {/each}
     </select>
     {#if validationErrors.city}
