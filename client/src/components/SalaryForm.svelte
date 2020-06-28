@@ -1,19 +1,50 @@
 <script>
+  import { goto } from "@sapper/app";
+
+  import { reportSalary } from "../api/market";
+  import UnknownError from "../errors/unknownError";
+  import ValidationErrors from "../errors/validationErrors";
+
   export let positions = [];
   export let cities = [];
   export let programmingLanguages = [];
 
-  let position = "";
-  let basicProgrammingLanguage = "";
-  let city = "";
-  let annualSalary = "";
-  let workExperience = "";
+  let position_id = "";
+  let programming_language_id = "";
+  let city_id = "";
+  let annual_salary = "";
+  let work_experience = "";
   let loading = false;
   let validationErrors = {};
   let formError = "";
 
   async function handleSubmit() {
-    return;
+    loading = true;
+
+    try {
+      const accessToken = await reportSalary(fetch, {
+        programming_language_id: parseInt(programming_language_id),
+        position_id: parseInt(position_id),
+        city_id: parseInt(city_id),
+        annual_salary: parseInt(annual_salary),
+        work_experience: parseInt(work_experience)
+      });
+
+      validationErrors = {};
+      formError = "";
+
+      await goto("./salaries");
+    } catch (err) {
+      validationErrors = {};
+
+      if (err instanceof ValidationErrors) {
+        validationErrors = err.errors;
+      } else {
+        formError = err.message;
+      }
+    } finally {
+      loading = false;
+    }
   }
 </script>
 
@@ -30,122 +61,126 @@
   </p>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="position">Position</label>
+    <label class="block body-text-primary" for="position_id">Position</label>
     <select
       class="input w-full"
-      name="position"
-      id="position"
-      bind:value={position}
-      aria-invalid={validationErrors.position}
-      aria-describedby="position-error">
+      name="position_id"
+      id="position_id"
+      bind:value={position_id}
+      aria-invalid={validationErrors.position_id}
+      aria-describedby="position_id-error">
       <option value disabled>-- Please choose --</option>
       {#each positions as position}
         <option value={position.id}>{position.name}</option>
       {/each}
     </select>
-    {#if validationErrors.position}
+    {#if validationErrors.position_id}
       <p
         class="error-text"
-        id="position-error"
+        id="position_id-error"
         aria-live="assertive"
         role="alert">
-        {validationErrors.position}
+        {validationErrors.position_id}
       </p>
     {/if}
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="basicProgrammingLanguage">
+    <label class="block body-text-primary" for="programming_language_id">
       Basic programming language
     </label>
     <select
       class="input w-full"
-      name="basicProgrammingLanguage"
-      id="basicProgrammingLanguage"
-      bind:value={basicProgrammingLanguage}
-      aria-invalid={validationErrors.basicProgrammingLanguage}
-      aria-describedby="basicProgrammingLanguage-error">
+      name="programming_language_id"
+      id="programming_language_id"
+      bind:value={programming_language_id}
+      aria-invalid={validationErrors.programming_language_id}
+      aria-describedby="programming_language_id-error">
       <option value disabled>-- Please choose --</option>
       {#each programmingLanguages as language}
         <option value={language.id}>{language.name}</option>
       {/each}
     </select>
-    {#if validationErrors.basicProgrammingLanguage}
+    {#if validationErrors.programming_language_id}
       <p
         class="error-text"
-        id="basicProgrammingLanguage-error"
+        id="programming_language_id-error"
         aria-live="assertive"
         role="alert">
-        {validationErrors.basicProgrammingLanguage}
+        {validationErrors.programming_language_id}
       </p>
     {/if}
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="city">City</label>
+    <label class="block body-text-primary" for="city_id">City</label>
     <select
       class="input w-full"
-      name="city"
-      id="city"
-      bind:value={city}
-      aria-invalid={validationErrors.city}
-      aria-describedby="city-error">
+      name="city_id"
+      id="city_id"
+      bind:value={city_id}
+      aria-invalid={validationErrors.city_id}
+      aria-describedby="city_id-error">
       <option value disabled>-- Please choose --</option>
       {#each cities as city}
         <option value={city.id}>{city.name}</option>
       {/each}
     </select>
-    {#if validationErrors.city}
-      <p class="error-text" id="city-error" aria-live="assertive" role="alert">
-        {validationErrors.city}
+    {#if validationErrors.city_id}
+      <p
+        class="error-text"
+        id="city_id-error"
+        aria-live="assertive"
+        role="alert">
+        {validationErrors.city_id}
       </p>
     {/if}
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="annualSalary">
+    <label class="block body-text-primary" for="annual_salary">
       Gross Annual Salary
     </label>
     <input
       class="input w-full"
       type="text"
-      name="annualSalary"
-      id="annualSalary"
-      bind:value={annualSalary}
-      aria-invalid={validationErrors.annualSalary}
-      aria-describedby="annualSalary-error" />
-    {#if validationErrors.annualSalary}
+      name="annual_salary"
+      id="annual_salary"
+      bind:value={annual_salary}
+      aria-invalid={validationErrors.annual_salary}
+      aria-describedby="annual_salary-error" />
+    {#if validationErrors.annual_salary}
       <p
         class="error-text"
-        id="annualSalary-error"
+        id="annual_salary-error"
         aria-live="assertive"
         role="alert">
-        {validationErrors.annualSalary}
+        {validationErrors.annual_salary}
       </p>
     {/if}
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="workExperience">
+    <label class="block body-text-primary" for="work_experience">
       Work experience
     </label>
     <input
       class="input w-full"
       type="number"
-      name="workExperience"
-      id="workExperience"
+      name="work_experience"
+      id="work_experience"
       min="1"
       max="50"
-      bind:value={workExperience}
-      aria-invalid={validationErrors.workExperience}
-      aria-describedby="workExperience-error" />
-    {#if validationErrors.workExperience}
+      bind:value={work_experience}
+      aria-invalid={validationErrors.work_experience}
+      aria-describedby="work_experience-error" />
+    {#if validationErrors.work_experience}
       <p
         class="error-text"
-        id="workExperience-error"
+        id="work_experience-error"
         aria-live="assertive"
         role="alert">
-        {validationErrors.workExperience}
+        {validationErrors.work_experience}
       </p>
     {/if}
   </div>
