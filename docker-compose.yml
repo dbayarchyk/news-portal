@@ -27,12 +27,22 @@ services:
     environment:
       FLASK_ENV: development
 
+  api-market-service:
+    build: ./api/services/market/.
+    depends_on:
+      - postgres
+    volumes:
+      - ./api/services/market:/usr/src/app
+    environment:
+      FLASK_ENV: development
+
   api-gateway-service:
     build: ./api/services/gateway/.
     depends_on:
       - api-auth-service
       - api-article-service
       - api-comment-service
+      - api-market-service
     volumes:
       - ./api/services/gateway:/usr/src/app
     environment:
@@ -63,6 +73,7 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-market-service
     volumes:
       - ./client:/usr/src/app
     command: ["npm", "run", "dev"]
@@ -72,6 +83,7 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-market-service
     volumes:
       - ./admin:/usr/src/app
     command: ["npm", "run", "dev"]
@@ -86,5 +98,6 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-market-service
       - client
       - admin

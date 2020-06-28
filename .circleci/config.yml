@@ -35,6 +35,16 @@ workflows:
               only:
                 - master
       - docker/publish:
+        name: Publish api market service docker image
+        image: dbayarchyk/itdog-api-market-service
+        path: ~/project/api/services/market
+        dockerfile: Dockerfile
+        docker-context: ~/project/api/services/market
+        filters:
+          branches:
+            only:
+              - master
+      - docker/publish:
           name: Publish api gateway service docker image
           image: dbayarchyk/itdog-api-gateway-service
           path: ~/project/api/services/gateway

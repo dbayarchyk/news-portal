@@ -31,6 +31,13 @@
       "links": ["api-auth-service"]
     },
     {
+      "name": "api-market-service",
+      "image": "dbayarchyk/itdog-api-market-service",
+      "hostname": "api-market-service",
+      "essential": false,
+      "memory": 128
+    },
+    {
       "name": "api-comment-service",
       "image": "dbayarchyk/itdog-api-comment-service",
       "hostname": "api-comment-service",
@@ -44,7 +51,12 @@
       "hostname": "api-gateway-service",
       "essential": false,
       "memory": 128,
-      "links": ["api-auth-service", "api-article-service"]
+      "links": [
+        "api-auth-service",
+        "api-article-service",
+        "api-comment-service",
+        "api-market-service"
+      ]
     },
     {
       "name": "nginx",
