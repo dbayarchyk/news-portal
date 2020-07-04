@@ -49,7 +49,7 @@
 </script>
 
 <div>
-  <div class="mt-2 flex flex-column items-center justify-evenly">
+  <div class="mt-2 flex items-center justify-evenly">
     <SalaryForm {positions} {cities} {programmingLanguages} />
 
     <img
