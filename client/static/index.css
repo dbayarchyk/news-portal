@@ -14806,6 +14806,57 @@ html {
   overflow: hidden;
 }
 
+.tabs-list {
+  display: flex;
+  border-bottom-width: 2px;
+  --border-opacity: 1;
+  border-color: #e2e8f0;
+  border-color: rgba(226, 232, 240, var(--border-opacity));
+}
+
+.tabs-list-item {
+  display: inline-block;
+}
+
+.tabs-list-item-control {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: inline-block;
+  position: relative;
+  font-weight: 600;
+  line-height: calc(5px + 2ex + 5px);
+  text-transform: none;
+  --text-opacity: 1;
+  color: #000;
+  color: rgba(0, 0, 0, var(--text-opacity));
+  --text-opacity: 1;
+  color: #718096;
+  color: rgba(113, 128, 150, var(--text-opacity));
+}
+
+.tabs-list-item-control:hover,
+.tabs-list-item-control-active {
+  --text-opacity: 1;
+  color: #9f7aea;
+  color: rgba(159, 122, 234, var(--text-opacity));
+}
+
+.tabs-list-item-control-active::after,
+.tabs-list-item-control:hover::after {
+  --bg-opacity: 1;
+  background-color: #9f7aea;
+  background-color: rgba(159, 122, 234, var(--bg-opacity));
+  display: block;
+  position: absolute;
+  content: "";
+  height: 2px;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+}
+
 .markdown *,
 .editor-preview * {
   font-size: 1rem;

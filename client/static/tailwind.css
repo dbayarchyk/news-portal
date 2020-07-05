@@ -342,6 +342,43 @@ html {
   overflow: hidden;
 }
 
+.tabs-list {
+  @apply flex;
+  @apply border-b-2;
+  @apply border-gray-300;
+}
+
+.tabs-list-item {
+  @apply inline-block;
+}
+
+.tabs-list-item-control {
+  @apply py-2;
+  @apply px-4;
+  @apply inline-block;
+  @apply relative;
+  @apply body-text-primary;
+  @apply text-gray-600;
+}
+
+.tabs-list-item-control:hover,
+.tabs-list-item-control-active {
+  @apply text-purple-500;
+}
+
+.tabs-list-item-control-active::after,
+.tabs-list-item-control:hover::after {
+  @apply bg-purple-500;
+  @apply block;
+  @apply absolute;
+
+  content: "";
+  height: 2px;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+}
+
 .markdown *,
 .editor-preview * {
   @apply body-text-normal;

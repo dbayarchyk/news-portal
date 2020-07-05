@@ -48,6 +48,10 @@
   export let programmingLanguages;
 </script>
 
+<svelte:head>
+  <title>Share Salary | IT Dog</title>
+</svelte:head>
+
 <div>
   <div class="mt-2 flex items-center justify-evenly">
     <SalaryForm {positions} {cities} {programmingLanguages} />

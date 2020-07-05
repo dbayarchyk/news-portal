@@ -1,24 +1,73 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   import SalaryReportTable from "./SalaryReportTable.svelte";
   import SalaryReportList from "./SalaryReportList.svelte";
   import SalaryReportNoData from "./SalaryReportNoData.svelte";
   import SalaryReportMissingDataBox from "./SalaryReportMissingDataBox.svelte";
 
   export let report;
+  export let activeGroupBy;
+
+  const dispatch = createEventDispatcher();
+
+  function handleTabClick(groupBy) {
+    dispatch("activeGroupByChange", groupBy);
+  }
 </script>
 
-{#if Array.isArray(report) && report.length > 0}
-  <div class="hidden sm:block">
-    <SalaryReportTable {report} />
-  </div>
+<ul class="tabs-list">
+  <li class="tabs-list-item">
+    <button
+      type="button"
+      class="tabs-list-item-control"
+      role="tab"
+      class:tabs-list-item-control-active={activeGroupBy === 'technology'}
+      aria-selected={activeGroupBy === 'technology'}
+      on:click={() => handleTabClick('technology')}>
+      Technology
+    </button>
+  </li>
 
-  <div class="block sm:hidden">
-    <SalaryReportList {report} />
-  </div>
+  <li class="tabs-list-item">
+    <button
+      type="button"
+      class="tabs-list-item-control"
+      role="tab"
+      class:tabs-list-item-control-active={activeGroupBy === 'position'}
+      aria-selected={activeGroupBy === 'position'}
+      on:click={() => handleTabClick('position')}>
+      Position
+    </button>
+  </li>
 
-  <div class="mt-8">
-    <SalaryReportMissingDataBox />
-  </div>
-{:else}
-  <SalaryReportNoData />
-{/if}
+  <li class="tabs-list-item">
+    <button
+      type="button"
+      class="tabs-list-item-control"
+      role="tab"
+      class:tabs-list-item-control-active={activeGroupBy === 'city'}
+      aria-selected={activeGroupBy === 'city'}
+      on:click={() => handleTabClick('city')}>
+      City
+    </button>
+  </li>
+</ul>
+
+<div class="mt-4">
+  {#if Array.isArray(report) && report.length > 0}
+    <div class="hidden sm:block">
+      <SalaryReportTable {report} />
+    </div>
+
+    <div class="block sm:hidden">
+      <SalaryReportList {report} />
+    </div>
+
+    <div class="mt-8">
+      <SalaryReportMissingDataBox />
+    </div>
+  {:else}
+    <SalaryReportNoData />
+  {/if}
+</div>
