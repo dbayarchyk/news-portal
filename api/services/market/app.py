@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 import datetime
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 
 from utils.validators import validate_position_id, validate_city_id, validate_programming_language_id, validate_annual_salary, validate_work_experience
 
@@ -221,4 +221,58 @@ def create_salary_handler_v1():
     except Exception:
         return make_response({
             'message': 'Oops, something went wrong.'
+        }, 500)
+
+def get_salaries_group_report():
+    db_connection = None
+    group_report_rows = []
+
+    try:
+        db_connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = db_connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+        cursor.execute("""
+            SELECT
+                cities.name AS name,
+                ARRAY_LENGTH(ARRAY_AGG(salaries.annual_salary), 1) AS count,
+                MIN(salaries.annual_salary) AS min,
+                MAX(salaries.annual_salary) AS max,
+                CAST(ROUND(AVG(salaries.annual_salary)) AS INTEGER) AS average,
+                PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY salaries.annual_salary) AS lower_quartile,
+                PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY salaries.annual_salary) AS median,
+                PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY salaries.annual_salary) AS upper_quartile
+            FROM
+                salaries
+            INNER JOIN
+                cities
+                ON salaries.city_id = cities.id
+            GROUP BY
+                cities.id,
+                salaries.city_id
+            HAVING ARRAY_LENGTH(ARRAY_AGG(salaries.annual_salary), 1) >= 3;
+        """)
+
+        group_report_rows = cursor.fetchall()
+
+        cursor.close()
+    finally:
+        if db_connection is not None:
+            db_connection.close()
+
+    return [dict(group_report_row) for group_report_row in group_report_rows]
+
+@app.route('/v1/salaries/report/group/city', methods=['get'])
+def get_salaries_group_report_handler_v1():
+    try:
+        report = get_salaries_group_report()
+
+        return make_response(jsonify(report), 200)
+    except Exception:
+        return make_response({
+            'message': 'Something went wrong.'
         }, 500)
