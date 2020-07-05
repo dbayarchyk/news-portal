@@ -8,7 +8,7 @@
   $: boundRange = upperBound - lowerBound;
   $: range = max - min;
   $: rangeElWidth = `${(range / boundRange) * 100}%`;
-  $: rangeElLeftShift = `${(min / boundRange) * 100}%`;
+  $: rangeElLeftShift = `${((min - lowerBound) / boundRange) * 100}%`;
   $: salaryAvarageElLeftShift = `${((avarage - min) / range) * 100}%`;
 </script>
 

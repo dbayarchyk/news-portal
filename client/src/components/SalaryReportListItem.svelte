@@ -4,6 +4,8 @@
   import SalaryRangeChartAxis from "./SalaryRangeChartAxis.svelte";
 
   export let name;
+  export let lowerBound;
+  export let upperBound;
   export let min;
   export let max;
   export let median;
@@ -35,10 +37,9 @@
 
   <div class="mt-2">
     <SalaryRangeChart
-      min={0}
-      max={4000}
-      ticks={4}
-      let:ticks={salaryChartTicks}
+      min={lowerBound}
+      max={upperBound}
+      ticks={2}
       let:lowerBound={salaryChartLowerBound}
       let:upperBound={salaryChartUpperBound}
       let:tickRange={salaryChartTickRange}>
@@ -50,7 +51,6 @@
         avarage={median} />
       <div class="mt-1">
         <SalaryRangeChartAxis
-          ticks={salaryChartTicks}
           lowerBound={salaryChartLowerBound}
           upperBound={salaryChartUpperBound}
           tickRange={salaryChartTickRange} />

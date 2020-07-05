@@ -5,8 +5,8 @@
 
   $: range = max - min;
   $: tickRange = Math.ceil(range / ticks / 5) * 5;
-  $: lowerBound = tickRange * Math.round(min / tickRange);
+  $: lowerBound = tickRange * Math.floor(min / tickRange);
   $: upperBound = tickRange * Math.ceil(max / tickRange);
 </script>
 
-<slot {lowerBound} {upperBound} {tickRange} {ticks} />
+<slot {lowerBound} {upperBound} {tickRange} />

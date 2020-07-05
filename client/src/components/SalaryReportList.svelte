@@ -1,17 +1,22 @@
 <script>
   import SalaryReportListItem from "./SalaryReportListItem.svelte";
+
+  export let report = [];
+
+  $: lowerBound = Math.min(...report.map(item => item.min)) || 0;
+  $: upperBound = Math.max(...report.map(item => item.max)) || 0;
 </script>
 
 <ul>
-  <li>
-    <SalaryReportListItem name="Berlin" min={1000} max={3500} median={2700} />
-  </li>
-
-  <li class="mt-6">
-    <SalaryReportListItem name="Munchen" min={1300} max={3800} median={3000} />
-  </li>
-
-  <li class="mt-6">
-    <SalaryReportListItem name="Köln" min={800} max={2000} median={1400} />
-  </li>
+  {#each report as item}
+    <li>
+      <SalaryReportListItem
+        name={item.name}
+        {lowerBound}
+        {upperBound}
+        min={item.lower_quartile}
+        max={item.upper_quartile}
+        median={item.median} />
+    </li>
+  {/each}
 </ul>

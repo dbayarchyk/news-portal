@@ -1,7 +1,6 @@
 <script>
   export let lowerBound = 0;
   export let upperBound = 0;
-  export let ticks = 0;
   export let tickRange = 0;
 
   function getLabels(start, end, step) {
@@ -62,7 +61,7 @@
   {#each labels as label, labelIndex}
     <span
       class="salary-range-value"
-      style={`right: ${(1 - labelIndex / ticks) * 100}%`}>
+      style={`right: ${(1 - labelIndex / (labels.length - 1)) * 100}%`}>
       {label}
     </span>
   {/each}

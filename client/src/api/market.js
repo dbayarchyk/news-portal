@@ -51,3 +51,7 @@ export async function reportSalary(fetch, requestData) {
     }
   }
 }
+
+export async function getGroupedSalaryReport(fetch) {
+  return fetch(`${MARKET_SERVICE_URL}/v1/salaries/report/group/city`);
+}

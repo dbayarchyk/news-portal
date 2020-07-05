@@ -1,5 +1,22 @@
+<script context="module">
+  import { getGroupedSalaryReport } from "../../api/market";
+  import extendFetchWithAuth from "../../utils/auth/extendFetchWithAuth";
+
+  export async function preload(page, session) {
+    const groupedSalaryReportResponse = await getGroupedSalaryReport(
+      extendFetchWithAuth(this.fetch, session)
+    );
+
+    return {
+      groupedSalaryReport: await groupedSalaryReportResponse.json()
+    };
+  }
+</script>
+
 <script>
   import SalaryReport from "../../components/SalaryReport.svelte";
+
+  export let groupedSalaryReport;
 </script>
 
 <section>
@@ -19,6 +36,6 @@
   </div>
 
   <div class="mt-6">
-    <SalaryReport />
+    <SalaryReport report={groupedSalaryReport} />
   </div>
 </section>

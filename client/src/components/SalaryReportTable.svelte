@@ -2,6 +2,11 @@
   import SalaryRangeChart from "./SalaryRangeChart.svelte";
   import SalaryRangeBarChart from "./SalaryRangeBarChart.svelte";
   import SalaryRangeChartAxis from "./SalaryRangeChartAxis.svelte";
+
+  export let report = [];
+
+  $: max = Math.max(...report.map(item => item.max)) || 0;
+  $: min = Math.min(...report.map(item => item.min)) || 0;
 </script>
 
 <style>
@@ -17,10 +22,9 @@
 </style>
 
 <SalaryRangeChart
-  min={0}
-  max={4000}
+  {min}
+  {max}
   ticks={4}
-  let:ticks={salaryChartTicks}
   let:lowerBound={salaryChartLowerBound}
   let:upperBound={salaryChartUpperBound}
   let:tickRange={salaryChartTickRange}>
@@ -34,7 +38,6 @@
           <th class="table-head-cell max-column text-right">Max</th>
           <th class="table-head-cell chart-colum">
             <SalaryRangeChartAxis
-              ticks={salaryChartTicks}
               lowerBound={salaryChartLowerBound}
               upperBound={salaryChartUpperBound}
               tickRange={salaryChartTickRange} />
@@ -43,48 +46,26 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td class="table-cell">Berlin</td>
-          <td class="table-cell text-right">2700</td>
-          <td class="table-cell min-column text-right">1000</td>
-          <td class="table-cell max-column text-right">3500</td>
-          <td class="table-cell chart-colum">
-            <SalaryRangeBarChart
-              lowerBound={salaryChartLowerBound}
-              upperBound={salaryChartUpperBound}
-              min={1000}
-              max={3500}
-              avarage={2700} />
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell">Munchen</td>
-          <td class="table-cell text-right">3000</td>
-          <td class="table-cell min-column text-right">1300</td>
-          <td class="table-cell max-column text-right">3800</td>
-          <td class="table-cell chart-colum">
-            <SalaryRangeBarChart
-              lowerBound={salaryChartLowerBound}
-              upperBound={salaryChartUpperBound}
-              min={1300}
-              max={3800}
-              avarage={3000} />
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell">Köln</td>
-          <td class="table-cell text-right">1400</td>
-          <td class="table-cell min-column text-right">800</td>
-          <td class="table-cell max-column text-right">2000</td>
-          <td class="table-cell chart-colum">
-            <SalaryRangeBarChart
-              lowerBound={salaryChartLowerBound}
-              upperBound={salaryChartUpperBound}
-              min={800}
-              max={2000}
-              avarage={1400} />
-          </td>
-        </tr>
+        {#each report as item}
+          <tr>
+            <td class="table-cell">{item.name}</td>
+            <td class="table-cell text-right">{item.median}</td>
+            <td class="table-cell min-column text-right">
+              {item.lower_quartile}
+            </td>
+            <td class="table-cell min-column text-right">
+              {item.upper_quartile}
+            </td>
+            <td class="table-cell chart-colum">
+              <SalaryRangeBarChart
+                lowerBound={salaryChartLowerBound}
+                upperBound={salaryChartUpperBound}
+                min={item.lower_quartile}
+                max={item.upper_quartile}
+                avarage={item.median} />
+            </td>
+          </tr>
+        {/each}
       </tbody>
     </table>
   </div>
