@@ -75,6 +75,7 @@ services:
       - api-article-service
       - api-market-service
     volumes:
+      - /client/node_modules
       - ./client:/usr/src/app
     command: ["npm", "run", "dev"]
 
@@ -85,6 +86,7 @@ services:
       - api-article-service
       - api-market-service
     volumes:
+      - /admin/node_modules
       - ./admin:/usr/src/app
     command: ["npm", "run", "dev"]
     environment:
