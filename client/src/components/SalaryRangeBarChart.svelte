@@ -28,7 +28,7 @@
   .salary-avarage::before,
   .salary-avarage::after {
     content: "";
-    background: #667eea;
+    background: #9f7aea;
     height: 100%;
     width: 2px;
     display: block;
@@ -53,13 +53,13 @@
 
 <div class="salary-range-chart w-full">
   <div
-    class="salary-range flex bg-indigo-200 relative"
+    class="salary-range flex bg-purple-200 relative"
     style={`
       width: ${rangeElWidth};
       left: ${rangeElLeftShift};
     `}>
     <span
-      class="salary-avarage inline-block relative bg-indigo-500 text-white
+      class="salary-avarage inline-block relative bg-purple-500 text-white
       font-semibold"
       style={`
         left: ${salaryAvarageElLeftShift};
