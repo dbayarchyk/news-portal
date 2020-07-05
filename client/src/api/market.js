@@ -30,6 +30,7 @@ export function getCities(fetch, queryParams = {}) {
 export async function reportSalary(fetch, requestData) {
   const response = await fetch(`${MARKET_SERVICE_URL}/v1/salaries`, {
     method: "POST",
+    credentials: "omit",
     headers: {
       "Content-Type": "application/json",
     },
