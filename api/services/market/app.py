@@ -223,7 +223,28 @@ def create_salary_handler_v1():
             'message': 'Oops, something went wrong.'
         }, 500)
 
-def get_salaries_group_report():
+def get_salaries_group_report(group_by):
+    group_by_join_table_name_map = {
+        'technology': 'programming_languages',
+        'position': 'positions',
+        'city': 'cities',
+    }
+    group_by_join_table_id_colum_map = {
+        'technology': 'id',
+        'position': 'id',
+        'city': 'id',
+    }
+    group_by_foreign_table_id_colum_map = {
+        'technology': 'programming_language_id',
+        'position': 'position_id',
+        'city': 'city_id',
+    }
+    group_by_join_table_name_colum_map = {
+        'technology': 'name',
+        'position': 'name',
+        'city': 'name',
+    }
+
     db_connection = None
     group_report_rows = []
 
@@ -238,7 +259,7 @@ def get_salaries_group_report():
 
         cursor.execute("""
             SELECT
-                cities.name AS name,
+                %s.%s AS name,
                 ARRAY_LENGTH(ARRAY_AGG(salaries.annual_salary), 1) AS count,
                 MIN(salaries.annual_salary) AS min,
                 MAX(salaries.annual_salary) AS max,
@@ -249,13 +270,23 @@ def get_salaries_group_report():
             FROM
                 salaries
             INNER JOIN
-                cities
-                ON salaries.city_id = cities.id
+                %s
+                ON salaries.%s = %s.%s
             GROUP BY
-                cities.id,
-                salaries.city_id
+                %s.%s,
+                salaries.%s
             HAVING ARRAY_LENGTH(ARRAY_AGG(salaries.annual_salary), 1) >= 3;
-        """)
+        """ % (
+            group_by_join_table_name_map[group_by],
+            group_by_join_table_name_colum_map[group_by],
+            group_by_join_table_name_map[group_by],
+            group_by_foreign_table_id_colum_map[group_by],
+            group_by_join_table_name_map[group_by],
+            group_by_join_table_id_colum_map[group_by],
+            group_by_join_table_name_map[group_by],
+            group_by_join_table_id_colum_map[group_by],
+            group_by_foreign_table_id_colum_map[group_by],
+        ))
 
         group_report_rows = cursor.fetchall()
 
@@ -266,10 +297,15 @@ def get_salaries_group_report():
 
     return [dict(group_report_row) for group_report_row in group_report_rows]
 
-@app.route('/v1/salaries/report/group/city', methods=['get'])
-def get_salaries_group_report_handler_v1():
+@app.route('/v1/salaries/report/group/<group_by>', methods=['get'])
+def get_salaries_group_report_handler_v1(group_by):
+    if group_by not in ['technology', 'position', 'city']:
+        return make_response({
+            'message': 'group_by param has to be one of these values: [technology, position, city]'
+        }, 400)
+
     try:
-        report = get_salaries_group_report()
+        report = get_salaries_group_report(group_by)
 
         return make_response(jsonify(report), 200)
     except Exception:
