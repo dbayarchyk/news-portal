@@ -13,9 +13,9 @@ export function getPositions(fetch, queryParams = {}) {
   );
 }
 
-export function getProgrammingLanguages(fetch, queryParams = {}) {
+export function getTechnologies(fetch, queryParams = {}) {
   return fetch(
-    `${MARKET_SERVICE_URL}/v1/programming_languages?${queryString.stringify(
+    `${MARKET_SERVICE_URL}/v1/technologies?${queryString.stringify(
       queryParams
     )}`
   );

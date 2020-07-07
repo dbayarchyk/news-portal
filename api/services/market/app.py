@@ -3,7 +3,7 @@ import psycopg2.extras
 import datetime
 from flask import Flask, request, make_response, jsonify
 
-from utils.validators import validate_position_id, validate_city_id, validate_programming_language_id, validate_annual_salary, validate_work_experience
+from utils.validators import validate_position_id, validate_city_id, validate_technology_id, validate_annual_salary, validate_work_experience
 
 app = Flask(__name__)
 
@@ -94,9 +94,9 @@ def positions_handler_v1():
         'items': items,
     }, 200)
 
-def get_programming_languages():
+def get_technologies():
     db_connection = None
-    programming_languages_rows = []
+    technologies_rows = []
 
     try:
         db_connection = psycopg2.connect(
@@ -109,24 +109,24 @@ def get_programming_languages():
 
         cursor.execute("""
             SELECT
-                programming_languages.id,
-                programming_languages.name
+                technologies.id,
+                technologies.name
             FROM
-                programming_languages
+                technologies
         """)
 
-        programming_languages_rows = cursor.fetchall()
+        technologies_rows = cursor.fetchall()
 
         cursor.close()
     finally:
         if db_connection is not None:
             db_connection.close()
 
-    return [dict(programming_language_row) for programming_language_row in programming_languages_rows]
+    return [dict(technology_row) for technology_row in technologies_rows]
 
-@app.route('/v1/programming_languages', methods=['GET'])
-def programming_languages_handler_v1():
-    items = get_programming_languages()
+@app.route('/v1/technologies', methods=['GET'])
+def technologies_handler_v1():
+    items = get_technologies()
 
     return make_response({
         'page': 1,
@@ -149,13 +149,13 @@ def create_salary(**options):
 
         cursor.execute("""
             INSERT INTO salaries
-                (position_id, city_id, programming_language_id, annual_salary, work_experience, created_date)
+                (position_id, city_id, technology_id, annual_salary, work_experience, created_date)
             VALUES
                 (%s, %s, %s, %s, %s, %s);
         """, (
             options['position_id'],
             options['city_id'],
-            options['programming_language_id'],
+            options['technology_id'],
             options['annual_salary'],
             options['work_experience'],
             options['created_date']
@@ -189,9 +189,9 @@ def create_salary_handler_v1():
         validation_errors['city_id'] = str(err)
 
     try:
-        validate_programming_language_id(request_body.get('programming_language_id'))
+        validate_technology_id(request_body.get('technology_id'))
     except ValueError as err:
-        validation_errors['programming_language_id'] = str(err)
+        validation_errors['technology_id'] = str(err)
 
     try:
         validate_annual_salary(request_body.get('annual_salary'))
@@ -210,7 +210,7 @@ def create_salary_handler_v1():
         create_salary(
             position_id = request_body.get('position_id'),
             city_id = request_body.get('city_id'),
-            programming_language_id = request_body.get('programming_language_id'),
+            technology_id = request_body.get('technology_id'),
             annual_salary = request_body.get('annual_salary'),
             work_experience = request_body.get('work_experience'),
             created_date = datetime.datetime.now()
@@ -225,7 +225,7 @@ def create_salary_handler_v1():
 
 def get_salaries_group_report(group_by):
     group_by_join_table_name_map = {
-        'technology': 'programming_languages',
+        'technology': 'technologies',
         'position': 'positions',
         'city': 'cities',
     }
@@ -235,7 +235,7 @@ def get_salaries_group_report(group_by):
         'city': 'id',
     }
     group_by_foreign_table_id_colum_map = {
-        'technology': 'programming_language_id',
+        'technology': 'technology_id',
         'position': 'position_id',
         'city': 'city_id',
     }

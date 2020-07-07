@@ -2,7 +2,7 @@
   import {
     getPositions,
     getCities,
-    getProgrammingLanguages
+    getTechnologies
   } from "../../api/market";
 
   async function deriveItemsFromResult(result) {
@@ -23,18 +23,18 @@
     const [
       positionsResult,
       citiesResult,
-      programmingLanguagesResult
+      technologiesResult
     ] = await Promise.all([
       getPositions(this.fetch),
       getCities(this.fetch),
-      getProgrammingLanguages(this.fetch)
+      getTechnologies(this.fetch)
     ]);
 
     return {
       positions: await deriveItemsFromResult(positionsResult),
       cities: await deriveItemsFromResult(citiesResult),
-      programmingLanguages: await deriveItemsFromResult(
-        programmingLanguagesResult
+      technologies: await deriveItemsFromResult(
+        technologiesResult
       )
     };
   }
@@ -45,7 +45,7 @@
 
   export let positions;
   export let cities;
-  export let programmingLanguages;
+  export let technologies;
 </script>
 
 <svelte:head>
@@ -54,7 +54,7 @@
 
 <div>
   <div class="mt-2 flex items-center justify-evenly">
-    <SalaryForm {positions} {cities} {programmingLanguages} />
+    <SalaryForm {positions} {cities} {technologies} />
 
     <img
       class="image w-1/4 md:w-1/3 hidden md:inline-block ml-2"

@@ -464,26 +464,26 @@ VALUES
   ('Oldenburg'),
   ('Chemnitz');
 
--- Table: public.programming_languages
+-- Table: public.technologies
 
--- DROP TABLE public.programming_languages;
+-- DROP TABLE public.technologies;
 
-CREATE SEQUENCE programming_languages_id_seq;
+CREATE SEQUENCE technologies_id_seq;
 
-CREATE TABLE public.programming_languages
+CREATE TABLE public.technologies
 (
-    id integer NOT NULL DEFAULT nextval('programming_languages_id_seq'::regclass),
+    id integer NOT NULL DEFAULT nextval('technologies_id_seq'::regclass),
     name character varying COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT programming_languages_pkey PRIMARY KEY (id)
+    CONSTRAINT technologies_pkey PRIMARY KEY (id)
 );
 
-ALTER SEQUENCE programming_languages_id_seq
-    OWNED BY public.programming_languages.id;
+ALTER SEQUENCE technologies_id_seq
+    OWNED BY public.technologies.id;
 
-ALTER TABLE public.programming_languages
+ALTER TABLE public.technologies
     OWNER to admin;
 
-INSERT INTO public.programming_languages
+INSERT INTO public.technologies
   ( name )
 VALUES
   ('C\'C++'),
@@ -512,7 +512,7 @@ CREATE TABLE public.salaries
     id bigint NOT NULL DEFAULT nextval('salaries_id_seq'::regclass),
     position_id integer NOT NULL,
     city_id integer NOT NULL,
-    programming_language_id integer NOT NULL,
+    technology_id integer NOT NULL,
     created_date date NOT NULL,
     annual_salary integer NOT NULL,
     work_experience smallint NOT NULL,
@@ -525,8 +525,8 @@ CREATE TABLE public.salaries
         REFERENCES public.positions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT salaries_fkey_programming_language_id FOREIGN KEY (programming_language_id)
-        REFERENCES public.programming_languages (id) MATCH SIMPLE
+    CONSTRAINT salaries_fkey_technology_id FOREIGN KEY (technology_id)
+        REFERENCES public.technologies (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );

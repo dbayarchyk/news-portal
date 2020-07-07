@@ -5,7 +5,7 @@
 
   <div class="mt-4 md:ml-6 md:mt-0">
     <p class="body-text-primary">
-      No report for you postition, city or language?
+      No report for you postition, city or technology?
     </p>
     <p class="body-text-normal mt-1">
       We try to provide a balanced report for every person. If you don't see the

@@ -7,10 +7,10 @@
 
   export let positions = [];
   export let cities = [];
-  export let programmingLanguages = [];
+  export let technologies = [];
 
   let position_id = "";
-  let programming_language_id = "";
+  let technology_id = "";
   let city_id = "";
   let annual_salary = "";
   let work_experience = "";
@@ -23,7 +23,7 @@
 
     try {
       const accessToken = await reportSalary(fetch, {
-        programming_language_id: parseInt(programming_language_id),
+        technology_id: parseInt(technology_id),
         position_id: parseInt(position_id),
         city_id: parseInt(city_id),
         annual_salary: parseInt(annual_salary),
@@ -86,28 +86,28 @@
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="programming_language_id">
-      Basic programming language
+    <label class="block body-text-primary" for="technology_id">
+      Basic technology
     </label>
     <select
       class="input w-full"
-      name="programming_language_id"
-      id="programming_language_id"
-      bind:value={programming_language_id}
-      aria-invalid={validationErrors.programming_language_id}
-      aria-describedby="programming_language_id-error">
+      name="technology_id"
+      id="technology_id"
+      bind:value={technology_id}
+      aria-invalid={validationErrors.technology_id}
+      aria-describedby="technology_id-error">
       <option value disabled>-- Please choose --</option>
-      {#each programmingLanguages as language}
-        <option value={language.id}>{language.name}</option>
+      {#each technologies as technology}
+        <option value={technology.id}>{technology.name}</option>
       {/each}
     </select>
-    {#if validationErrors.programming_language_id}
+    {#if validationErrors.technology_id}
       <p
         class="error-text"
-        id="programming_language_id-error"
+        id="technology_id-error"
         aria-live="assertive"
         role="alert">
-        {validationErrors.programming_language_id}
+        {validationErrors.technology_id}
       </p>
     {/if}
   </div>

@@ -12,12 +12,12 @@ def validate_city_id(city_id):
     if isinstance(city_id, int) is False:
         raise ValueError('Please provide the city id as a number.')
 
-def validate_programming_language_id(programming_language_id):
-    if programming_language_id is None:
-        raise ValueError('Please provide a programming language.')
+def validate_technology_id(technology_id):
+    if technology_id is None:
+        raise ValueError('Please provide a programming technology.')
 
-    if isinstance(programming_language_id, int) is False:
-        raise ValueError('Please provide the programming language id as a number.')
+    if isinstance(technology_id, int) is False:
+        raise ValueError('Please provide the programming technology id as a number.')
 
 def validate_annual_salary(annual_salary):
     if annual_salary is None:
