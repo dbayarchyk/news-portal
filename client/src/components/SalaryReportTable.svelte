@@ -32,7 +32,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="table-head-cell">Name</th>
+          <th class="table-head-cell text-left">Name</th>
           <th class="table-head-cell text-right">Median</th>
           <th class="table-head-cell min-column text-right">Min</th>
           <th class="table-head-cell max-column text-right">Max</th>
@@ -48,7 +48,7 @@
       <tbody>
         {#each report as item}
           <tr>
-            <td class="table-cell">{item.name}</td>
+            <td class="table-cell text-left">{item.name}</td>
             <td class="table-cell text-right">{item.median}</td>
             <td class="table-cell min-column text-right">
               {item.lower_quartile}
