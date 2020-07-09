@@ -58,10 +58,10 @@
 </style>
 
 <form class="w-full signin-form" on:submit|preventDefault={handleSubmit}>
-  <h1 class="headline-1">Sign In</h1>
+  <h1 class="headline headline-1">Sign In</h1>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="email">Email</label>
+    <label class="block body-text body-text-primary" for="email">Email</label>
     <input
       class="input w-full"
       type="email"
@@ -72,14 +72,16 @@
       aria-invalid={validationErrors.email}
       aria-describedby="email-error" />
     {#if validationErrors.email}
-      <p class="error-text" id="email-error" aria-live="assertive" role="alert">
+      <p class="body-text body-text-error" id="email-error" aria-live="assertive" role="alert">
         {validationErrors.email}
       </p>
     {/if}
   </div>
 
   <div class="form-field">
-    <label class="block body-text-primary" for="password">Password</label>
+    <label class="block body-text body-text-primary" for="password">
+      Password
+    </label>
     <input
       class="input w-full"
       type="password"
@@ -90,7 +92,7 @@
       aria-describedby="password-error" />
     {#if validationErrors.password}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="password-error"
         aria-live="assertive"
         role="alert">
@@ -100,13 +102,13 @@
   </div>
 
   {#if formError}
-    <p class="error-text mt-4" aria-live="assertive" role="alert">
+    <p class="body-text body-text-error mt-4" aria-live="assertive" role="alert">
       {formError}
     </p>
   {/if}
 
   <div class="mt-4">
-    <button class="button" type="submit">
+    <button class="button button-primary" type="submit">
       {loading ? 'Loading...' : 'Sign me in'}
     </button>
   </div>

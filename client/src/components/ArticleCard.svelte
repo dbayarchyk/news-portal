@@ -38,10 +38,12 @@
       class="article-link hover:underline"
       rel="prefetch"
       href="article/{articleId}">
-      <h2 class="body-text-primary">{title}</h2>
+      <h2 class="body-text body-text-primary">{title}</h2>
     </a>
 
-    <a href="article/{articleId}#comments" class="link text-cropped relative z-10">
+    <a
+      href="article/{articleId}#comments"
+      class="link text-cropped relative z-10">
       {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
     </a>
   </div>

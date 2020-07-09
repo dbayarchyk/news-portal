@@ -34,16 +34,18 @@
 <div>
   <p>
     {#if comment.author && comment.author.username}
-      <span class="body-text-primary" id={authorElementId}>
+      <span class="body-text body-text-primary" id={authorElementId}>
         {comment.author.username}
       </span>
     {/if}
-    <span class="body-text-secondary" id={createdDateElementId}>
+    <span class="body-text body-text-secondary" id={createdDateElementId}>
       <span aria-hidden="true">•</span>
       {new Date(comment.created_date).toLocaleDateString()}
     </span>
   </p>
-  <p class="body-text-normal" id={contentElementId}>{comment.content}</p>
+  <p class="body-text body-text-normal" id={contentElementId}>
+    {comment.content}
+  </p>
 
   {#if !isCommentFormVisible && canCreateComment($session.currentUser)}
     <button
@@ -65,7 +67,7 @@
         on:create={handleCreateComment}>
         <button
           slot="additional-buttons"
-          class="button-outline mr-2"
+          class="button button-outline mr-2"
           type="button"
           on:click={hideCommentForm}>
           Cancel

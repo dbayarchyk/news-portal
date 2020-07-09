@@ -1,0 +1,23 @@
+.badge {
+  @apply px-2;
+  @apply inline-flex;
+  @apply text-xs;
+  @apply leading-generic;
+  @apply font-semibold;
+  @apply rounded-full;
+}
+
+.badge-gray {
+  @apply bg-gray-100;
+  @apply text-gray-800;
+}
+
+.badge-green {
+  @apply bg-green-100;
+  @apply text-green-800;
+}
+
+.badge-red {
+  @apply bg-red-100;
+  @apply text-red-800;
+}

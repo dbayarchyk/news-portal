@@ -48,7 +48,9 @@
 </script>
 
 {#if !$session.currentUser}
-  <a href="./signin" class="button-outline block text-center w-full mt-3">
+  <a
+    href="./signin"
+    class="button button-outline block text-center w-full mt-3">
     Sign in to leave a comment
   </a>
 {:else if canCreateComment($session.currentUser)}
@@ -66,7 +68,7 @@
         aria-describedby="comment-error" />
       {#if formError}
         <p
-          class="error-text"
+          class="body-text body-text-error"
           id="comment-error"
           aria-live="assertive"
           role="alert">
@@ -78,7 +80,7 @@
     <div class="mt-2">
       <slot name="additional-buttons" />
 
-      <button class="button" type="submit">
+      <button class="button button-primary" type="submit">
         {isCreatingArticle ? 'Posting the comment ...' : 'Leave a comment'}
       </button>
     </div>

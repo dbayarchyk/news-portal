@@ -39,7 +39,7 @@
   <Error status={error.status} message={error.message} />
 {:else}
   <section>
-    <h1 class="headline-1">News</h1>
+    <h1 class="headline headline-1">News</h1>
 
     <ul
       class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 md:gap-4 gap-8

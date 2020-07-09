@@ -55,13 +55,15 @@
 </style>
 
 <form class="w-full signin-form" on:submit|preventDefault={handleSubmit}>
-  <h1 class="headline-1">Share your salary</h1>
-  <p class="body-text-secondary">
+  <h1 class="headline headline-1">Share your salary</h1>
+  <p class="body-text body-text-secondary">
     Let's make the Germany IT market transparent together
   </p>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="position_id">Position</label>
+    <label class="block body-text body-text-primary" for="position_id">
+      Position
+    </label>
     <select
       class="input w-full"
       name="position_id"
@@ -76,7 +78,7 @@
     </select>
     {#if validationErrors.position_id}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="position_id-error"
         aria-live="assertive"
         role="alert">
@@ -86,7 +88,7 @@
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="technology_id">
+    <label class="block body-text body-text-primary" for="technology_id">
       Basic technology
     </label>
     <select
@@ -103,7 +105,7 @@
     </select>
     {#if validationErrors.technology_id}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="technology_id-error"
         aria-live="assertive"
         role="alert">
@@ -113,7 +115,7 @@
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="city_id">City</label>
+    <label class="block body-text body-text-primary" for="city_id">City</label>
     <select
       class="input w-full"
       name="city_id"
@@ -128,7 +130,7 @@
     </select>
     {#if validationErrors.city_id}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="city_id-error"
         aria-live="assertive"
         role="alert">
@@ -138,7 +140,7 @@
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="annual_salary">
+    <label class="block body-text body-text-primary" for="annual_salary">
       Gross Annual Salary
     </label>
     <input
@@ -151,7 +153,7 @@
       aria-describedby="annual_salary-error" />
     {#if validationErrors.annual_salary}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="annual_salary-error"
         aria-live="assertive"
         role="alert">
@@ -161,7 +163,7 @@
   </div>
 
   <div class="form-field mt-4">
-    <label class="block body-text-primary" for="work_experience">
+    <label class="block body-text body-text-primary" for="work_experience">
       Work experience
     </label>
     <input
@@ -176,7 +178,7 @@
       aria-describedby="work_experience-error" />
     {#if validationErrors.work_experience}
       <p
-        class="error-text"
+        class="body-text body-text-error"
         id="work_experience-error"
         aria-live="assertive"
         role="alert">
@@ -186,17 +188,19 @@
   </div>
 
   {#if formError}
-    <p class="error-text mt-4" aria-live="assertive" role="alert">
+    <p class="body-text body-text-error mt-4" aria-live="assertive" role="alert">
       {formError}
     </p>
   {/if}
 
   <div class="mt-4">
     <div>
-      <button class="button" type="submit">
+      <button class="button button-primary" type="submit">
         {loading ? 'Submitting...' : 'Share my salary'}
       </button>
-      <p class="body-text-secondary text-xs">This is completely anonymous</p>
+      <p class="body-text body-text-secondary text-xs">
+        This is completely anonymous
+      </p>
     </div>
   </div>
 </form>

@@ -1,0 +1,40 @@
+.button {
+  @apply shadow;
+  @apply font-bold;
+  @apply py-2;
+  @apply px-4;
+  @apply rounded;
+  @apply border;
+}
+
+.button-primary {
+  @apply bg-purple-500;
+  @apply text-white;
+  @apply border-transparent;
+}
+
+.button-primary:hover {
+  @apply bg-purple-400;
+}
+
+.button-primary:focus {
+  @apply shadow-outline;
+  @apply outline-none;
+}
+
+.button-outline {
+  @apply bg-transparent;
+  @apply text-purple-700;
+  @apply border-purple-500;
+}
+
+.button-outline:hover {
+  @apply bg-purple-200;
+  @apply text-purple-800;
+  @apply border-purple-200;
+}
+
+.button-outline:focus {
+  @apply shadow-outline;
+  @apply outline-none;
+}

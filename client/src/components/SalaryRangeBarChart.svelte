@@ -28,7 +28,7 @@
   .salary-avarage::before,
   .salary-avarage::after {
     content: "";
-    background: #9f7aea;
+    @apply bg-purple-500;
     height: 100%;
     width: 2px;
     display: block;

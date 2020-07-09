@@ -1,0 +1,5 @@
+.layout-container {
+  @apply px-3;
+  @apply mx-auto;
+  max-width: 80rem;
+}

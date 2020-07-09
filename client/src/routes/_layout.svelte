@@ -17,7 +17,9 @@
 
     {#if segment !== 'signin'}
       {#if $session.currentUser}
-        <span class="body-text-primary">{$session.currentUser.username}</span>
+        <span class="body-text body-text-primary">
+          {$session.currentUser.username}
+        </span>
       {:else}
         <a href="./signin" class="link">Sign In</a>
       {/if}

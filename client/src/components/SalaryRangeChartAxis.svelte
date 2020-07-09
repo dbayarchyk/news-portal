@@ -22,11 +22,11 @@
 
 <style>
   .salary-range-value {
-    display: block;
+    @apply block;
   }
 
   .salary-range-value:not(:first-child) {
-    position: absolute;
+    @apply absolute;
   }
 
   .salary-range-value:not(:first-child):not(:last-child) {
@@ -35,7 +35,7 @@
 
   .salary-range-value::after {
     content: "";
-    background: #a0aec0;
+    @apply bg-gray-500;
     height: 4px;
     width: 2px;
     display: block;

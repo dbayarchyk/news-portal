@@ -15,22 +15,22 @@
   class="rounded overflow-hidden border border-gray-200 shadow-lg px-6 py-4">
   <dl>
     <dt class="visually-hidden">Name</dt>
-    <dd class="headline-4">{name}</dd>
+    <dd class="headline headline-4">{name}</dd>
 
     <div class="flex">
       <div>
-        <dt class="body-text-secondary">Median</dt>
-        <dd class="body-text-normal">{median}</dd>
+        <dt class="body-text body-text-secondary">Median</dt>
+        <dd class="body-text body-text-normal">{median}</dd>
       </div>
 
       <div class="ml-6">
-        <dt class="body-text-secondary">Min</dt>
-        <dd class="body-text-normal">{min}</dd>
+        <dt class="body-text body-text-secondary">Min</dt>
+        <dd class="body-text body-text-normal">{min}</dd>
       </div>
 
       <div class="ml-6">
-        <dt class="body-text-secondary">Max</dt>
-        <dd class="body-text-normal">{max}</dd>
+        <dt class="body-text body-text-secondary">Max</dt>
+        <dd class="body-text body-text-normal">{max}</dd>
       </div>
     </div>
   </dl>

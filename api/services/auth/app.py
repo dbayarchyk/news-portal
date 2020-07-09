@@ -154,7 +154,7 @@ def signup_handler_v1():
 
     if request_body is None:
         return make_response({
-            'message': 'Provide an email, username and a password in the request body'
+            'message': 'Provide an email, username and and a password in the request body'
         }, 400)
 
     validation_errors = {}
