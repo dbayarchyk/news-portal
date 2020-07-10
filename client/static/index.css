@@ -683,6 +683,17 @@
   max-width: 80rem;
 }
 
+.visually-hidden {
+  position: absolute;
+  padding: 0;
+  border-width: 0;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document

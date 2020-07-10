@@ -42,6 +42,7 @@
               upperBound={salaryChartUpperBound}
               tickRange={salaryChartTickRange} />
           </th>
+          <th class="table-head-cell">📄</th>
         </tr>
       </thead>
 
@@ -63,6 +64,9 @@
                 min={item.lower_quartile}
                 max={item.upper_quartile}
                 avarage={item.median} />
+            </td>
+            <td class="table-cell text-center">
+              <span class="body-text body-text-secondary">{item.count}</span>
             </td>
           </tr>
         {/each}

@@ -16,7 +16,8 @@
         {upperBound}
         min={item.lower_quartile}
         max={item.upper_quartile}
-        median={item.median} />
+        median={item.median}
+        count={item.count} />
     </li>
   {/each}
 </ul>

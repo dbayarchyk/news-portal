@@ -9,13 +9,17 @@
   export let min;
   export let max;
   export let median;
+  export let count;
 </script>
 
 <article
   class="rounded overflow-hidden border border-gray-200 shadow-lg px-6 py-4">
   <dl>
     <dt class="visually-hidden">Name</dt>
-    <dd class="headline headline-4">{name}</dd>
+    <dd>
+      <span class="headline headline-4">{name}</span>
+      <span class="body-text body-text-secondary ml-2">📄 {count}</span>
+    </dd>
 
     <div class="flex">
       <div>

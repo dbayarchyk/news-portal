@@ -16,8 +16,8 @@
   }
 </script>
 
-<ul class="tabs-list">
-  <li class="tabs-list-item">
+<ul class="tabs-list" role="tablist">
+  <li class="tabs-list-item" role="presentation">
     <button
       type="button"
       class="tabs-list-item-control"
@@ -29,7 +29,7 @@
     </button>
   </li>
 
-  <li class="tabs-list-item">
+  <li class="tabs-list-item" role="presentation">
     <button
       type="button"
       class="tabs-list-item-control"
@@ -41,7 +41,7 @@
     </button>
   </li>
 
-  <li class="tabs-list-item">
+  <li class="tabs-list-item" role="presentation">
     <button
       type="button"
       class="tabs-list-item-control"
@@ -56,11 +56,11 @@
 
 <div class="mt-4">
   {#if Array.isArray(report) && report.length > 0}
-    <div class="hidden sm:block">
+    <div class="hidden md:block">
       <SalaryReportTable {report} />
     </div>
 
-    <div class="block sm:hidden">
+    <div class="block md:hidden">
       <SalaryReportList {report} />
     </div>
 

@@ -3,3 +3,14 @@
   @apply mx-auto;
   max-width: 80rem;
 }
+
+.visually-hidden {
+  @apply absolute;
+  @apply p-0;
+  @apply border-0;
+  @apply overflow-hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+}
