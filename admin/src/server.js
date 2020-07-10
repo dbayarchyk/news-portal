@@ -11,6 +11,13 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
 
 async function initServerAccessToken(req, res, next) {
+  // Filter out static assets requests like: .js, .css
+  // and make sure that we call refresh only when a page is requested
+  if (req.url.indexOf(".") !== -1) {
+    next();
+    return;
+  }
+
   const fetchWithCookies = (url, options) =>
     fetch(url, {
       ...options,
