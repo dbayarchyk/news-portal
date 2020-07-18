@@ -1,3 +1,4 @@
 database/data/**/*
 *.pyc
 .DS_Store
+.vscode

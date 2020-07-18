@@ -33,8 +33,18 @@ services:
       - postgres
     volumes:
       - ./api/services/market:/usr/src/app
-    environment:
-      FLASK_ENV: development
+    command:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--root-path",
+        "/api/market",
+        "--reload",
+      ]
 
   api-gateway-service:
     build: ./api/services/gateway/.

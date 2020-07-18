@@ -2,6 +2,7 @@ import queryString from "query-string";
 
 import ValidationErrors from "../errors/validationErrors";
 import UnknownError from "../errors/unknownError";
+import handle422ValidationError from "../utils/responseHandlers/handle422ValidationError";
 
 const MARKET_SERVICE_URL = process.browser
   ? "api/market"
@@ -9,13 +10,13 @@ const MARKET_SERVICE_URL = process.browser
 
 export function getPositions(fetch, queryParams = {}) {
   return fetch(
-    `${MARKET_SERVICE_URL}/v1/positions?${queryString.stringify(queryParams)}`
+    `${MARKET_SERVICE_URL}/v1/positions/?${queryString.stringify(queryParams)}`
   );
 }
 
 export function getTechnologies(fetch, queryParams = {}) {
   return fetch(
-    `${MARKET_SERVICE_URL}/v1/technologies?${queryString.stringify(
+    `${MARKET_SERVICE_URL}/v1/technologies/?${queryString.stringify(
       queryParams
     )}`
   );
@@ -23,12 +24,12 @@ export function getTechnologies(fetch, queryParams = {}) {
 
 export function getCities(fetch, queryParams = {}) {
   return fetch(
-    `${MARKET_SERVICE_URL}/v1/cities?${queryString.stringify(queryParams)}`
+    `${MARKET_SERVICE_URL}/v1/cities/?${queryString.stringify(queryParams)}`
   );
 }
 
 export async function reportSalary(fetch, requestData) {
-  const response = await fetch(`${MARKET_SERVICE_URL}/v1/salaries`, {
+  const response = await fetch(`${MARKET_SERVICE_URL}/v1/salaries/`, {
     method: "POST",
     credentials: "omit",
     headers: {
@@ -38,9 +39,8 @@ export async function reportSalary(fetch, requestData) {
   });
 
   switch (response.status) {
-    case 400: {
-      const errors = await response.json();
-      throw new ValidationErrors(errors);
+    case 422: {
+      return handle422ValidationError(await response.json());
     }
 
     case 201: {
@@ -54,5 +54,5 @@ export async function reportSalary(fetch, requestData) {
 }
 
 export async function getGroupedSalaryReport(fetch, groupBy) {
-  return fetch(`${MARKET_SERVICE_URL}/v1/salaries/report/group/${groupBy}`);
+  return fetch(`${MARKET_SERVICE_URL}/v1/salaries/report/group/${groupBy}/`);
 }
