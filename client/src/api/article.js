@@ -6,10 +6,10 @@ const ARTICLE_SERVICE_URL = process.browser
 
 export function getArticles(fetch, queryParams = {}) {
   return fetch(
-    `${ARTICLE_SERVICE_URL}/v1/articles?${queryString.stringify(queryParams)}`
+    `${ARTICLE_SERVICE_URL}/v1/articles/?${queryString.stringify(queryParams)}`
   );
 }
 
 export function getArticleById(fetch, id) {
-  return fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}`);
+  return fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}/`);
 }

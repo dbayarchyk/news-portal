@@ -2,7 +2,7 @@ from flask import Flask, request, make_response
 import requests
 
 AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
-ARTICLE_SERVICE_ENDPOINT = 'http://api-article-service:5000'
+ARTICLE_SERVICE_ENDPOINT = 'http://api-article-service:8000'
 COMMENT_SERVICE_ENDPOINT = 'http://api-comment-service:8000'
 MARKET_SERVICE_ENDPOINT = 'http://api-market-service:8000'
 
@@ -107,10 +107,10 @@ def aggregate_article(article):
     return aggregated_article_with_author_and_comments_count
 
 
-@app.route('/article/v1/articles', methods=['GET'])
+@app.route('/article/v1/articles/', methods=['GET'])
 def get_articles_handler():
     articles_response = requests.get(
-        f'{ARTICLE_SERVICE_ENDPOINT}/v1/articles',
+        f'{ARTICLE_SERVICE_ENDPOINT}/v1/articles/',
         params=request.args,
         headers=request.headers
     )
@@ -142,10 +142,10 @@ def get_articles_handler():
     )
 
 
-@app.route('/article/v1/articles/<id>', methods=['GET'])
+@app.route('/article/v1/articles/<id>/', methods=['GET'])
 def get_article_by_id_handler(id):
     article_response = requests.get(
-        f'{ARTICLE_SERVICE_ENDPOINT}/v1/articles/{id}',
+        f'{ARTICLE_SERVICE_ENDPOINT}/v1/articles/{id}/',
         params=request.args,
         headers=request.headers
     )
@@ -190,7 +190,7 @@ def aggregate_comment(comment):
     return aggregated_comment_with_author
 
 
-@app.route('/comment/v1/comments', methods=['GET'])
+@app.route('/comment/v1/comments/', methods=['GET'])
 def get_comments_handler():
     comments_response = requests.get(
         f'{COMMENT_SERVICE_ENDPOINT}/v1/comments/',
@@ -225,7 +225,7 @@ def get_comments_handler():
     )
 
 
-@app.route('/comment/v1/comments', methods=['POST'])
+@app.route('/comment/v1/comments/', methods=['POST'])
 def create_comment_handler_v1():
     create_comment_response = requests.request(
         'POST',

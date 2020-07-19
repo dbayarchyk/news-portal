@@ -9,16 +9,16 @@ const ARTICLE_SERVICE_URL = process.browser
 
 export function getArticles(fetch, queryParams = {}) {
   return fetch(
-    `${ARTICLE_SERVICE_URL}/v1/articles?${queryString.stringify(queryParams)}`
+    `${ARTICLE_SERVICE_URL}/v1/articles/?${queryString.stringify(queryParams)}`
   );
 }
 
 export function getArticleById(fetch, id) {
-  return fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}`);
+  return fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}/`);
 }
 
 export async function createArticle(fetch, requestData) {
-  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/articles`, {
+  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/articles/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export async function createArticle(fetch, requestData) {
 }
 
 export async function updateArticleById(fetch, id, requestData) {
-  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}`, {
+  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/articles/${id}/`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -71,20 +71,20 @@ export async function updateArticleById(fetch, id, requestData) {
 
 export async function publishArticleById(fetch, id) {
   const response = await fetch(
-    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/publish`,
+    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/publish/`,
     {
       method: "POST",
     }
   );
 
-  const responseData = await response.json();
-
   switch (response.status) {
-    case 200: {
-      return responseData;
+    case 202: {
+      return;
     }
 
     default: {
+      const responseData = await response.json();
+
       if (responseData.message) {
         throw new Error(responseData.message);
       }
@@ -96,20 +96,20 @@ export async function publishArticleById(fetch, id) {
 
 export async function archiveArticleById(fetch, id) {
   const response = await fetch(
-    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/archive`,
+    `${ARTICLE_SERVICE_URL}/v1/articles/${id}/archive/`,
     {
       method: "POST",
     }
   );
 
-  const responseData = await response.json();
-
   switch (response.status) {
-    case 200: {
-      return responseData;
+    case 202: {
+      return;
     }
 
     default: {
+      const responseData = await response.json();
+
       if (responseData.message) {
         throw new Error(responseData.message);
       }

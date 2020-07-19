@@ -122,10 +122,7 @@
       });
 
       if (!formError && Object.keys(formValidationErrors).length === 0) {
-        await archiveArticleById(
-          extendFetchWithAuth(fetch, get(session).currentUser),
-          id
-        );
+        await archiveArticleById(extendFetchWithAuth(fetch, get(session)), id);
 
         if (canViewArchivedArticles(get(session).currentUser)) {
           await goto("./app/articles/archived");
