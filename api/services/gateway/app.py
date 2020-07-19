@@ -3,7 +3,7 @@ import requests
 
 AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
 ARTICLE_SERVICE_ENDPOINT = 'http://api-article-service:5000'
-COMMENT_SERVICE_ENDPOINT = 'http://api-comment-service:5000'
+COMMENT_SERVICE_ENDPOINT = 'http://api-comment-service:8000'
 MARKET_SERVICE_ENDPOINT = 'http://api-market-service:8000'
 
 app = Flask(__name__)
@@ -64,7 +64,7 @@ def get_user_by_id(id):
 
 def get_comments_count(article_id):
     response = requests.get(
-        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments?page_size=0&article_id={article_id}',
+        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments/?page_size=0&article_id={article_id}',
         params=request.args,
         headers=request.headers
     )
@@ -193,7 +193,7 @@ def aggregate_comment(comment):
 @app.route('/comment/v1/comments', methods=['GET'])
 def get_comments_handler():
     comments_response = requests.get(
-        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments',
+        f'{COMMENT_SERVICE_ENDPOINT}/v1/comments/',
         params=request.args,
         headers=request.headers
     )
@@ -229,7 +229,7 @@ def get_comments_handler():
 def create_comment_handler_v1():
     create_comment_response = requests.request(
         'POST',
-        url=f'{COMMENT_SERVICE_ENDPOINT}/v1/comments',
+        url=f'{COMMENT_SERVICE_ENDPOINT}/v1/comments/',
         params=request.args,
         headers=request.headers,
         data=request.data

@@ -9,12 +9,12 @@ const ARTICLE_SERVICE_URL = process.browser
 
 export function getComments(fetch, queryParams = {}) {
   return fetch(
-    `${ARTICLE_SERVICE_URL}/v1/comments?${queryString.stringify(queryParams)}`
+    `${ARTICLE_SERVICE_URL}/v1/comments/?${queryString.stringify(queryParams)}`
   );
 }
 
 export async function createComment(fetch, requestData) {
-  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/comments`, {
+  const response = await fetch(`${ARTICLE_SERVICE_URL}/v1/comments/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
