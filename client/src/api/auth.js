@@ -1,23 +1,30 @@
 import ValidationErrors from "../errors/validationErrors";
 import UnknownError from "../errors/unknownError";
+import handle422ValidationError from '../utils/responseHandlers/handle422ValidationError';
 
 const AUTH_SERVICE_URL = process.browser
   ? "api/auth"
   : "http://api-gateway-service:5000/auth";
 
 export async function signIn(fetch, requestData) {
-  const response = await fetch(`${AUTH_SERVICE_URL}/v1/signin`, {
+  const formData = new FormData();
+
+  formData.append("username", requestData.username);
+  formData.append("password", requestData.password);
+
+  const response = await fetch(`${AUTH_SERVICE_URL}/v1/token/access/`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestData),
+    body: formData,
   });
 
   switch (response.status) {
     case 400: {
-      const errors = await response.json();
-      throw new ValidationErrors(errors);
+      const error = await response.json();
+      throw new ValidationErrors(error.detail);
+    }
+
+    case 422: {
+      return handle422ValidationError(await response.json());
     }
 
     case 200: {
@@ -37,7 +44,7 @@ export async function signIn(fetch, requestData) {
 }
 
 export async function refresh(fetch) {
-  const response = await fetch(`${AUTH_SERVICE_URL}/v1/refresh`, {
+  const response = await fetch(`${AUTH_SERVICE_URL}/v1/token/access/refresh/`, {
     credentials: "include",
   });
 
@@ -51,5 +58,5 @@ export async function refresh(fetch) {
 }
 
 export async function singOut(fetch) {
-  return fetch(`${AUTH_SERVICE_URL}/v1/signout`);
+  return fetch(`${AUTH_SERVICE_URL}/v1/token/access/forget/`);
 }

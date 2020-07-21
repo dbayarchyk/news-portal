@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 ACCESS_TOKEN_SECRET = 'secret_access_token'
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/v1/token/access/")
 
 
 def get_access_token(auth_token: str = Depends(oauth2_scheme)):

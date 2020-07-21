@@ -8,7 +8,7 @@
   import UnknownError from "../errors/unknownError";
   import ValidationErrors from "../errors/validationErrors";
 
-  let email = "";
+  let username = "";
   let password = "";
   let loading = false;
   let validationErrors = {};
@@ -23,7 +23,7 @@
       const accessToken = await signIn(
         extendFetchWithAuth(fetch, get(session)),
         {
-          email,
+          username,
           password
         }
       );
@@ -61,19 +61,18 @@
   <h1 class="headline headline-1">Sign In</h1>
 
   <div class="form-field mt-4">
-    <label class="block body-text body-text-primary" for="email">Email</label>
+    <label class="block body-text body-text-primary" for="username">Username</label>
     <input
       class="input w-full"
-      type="email"
-      name="email"
-      id="email"
-      placeholder="example@gmail.com"
-      bind:value={email}
-      aria-invalid={validationErrors.email}
-      aria-describedby="email-error" />
-    {#if validationErrors.email}
-      <p class="body-text body-text-error" id="email-error" aria-live="assertive" role="alert">
-        {validationErrors.email}
+      type="username"
+      name="username"
+      id="username"
+      bind:value={username}
+      aria-invalid={validationErrors.username}
+      aria-describedby="username-error" />
+    {#if validationErrors.username}
+      <p class="body-text body-text-error" id="username-error" aria-live="assertive" role="alert">
+        {validationErrors.username}
       </p>
     {/if}
   </div>

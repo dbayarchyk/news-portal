@@ -1,7 +1,7 @@
 from flask import Flask, request, make_response
 import requests
 
-AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:5000'
+AUTH_SERVICE_ENDPOINT = 'http://api-auth-service:8000'
 ARTICLE_SERVICE_ENDPOINT = 'http://api-article-service:8000'
 COMMENT_SERVICE_ENDPOINT = 'http://api-comment-service:8000'
 MARKET_SERVICE_ENDPOINT = 'http://api-market-service:8000'
@@ -51,7 +51,7 @@ def comment_proxy(path):
 
 def get_user_by_id(id):
     response = requests.get(
-        f'{AUTH_SERVICE_ENDPOINT}/v1/users/{id}',
+        f'{AUTH_SERVICE_ENDPOINT}/v1/users/{id}/',
         params=request.args,
         headers=request.headers
     )
