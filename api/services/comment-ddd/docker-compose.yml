@@ -1,0 +1,23 @@
+version: "3"
+services:
+  api-comment-service:
+    build: ./.
+    environment:
+      PORT: 8000
+      MONGODB_URL: mongodb://api-comment-service-db:27017/comment
+    depends_on:
+      - api-comment-service-db
+    volumes:
+      - ./node_modules
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
+    command: ["npm", "run", "dev"]
+
+  api-comment-service-db:
+    image: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 8001:27017
