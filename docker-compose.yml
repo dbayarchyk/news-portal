@@ -4,6 +4,7 @@ services:
     build: ./api/services/auth/.
     depends_on:
       - postgres
+      - postgres-pgadmin
     volumes:
       - ./api/services/auth:/usr/src/app
     command:
@@ -23,6 +24,7 @@ services:
     build: ./api/services/article/.
     depends_on:
       - postgres
+      - postgres-pgadmin
     volumes:
       - ./api/services/article:/usr/src/app
     command:
@@ -42,6 +44,7 @@ services:
     build: ./api/services/comment/.
     depends_on:
       - postgres
+      - postgres-pgadmin
     volumes:
       - ./api/services/comment:/usr/src/app
     command:
@@ -61,6 +64,7 @@ services:
     build: ./api/services/market/.
     depends_on:
       - postgres
+      - postgres-pgadmin
     volumes:
       - ./api/services/market:/usr/src/app
     command:
@@ -113,6 +117,7 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-comment-service
       - api-market-service
     volumes:
       - /client/node_modules
@@ -124,6 +129,7 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-comment-service
       - api-market-service
     volumes:
       - /admin/node_modules
@@ -140,6 +146,7 @@ services:
     depends_on:
       - api-auth-service
       - api-article-service
+      - api-comment-service
       - api-market-service
       - client
       - admin

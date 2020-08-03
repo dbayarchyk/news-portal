@@ -49,6 +49,25 @@ def comment_proxy(path):
     return proxy_request(f'{COMMENT_SERVICE_ENDPOINT}/{path}')
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def get_user_by_id(id):
     response = requests.get(
         f'{AUTH_SERVICE_ENDPOINT}/v1/users/{id}/',
