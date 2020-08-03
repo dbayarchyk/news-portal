@@ -18,11 +18,12 @@ const CommentSchema = new Schema(
     content: { type: String, required: true },
     authorId: { type: String, required: true },
     articleId: { type: String, required: true },
-    parentCommentId: { type: String },
+    parentCommentId: { type: String, default: null },
+    createdAt: { type: String, required: true },
+    updatedAt: { type: String, required: true },
   },
   {
     _id: false,
-    timestamps: { createdAt: true, updatedAt: true },
   }
 );
 

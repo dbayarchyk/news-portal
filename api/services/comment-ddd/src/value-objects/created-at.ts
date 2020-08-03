@@ -13,9 +13,9 @@ export class CreatedAt extends ValueObject<CreatedAtProps> {
     super(props);
   }
 
-  public static create(
-    createdAt: string | null | undefined
-  ): CreatedAt | never {
-    return new CreatedAt({ value: createdAt || null });
+  public static create(createdAt?: string | null): CreatedAt | never {
+    const value = createdAt ? createdAt : new Date().toISOString();
+
+    return new CreatedAt({ value });
   }
 }

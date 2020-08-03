@@ -8,7 +8,7 @@ type Params = {
   articleId: string;
 };
 
-type ResponseBody = {
+type ResponseDTO = {
   items: CommentDTO[];
 };
 
@@ -22,7 +22,7 @@ export class GetCommentsByArticleIdController extends Controller {
 
   public async handle(
     req: Request<Params>,
-    res: Response<ResponseBody>
+    res: Response<ResponseDTO>
   ): Promise<void> {
     const articleId = req.params.articleId;
 

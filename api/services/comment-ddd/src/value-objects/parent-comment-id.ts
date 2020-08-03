@@ -5,7 +5,7 @@ interface ParentCommentIdProps {
 }
 
 export class ParentCommentId extends ValueObject<ParentCommentIdProps> {
-  public get value(): string {
+  public get value(): string | null {
     return this.props.value;
   }
 
@@ -18,7 +18,7 @@ export class ParentCommentId extends ValueObject<ParentCommentIdProps> {
   ): ParentCommentId | never {
     if (typeof parentCommentId === "string" && parentCommentId.length < 1) {
       throw new Error(
-        "Parent comment id must be not greater than 1 characters"
+        "Parent comment id string must be greater than 1 character"
       );
     }
 

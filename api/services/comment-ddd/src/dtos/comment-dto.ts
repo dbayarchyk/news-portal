@@ -4,6 +4,6 @@ export interface CommentDTO {
   articleId: string;
   authorId: string;
   parentCommentId: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
 }

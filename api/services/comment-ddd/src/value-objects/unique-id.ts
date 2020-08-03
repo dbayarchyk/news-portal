@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 import { ValueObject } from ".//value-object";
 
 interface UniqueIdProps {
@@ -14,6 +16,6 @@ export class UniqueId extends ValueObject<UniqueIdProps> {
   }
 
   public static create(id?: string | null): UniqueId {
-    return new UniqueId({ value: id || "" });
+    return new UniqueId({ value: id || uuidv4() });
   }
 }

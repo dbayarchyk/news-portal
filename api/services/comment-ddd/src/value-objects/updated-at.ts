@@ -1,7 +1,7 @@
 import { ValueObject } from "./value-object";
 
 interface UpdatedAtProps {
-  value: string | null;
+  value: string;
 }
 
 export class UpdatedAt extends ValueObject<UpdatedAtProps> {
@@ -13,9 +13,9 @@ export class UpdatedAt extends ValueObject<UpdatedAtProps> {
     super(props);
   }
 
-  public static create(
-    updatedAt: string | null | undefined
-  ): UpdatedAt | never {
-    return new UpdatedAt({ value: updatedAt || null });
+  public static create(updatedAt?: string | null): UpdatedAt | never {
+    const value = updatedAt ? updatedAt : new Date().toISOString();
+
+    return new UpdatedAt({ value });
   }
 }
