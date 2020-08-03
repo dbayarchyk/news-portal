@@ -79,14 +79,7 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  moduleNameMapper: {
-    "controllers/(.*)": "<rootDir>/controllers/$1",
-    "entities/(.*)": "<rootDir>/entities/$1",
-    "mappers/(.*)": "<rootDir>/mappers/$1",
-    "repositories/(.*)": "<rootDir>/repositories/$1",
-    "value-objects/(.*)": "<rootDir>/value-objects/$1",
-    "dtos/(.*)": "<rootDir>/dtos/$1",
-  },
+  // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
