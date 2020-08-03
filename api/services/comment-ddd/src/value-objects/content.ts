@@ -1,4 +1,5 @@
-import { ValueObject } from ".//value-object";
+import { ValueObject } from "./value-object";
+import { Result } from "../utils/result";
 
 interface ContentProps {
   value: string;
@@ -13,18 +14,20 @@ export class Content extends ValueObject<ContentProps> {
     super(props);
   }
 
-  public static create(content: string | null | undefined): Content | never {
+  public static create(
+    content: string | null | undefined
+  ): Result<Content, string> {
     if (
       content === undefined ||
       content === null ||
       content.length < 1 ||
       content.length > 1000
     ) {
-      throw new Error(
-        "Content must be greater than 1 characters or less than 1000"
+      return Result.fail(
+        "Content must be greater than 1 or less than 1000 characters"
       );
     }
 
-    return new Content({ value: content });
+    return Result.ok(new Content({ value: content }));
   }
 }

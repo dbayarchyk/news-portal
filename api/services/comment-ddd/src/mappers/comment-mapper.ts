@@ -13,10 +13,10 @@ export class CommentMapper {
   public static toEntity(raw: CommentPersistance): Comment {
     const comment = new Comment(
       {
-        content: Content.create(raw.content),
-        articleId: ArticleId.create(raw.articleId),
-        authorId: AuthorId.create(raw.authorId),
-        parentCommentId: ParentCommentId.create(raw.parentCommentId),
+        content: Content.create(raw.content).value,
+        articleId: ArticleId.create(raw.articleId).value,
+        authorId: AuthorId.create(raw.authorId).value,
+        parentCommentId: ParentCommentId.create(raw.parentCommentId).value,
         createdAt: CreatedAt.create(raw.createdAt),
         updatedAt: UpdatedAt.create(raw.updatedAt),
       },

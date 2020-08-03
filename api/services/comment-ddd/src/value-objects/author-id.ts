@@ -1,4 +1,5 @@
-import { ValueObject } from ".//value-object";
+import { ValueObject } from "./value-object";
+import { Result } from "../utils/result";
 
 interface AuthorIdProps {
   value: string;
@@ -13,11 +14,13 @@ export class AuthorId extends ValueObject<AuthorIdProps> {
     super(props);
   }
 
-  public static create(authorId: string | null | undefined): AuthorId | never {
+  public static create(
+    authorId: string | null | undefined
+  ): Result<AuthorId, string> {
     if (authorId === null || authorId === undefined || authorId.length === 0) {
-      throw new Error("Author id must be defined");
+      return Result.fail("Author id must be defined");
     }
 
-    return new AuthorId({ value: authorId });
+    return Result.ok(new AuthorId({ value: authorId }));
   }
 }

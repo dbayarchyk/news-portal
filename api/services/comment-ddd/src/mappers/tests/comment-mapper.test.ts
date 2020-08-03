@@ -39,10 +39,10 @@ describe("CommentMapper", () => {
     it("should map comment entity to persistance", () => {
       const comment = new Comment(
         {
-          content: Content.create("Nice article!"),
-          authorId: AuthorId.create("some-author-id"),
-          articleId: ArticleId.create("some-article-id"),
-          parentCommentId: ParentCommentId.create("some-comment-id"),
+          content: Content.create("Nice article!").value,
+          authorId: AuthorId.create("some-author-id").value,
+          articleId: ArticleId.create("some-article-id").value,
+          parentCommentId: ParentCommentId.create("some-comment-id").value,
           createdAt: CreatedAt.create("some created date"),
           updatedAt: UpdatedAt.create("some updated date"),
         },
@@ -65,10 +65,10 @@ describe("CommentMapper", () => {
     it("should map comment entity to DTO", () => {
       const comment = new Comment(
         {
-          content: Content.create("Nice article!"),
-          authorId: AuthorId.create("some-author-id"),
-          articleId: ArticleId.create("some-article-id"),
-          parentCommentId: ParentCommentId.create("some-comment-id"),
+          content: Content.create("Nice article!").value,
+          authorId: AuthorId.create("some-author-id").value,
+          articleId: ArticleId.create("some-article-id").value,
+          parentCommentId: ParentCommentId.create("some-comment-id").value,
           createdAt: CreatedAt.create("some created date"),
           updatedAt: UpdatedAt.create("some updated date"),
         },

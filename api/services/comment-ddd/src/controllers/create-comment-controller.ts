@@ -10,6 +10,7 @@ import { ArticleId } from "../value-objects/article-id";
 import { ParentCommentId } from "../value-objects/parent-comment-id";
 import { CreatedAt } from "../value-objects/created-at";
 import { UpdatedAt } from "../value-objects/updated-at";
+import { Result } from "../utils/result";
 
 export type CreateCommentRequestDTO = {
   content: string;
@@ -20,6 +21,11 @@ export type CreateCommentRequestDTO = {
 
 export type CreateCommentValidationErrorsDTO = Partial<
   Record<keyof CreateCommentRequestDTO, string>
+>;
+
+type CombinedResult<TRecordKey extends string> = Record<
+  TRecordKey,
+  Result<unknown, unknown>
 >;
 
 export class CreateCommentController extends Controller {
@@ -37,11 +43,30 @@ export class CreateCommentController extends Controller {
   ): Promise<void> {
     const rawComment = req.body;
 
-    const comment = new Comment({
+    const combinedCommentPropsResult = Result.combine({
       content: Content.create(rawComment.content),
       articleId: ArticleId.create(rawComment.articleId),
       authorId: AuthorId.create(rawComment.authorId),
       parentCommentId: ParentCommentId.create(rawComment.parentCommentId),
+    });
+
+    if (combinedCommentPropsResult.checkStatus("failure")) {
+      const validationErrors = this.deriveErrorsFromFailedCombinedResult(
+        combinedCommentPropsResult.error as CombinedResult<
+          keyof typeof combinedCommentPropsResult.error
+        >
+      );
+
+      res.status(422).send(validationErrors);
+      return;
+    }
+
+    const commentProps = combinedCommentPropsResult.value;
+    const comment = new Comment({
+      content: commentProps.content.value,
+      articleId: commentProps.articleId.value,
+      authorId: commentProps.authorId.value,
+      parentCommentId: commentProps.parentCommentId.value,
       createdAt: CreatedAt.create(),
       updatedAt: UpdatedAt.create(),
     });
@@ -51,5 +76,25 @@ export class CreateCommentController extends Controller {
     const commentDTO = CommentMapper.toDTO(comment);
 
     res.status(201).send(commentDTO);
+  }
+
+  private deriveErrorsFromFailedCombinedResult<
+    T extends CombinedResult<string>
+  >(combinedResultError: T): Record<keyof T, string> {
+    const validationErrors = Object.entries(combinedResultError).reduce(
+      (errors, [key, failedResult]) => {
+        if (!failedResult) {
+          return errors;
+        }
+
+        return {
+          ...errors,
+          [key]: failedResult.error,
+        };
+      },
+      {} as Record<keyof T, string>
+    );
+
+    return validationErrors;
   }
 }

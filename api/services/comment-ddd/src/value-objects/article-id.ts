@@ -1,4 +1,5 @@
 import { ValueObject } from "./value-object";
+import { Result } from "../utils/result";
 
 interface ArticleIdProps {
   value: string;
@@ -15,15 +16,15 @@ export class ArticleId extends ValueObject<ArticleIdProps> {
 
   public static create(
     articleId: string | null | undefined
-  ): ArticleId | never {
+  ): Result<ArticleId, string> {
     if (
       articleId === null ||
       articleId === undefined ||
       articleId.length === 0
     ) {
-      throw new Error("Article id must be defined");
+      return Result.fail("Article id must be defined");
     }
 
-    return new ArticleId({ value: articleId });
+    return Result.ok(new ArticleId({ value: articleId }));
   }
 }
