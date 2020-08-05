@@ -1,6 +1,14 @@
 import React from "react";
 
-function ArticleComments({ article }) {
+import { ArticleComments_ArticleFragment } from "../generated/graphql-types";
+
+type ArticleCommentsProps = {
+  article: ArticleComments_ArticleFragment;
+};
+
+const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
+  article,
+}) => {
   return (
     <section>
       <h1>Comments</h1>
@@ -8,7 +16,7 @@ function ArticleComments({ article }) {
       <p>{article.areCommentsEnabled ? "Enabled" : "Disabled"}</p>
     </section>
   );
-}
+};
 
 ArticleComments.fragments = {
   article: /* GraphQL */ `

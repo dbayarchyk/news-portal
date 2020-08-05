@@ -1,10 +1,12 @@
 import React from "react";
+import { GetStaticProps, GetStaticPaths } from "next";
 import Head from "next/head";
 import "isomorphic-fetch";
 
 import Article from "../../components/article";
 import ArticleComments from "../../components/article-comments";
 import HeadTitle from "../../components/head-title";
+import { ArticlePageQuery } from "../../generated/graphql-types";
 
 async function queryAllArticles() {
   const response = await fetch(
@@ -17,7 +19,7 @@ async function queryAllArticles() {
       },
       body: JSON.stringify({
         query: /* GraphQL */ `
-          query ArticlePageAllArticlesQuery {
+          query ArticlePageAllArticles {
             articleCollection {
               items {
                 sys {
@@ -36,7 +38,7 @@ async function queryAllArticles() {
   return responsePayload;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await queryAllArticles();
   const paths = data.articleCollection.items.map((item) => ({
     params: {
@@ -61,7 +63,7 @@ async function queryArticle(slug) {
       },
       body: JSON.stringify({
         query: /* GraphQL */ `
-          query ArticlePageQuery {
+          query ArticlePage {
             articleCollection(
               where: { slug: "${slug}" }
             ) {
@@ -82,7 +84,7 @@ async function queryArticle(slug) {
   return responsePayload;
 }
 
-export const getStaticProps = async ({ params: { slug } }) => {
+export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
   const { data } = await queryArticle(slug);
 
   return {
@@ -92,7 +94,11 @@ export const getStaticProps = async ({ params: { slug } }) => {
   };
 };
 
-function ArticlePage({ article }) {
+type ArticlePageProps = {
+  article: ArticlePageQuery["articleCollection"]["items"][0];
+};
+
+const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
   return (
     <>
       <Head>
@@ -105,6 +111,6 @@ function ArticlePage({ article }) {
       </div>
     </>
   );
-}
+};
 
 export default ArticlePage;

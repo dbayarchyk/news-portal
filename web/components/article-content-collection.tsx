@@ -1,8 +1,15 @@
 import React from "react";
 
 import Paragraph from "./paragraph";
+import { ArticleContentCollection_ArticleFragment } from "../generated/graphql-types";
 
-function ArticleContentCollection({ article }) {
+type ArticleContentCollectionProps = {
+  article: ArticleContentCollection_ArticleFragment;
+};
+
+const ArticleContentCollection: React.FCWithFragments<ArticleContentCollectionProps> = ({
+  article,
+}) => {
   return (
     <>
       {article.contentCollection.items.map((item) => {
@@ -18,7 +25,7 @@ function ArticleContentCollection({ article }) {
       })}
     </>
   );
-}
+};
 
 ArticleContentCollection.fragments = {
   article: /* GraphQL */ `

@@ -1,9 +1,11 @@
 import React from "react";
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import "isomorphic-fetch";
 
 import HeadTitle from "../components/head-title";
+import { HomePageAllArticlesQuery } from "../generated/graphql-types";
 
 async function queryAllArticles() {
   const response = await fetch(
@@ -16,7 +18,7 @@ async function queryAllArticles() {
       },
       body: JSON.stringify({
         query: /* GraphQL */ `
-          query HomePageAllArticlesQuery {
+          query HomePageAllArticles {
             articleCollection {
               items {
                 slug
@@ -36,7 +38,7 @@ async function queryAllArticles() {
   return responsePayload;
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data } = await queryAllArticles();
 
   return {
@@ -46,7 +48,11 @@ export const getStaticProps = async () => {
   };
 };
 
-function HomePage({ articlesCollection }) {
+type HomePageProps = {
+  articlesCollection: HomePageAllArticlesQuery["articleCollection"];
+};
+
+const HomePage: React.FC<HomePageProps> = ({ articlesCollection }) => {
   return (
     <>
       <Head>
@@ -67,6 +73,6 @@ function HomePage({ articlesCollection }) {
       </ul>
     </>
   );
-}
+};
 
 export default HomePage;

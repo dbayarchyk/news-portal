@@ -1,10 +1,15 @@
 import React from "react";
 
 import ContentfulRichText from "./contentful-rich-text";
+import { Paragraph_ParagraphFragment } from "../generated/graphql-types";
 
-function Paragraph({ paragraph }) {
+type ParagraphProps = {
+  paragraph: Paragraph_ParagraphFragment;
+};
+
+const Paragraph: React.FCWithFragments<ParagraphProps> = ({ paragraph }) => {
   return <ContentfulRichText document={paragraph.content.json} />;
-}
+};
 
 Paragraph.fragments = {
   paragraph: /* GraphQL */ `

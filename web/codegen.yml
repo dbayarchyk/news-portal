@@ -1,0 +1,14 @@
+overwrite: true
+schema: "https://graphql.contentful.com/content/v1/spaces/lp31vknyje6d?access_token=nqnPOPnDVgnAC1k_lBJglpmIvxgsmVmBzB1wUWxoRU4"
+documents: "**/*.tsx"
+generates:
+  ./generated/graphql-types.d.ts:
+    plugins:
+      - "@graphql-codegen/typescript"
+      - "@graphql-codegen/typescript-operations"
+    config:
+      withComponent: false
+      withHOC: false
+      withHooks: false
+      withMutationFn: false
+      withRefetchFn: false
