@@ -8,9 +8,7 @@ export const config = {
 };
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const isDevelopment = true;
-
-  if (isDevelopment) {
+  if (process.env.NODE_ENV === "development") {
     return nextHttpProxyMiddleware(req, res, {
       // You can use the `http-proxy` option
       target: "http://localhost:8000",
