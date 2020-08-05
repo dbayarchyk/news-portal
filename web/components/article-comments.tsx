@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { ArticleComments_ArticleFragment } from "../generated/graphql-types";
 import { getCommentsByArticleId } from "../api/comment";
 import CommentsTree from "./comments-tree";
+import CommentForm from "./comment-form";
 
 type ArticleCommentsProps = {
   article: ArticleComments_ArticleFragment;
@@ -12,11 +13,15 @@ type ArticleCommentsProps = {
 const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
   article,
 }) => {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     `article-${article}-comments`,
     () => getCommentsByArticleId(article.sys.id),
     { enabled: article.areCommentsEnabled }
   );
+
+  const handleCommentCreation = () => {
+    refetch();
+  };
 
   return (
     <section>
@@ -27,7 +32,13 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            <CommentsTree describedBy="comments" comments={data.items} />
+            <>
+              <CommentsTree describedBy="comments" comments={data.items} />
+              <CommentForm
+                articleId={article.sys.id}
+                onCreate={handleCommentCreation}
+              />
+            </>
           )}
         </>
       ) : (
