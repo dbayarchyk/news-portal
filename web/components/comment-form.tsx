@@ -6,12 +6,16 @@ import { createComment, Comment } from "../api/comment";
 type CommentFormProps = {
   articleId: string;
   parentCommentId?: string;
+  textareaRef?: React.LegacyRef<HTMLTextAreaElement>;
+  extraControl?: React.ReactNode;
   onCreate?: (createdComment: Comment) => void;
 };
 
 const CommentForm: React.FC<CommentFormProps> = ({
   articleId,
   parentCommentId,
+  textareaRef,
+  extraControl,
   onCreate,
 }) => {
   const [content, setContent] = React.useState("");
@@ -48,8 +52,8 @@ const CommentForm: React.FC<CommentFormProps> = ({
   };
 
   const inputId = parentCommentId
-    ? "new-comment"
-    : `reply-comment-to-${parentCommentId}`;
+    ? `reply-comment-to-${parentCommentId}`
+    : "new-comment";
 
   return (
     <form onSubmit={handleSubmissions}>
@@ -58,6 +62,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
           <div>Comment</div>
         </label>
         <textarea
+          ref={textareaRef}
           id={inputId}
           placeholder="Type your comment here..."
           name="content"
@@ -76,6 +81,8 @@ const CommentForm: React.FC<CommentFormProps> = ({
       </div>
 
       <div>
+        {extraControl}
+
         <button type="submit">
           {createCommentMutationResult.isLoading
             ? "Posting the comment ..."

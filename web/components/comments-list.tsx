@@ -11,16 +11,22 @@ export type CommentTreeItem = Comment & {
 type CommentsListProps = {
   describedBy: string;
   comments: CommentTreeItem[];
+  onReply?: (createdComment: Comment) => void;
 };
 
 const CommentsList: React.FC<CommentsListProps> = ({
   describedBy,
   comments,
+  onReply,
 }) => {
   return (
     <ul aria-describedby={describedBy}>
       {comments.map((comment) => (
-        <CommentsListItem key={comment.id} comment={comment} />
+        <CommentsListItem
+          key={comment.id}
+          comment={comment}
+          onReply={onReply}
+        />
       ))}
     </ul>
   );

@@ -32,7 +32,11 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            <CommentsTree describedBy="comments" comments={data.items} />
+            <CommentsTree
+              describedBy="comments"
+              comments={data.items}
+              onReply={handleCommentCreation}
+            />
           )}
           <CommentForm
             articleId={article.sys.id}

@@ -45,15 +45,23 @@ const buildCommentsTree = (comments: Comment[]): CommentTreeItem[] => {
 type CommentsTreeProps = {
   describedBy: string;
   comments: Comment[];
+  onReply?: (createdComment: Comment) => void;
 };
 
 const CommentsTree: React.FC<CommentsTreeProps> = ({
   describedBy,
   comments,
+  onReply,
 }) => {
   const commentsTree = buildCommentsTree(comments);
 
-  return <CommentsList describedBy={describedBy} comments={commentsTree} />;
+  return (
+    <CommentsList
+      describedBy={describedBy}
+      comments={commentsTree}
+      onReply={onReply}
+    />
+  );
 };
 
 export default CommentsTree;
