@@ -19,8 +19,8 @@ const CommentSchema = new Schema(
     authorId: { type: String, required: true },
     articleId: { type: String, required: true },
     parentCommentId: { type: String, default: null },
-    createdAt: { type: String, required: true },
-    updatedAt: { type: String, required: true },
+    createdAt: { type: Date, required: true },
+    updatedAt: { type: Date, required: true },
   },
   {
     _id: false,
