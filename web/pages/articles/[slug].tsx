@@ -102,7 +102,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
   return (
     <>
       <Head>
-        <HeadTitle>{article.title}</HeadTitle>
+        <HeadTitle title={article.title} />
       </Head>
 
       <div>
