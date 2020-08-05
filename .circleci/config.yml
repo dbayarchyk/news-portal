@@ -7,9 +7,9 @@ workflows:
       - docker/publish:
           name: Publish api auth service docker image
           image: dbayarchyk/itdog-api-auth-service
-          path: ~/project/api/services/auth
+          path: ~/project/legacy/api/services/auth
           dockerfile: Dockerfile
-          docker-context: ~/project/api/services/auth
+          docker-context: ~/project/legacy/api/services/auth
           filters:
             branches:
               only:
@@ -17,9 +17,9 @@ workflows:
       - docker/publish:
           name: Publish api article service docker image
           image: dbayarchyk/itdog-api-article-service
-          path: ~/project/api/services/article
+          path: ~/project/legacy/api/services/article
           dockerfile: Dockerfile
-          docker-context: ~/project/api/services/article
+          docker-context: ~/project/legacy/api/services/article
           filters:
             branches:
               only:
@@ -27,9 +27,9 @@ workflows:
       - docker/publish:
           name: Publish api comment service docker image
           image: dbayarchyk/itdog-api-comment-service
-          path: ~/project/api/services/comment
+          path: ~/project/legacy/api/services/comment
           dockerfile: Dockerfile
-          docker-context: ~/project/api/services/comment
+          docker-context: ~/project/legacy/api/services/comment
           filters:
             branches:
               only:
@@ -37,9 +37,9 @@ workflows:
       - docker/publish:
           name: Publish api market service docker image
           image: dbayarchyk/itdog-api-market-service
-          path: ~/project/api/services/market
+          path: ~/project/legacy/api/services/market
           dockerfile: Dockerfile
-          docker-context: ~/project/api/services/market
+          docker-context: ~/project/legacy/api/services/market
           filters:
             branches:
               only:
@@ -47,9 +47,9 @@ workflows:
       - docker/publish:
           name: Publish api gateway service docker image
           image: dbayarchyk/itdog-api-gateway-service
-          path: ~/project/api/services/gateway
+          path: ~/project/legacy/api/services/gateway
           dockerfile: Dockerfile
-          docker-context: ~/project/api/services/gateway
+          docker-context: ~/project/legacy/api/services/gateway
           filters:
             branches:
               only:
@@ -57,7 +57,7 @@ workflows:
       - docker/publish:
           name: Publish admin docker image
           image: dbayarchyk/itdog-admin
-          path: ~/project/admin
+          path: ~/project/legacy/admin
           dockerfile: Dockerfile
           docker-context: ~/project/admin
           filters:
@@ -67,7 +67,7 @@ workflows:
       - docker/publish:
           name: Publish client docker image
           image: dbayarchyk/itdog-client
-          path: ~/project/client
+          path: ~/project/legacy/client
           dockerfile: Dockerfile
           docker-context: ~/project/client
           filters:
