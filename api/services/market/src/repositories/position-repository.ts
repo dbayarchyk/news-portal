@@ -3,12 +3,23 @@ import { Position } from "../entities/position";
 import { PositionMapper } from "../mappers/position-mapper";
 
 export interface IPositionRepository {
+  findPositionById(id: string): Promise<Position | null>;
   findPositions(): Promise<Position[]>;
   save(position: Position): Promise<void>;
   exists(position: Position): Promise<boolean>;
 }
 
 export class PositionRepository implements IPositionRepository {
+  public async findPositionById(id: string): Promise<Position | null> {
+    const rawPosition = await PositionModel.findById(id).lean();
+
+    if (rawPosition === null) {
+      return null;
+    }
+
+    return PositionMapper.toEntity(rawPosition);
+  }
+
   public async findPositions(): Promise<Position[]> {
     const rawCities = await PositionModel.find().lean();
 
