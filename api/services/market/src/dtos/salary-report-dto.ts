@@ -11,3 +11,14 @@ export interface SalaryReportDTO {
   workExperience: number;
   createdAt: string;
 }
+
+export interface AnnualSalaryReport {
+  count: number;
+  min: number;
+  max: number;
+  average: number;
+  lowerQuartile: number;
+  median: number;
+  upperQuartile: number;
+  groupBy: string;
+}
