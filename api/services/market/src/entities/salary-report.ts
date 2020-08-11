@@ -53,7 +53,7 @@ export class SalaryReport extends AggregateRoot<SalaryReportProps> {
   public static create(
     props: SalaryReportProps,
     id?: UniqueId | null
-  ): Result<SalaryReport, any> {
+  ): Result<SalaryReport, never> {
     const salaryReport = new SalaryReport(props, id);
 
     return Result.ok(salaryReport);
