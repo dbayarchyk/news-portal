@@ -3,7 +3,6 @@ import { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import "isomorphic-fetch";
 
-import HeadTitle from "../../components/head-title";
 import SalaryReportForm from "../../components/salary-report-form";
 import {
   Position,
@@ -13,6 +12,7 @@ import {
   getPositions,
   getTechnologies,
 } from "../../api/market";
+import { getHeadTitle } from "../../utils/head-title";
 
 type ShareSalaryPageProps = {
   positions: Position[];
@@ -44,7 +44,7 @@ const ShareSalaryPage: NextPage<ShareSalaryPageProps> = ({
   return (
     <>
       <Head>
-        <HeadTitle title="Share Salary" />
+        <title>{getHeadTitle("Share Salary")}</title>
       </Head>
 
       <div>

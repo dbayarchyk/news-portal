@@ -4,8 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import "isomorphic-fetch";
 
-import HeadTitle from "../components/head-title";
 import { HomePageAllArticlesQuery } from "../generated/graphql-types";
+import { getHeadTitle } from "../utils/head-title";
 
 async function queryAllArticles() {
   const response = await fetch(
@@ -56,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = ({ articlesCollection }) => {
   return (
     <>
       <Head>
-        <HeadTitle />
+        <title>{getHeadTitle()}</title>
       </Head>
 
       <ul>

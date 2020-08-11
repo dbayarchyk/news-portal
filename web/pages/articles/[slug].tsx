@@ -5,8 +5,8 @@ import "isomorphic-fetch";
 
 import Article from "../../components/article";
 import ArticleComments from "../../components/article-comments";
-import HeadTitle from "../../components/head-title";
 import { ArticlePageQuery } from "../../generated/graphql-types";
+import { getHeadTitle } from "../../utils/head-title";
 
 async function queryAllArticles() {
   const response = await fetch(
@@ -102,7 +102,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
   return (
     <>
       <Head>
-        <HeadTitle title={article.title} />
+        <title>{getHeadTitle(article.title)}</title>
       </Head>
 
       <div>
