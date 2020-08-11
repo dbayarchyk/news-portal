@@ -115,3 +115,32 @@ export const createSalaryReport = async (
     }
   }
 };
+
+export type AnnualSalaryReportItem = {
+  count: number;
+  min: number;
+  max: number;
+  average: number;
+  lowerQuartile: number;
+  median: number;
+  upperQuartile: number;
+  groupBy: string;
+};
+
+export const getAnnualSalaryReport = async (
+  groupBy: "city" | "position" | "technology"
+): Promise<AnnualSalaryReportItem[] | never> => {
+  const response = await fetch(
+    `${MARKET_SERVICE_API}/salary-reports/analysis/annual/${groupBy}/`
+  );
+
+  switch (response.status) {
+    case 200: {
+      return response.json();
+    }
+
+    default: {
+      throw new Error(`Unsupported response status: ${response.status}`);
+    }
+  }
+};
