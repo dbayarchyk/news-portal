@@ -1,0 +1,17 @@
+@import "../styles/media.scss";
+
+.list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: var(--spacing-0);
+  margin: var(--spacing-0);
+}
+
+.listItem {
+  margin-right: var(--spacing-3);
+
+  @include tablet {
+    margin-right: var(--spacing-6);
+  }
+}

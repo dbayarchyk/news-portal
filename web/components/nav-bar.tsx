@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
+import styles from "./nav-bar.module.scss";
+
 const NAV_ITEMS = [
   {
     title: "Home",
@@ -27,9 +29,9 @@ const NAV_ITEMS = [
 const NavBar: React.FC = () => {
   return (
     <nav>
-      <ul>
+      <ul className={styles.list}>
         {NAV_ITEMS.map((item) => (
-          <li key={item.href}>
+          <li className={styles.listItem} key={item.href}>
             <Link href={item.href}>
               <a
               //   aria-current={segment === item.href ? "page" : undefined}
