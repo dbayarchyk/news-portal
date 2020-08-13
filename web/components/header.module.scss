@@ -1,0 +1,15 @@
+.header {
+  padding-top: var(--spacing-4);
+  padding-bottom: var(--spacing-4);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerContentLeft,
+.headerContentRight {
+  flex: 1;
+}
