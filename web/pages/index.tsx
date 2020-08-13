@@ -1,11 +1,12 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import "isomorphic-fetch";
 
 import { HomePageAllArticlesQuery } from "../generated/graphql-types";
 import { getHeadTitle } from "../utils/head-title";
+import ArticlePreview from "../components/article-preview";
+import ArticlePreviews from "../components/article-previews";
 
 async function queryAllArticles() {
   const response = await fetch(
@@ -20,15 +21,10 @@ async function queryAllArticles() {
         query: /* GraphQL */ `
           query HomePageAllArticles {
             articleCollection {
-              items {
-                slug
-                title
-                sys {
-                  publishedAt
-                }
-              }
+              ...ArticlePreviews_articleCollection
             }
           }
+          ${ArticlePreviews.fragments.articleCollection}
         `,
       }),
     }
@@ -43,34 +39,23 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      articlesCollection: data.articleCollection,
+      articleCollection: data.articleCollection,
     },
   };
 };
 
 type HomePageProps = {
-  articlesCollection: HomePageAllArticlesQuery["articleCollection"];
+  articleCollection: HomePageAllArticlesQuery["articleCollection"];
 };
 
-const HomePage: React.FC<HomePageProps> = ({ articlesCollection }) => {
+const HomePage: React.FC<HomePageProps> = ({ articleCollection }) => {
   return (
     <>
       <Head>
         <title>{getHeadTitle()}</title>
       </Head>
 
-      <ul>
-        {articlesCollection.items.map((article) => (
-          <li key={article.slug}>
-            <h2>
-              <Link href={`articles/[slug]`} as={`articles/${article.slug}`}>
-                <a>{article.title}</a>
-              </Link>
-            </h2>
-            <p>{new Date(article.sys.publishedAt).toLocaleDateString()}</p>
-          </li>
-        ))}
-      </ul>
+      <ArticlePreviews articleCollection={articleCollection} />
     </>
   );
 };

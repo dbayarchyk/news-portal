@@ -577,6 +577,27 @@ export type ArticleContentCollection_ArticleFragment = (
   )> }
 );
 
+export type ArticlePreview_ArticleFragment = (
+  { __typename?: 'Article' }
+  & Pick<Article, 'title' | 'slug'>
+  & { previewImage?: Maybe<(
+    { __typename?: 'Asset' }
+    & Pick<Asset, 'title' | 'description' | 'url'>
+  )>, sys: (
+    { __typename?: 'Sys' }
+    & Pick<Sys, 'publishedAt'>
+  ) }
+);
+
+export type ArticlePreviews_ArticleCollectionFragment = (
+  { __typename?: 'ArticleCollection' }
+  & { items: Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'slug'>
+    & ArticlePreview_ArticleFragment
+  )>> }
+);
+
 export type Article_ArticleFragment = (
   { __typename?: 'Article' }
   & Pick<Article, 'title' | 'slug'>
@@ -638,13 +659,6 @@ export type HomePageAllArticlesQuery = (
   { __typename?: 'Query' }
   & { articleCollection?: Maybe<(
     { __typename?: 'ArticleCollection' }
-    & { items: Array<Maybe<(
-      { __typename?: 'Article' }
-      & Pick<Article, 'slug' | 'title'>
-      & { sys: (
-        { __typename?: 'Sys' }
-        & Pick<Sys, 'publishedAt'>
-      ) }
-    )>> }
+    & ArticlePreviews_ArticleCollectionFragment
   )> }
 );

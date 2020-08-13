@@ -1,11 +1,10 @@
 import React from "react";
-import Link from "next/link";
+
+import styles from "./footer.module.scss";
 
 const Footer: React.FC = () => {
-  const nowDate = new Date();
-
   return (
-    <footer>
+    <footer className={styles.footer}>
       <div>Footer</div>
     </footer>
   );

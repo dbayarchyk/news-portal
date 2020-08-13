@@ -1,0 +1,17 @@
+@import "../styles/media.scss";
+
+.list {
+  display: grid;
+  grid-gap: var(--spacing-8);
+  padding: 0;
+  list-style: none;
+
+  @include tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-gap: var(--spacing-4);
+  }
+}
