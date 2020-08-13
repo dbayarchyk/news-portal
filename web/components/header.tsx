@@ -8,7 +8,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.headerContent}>
+      <div className={`layout-container ${styles.headerContent}`}>
         <div className={styles.headerContentLeft}>
           <Link href="/">
             <a>{nowDate.toLocaleDateString()}</a>

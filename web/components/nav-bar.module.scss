@@ -1,7 +1,7 @@
 @import "../styles/media.scss";
 
 .list {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   list-style: none;
   padding: var(--spacing-0);

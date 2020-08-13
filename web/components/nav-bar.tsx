@@ -29,7 +29,7 @@ const NAV_ITEMS = [
 const NavBar: React.FC = () => {
   return (
     <nav>
-      <ul className={styles.list}>
+      <ul className={`layout-container ${styles.list}`}>
         {NAV_ITEMS.map((item) => (
           <li className={styles.listItem} key={item.href}>
             <Link href={item.href}>
