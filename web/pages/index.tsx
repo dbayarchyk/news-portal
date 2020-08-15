@@ -5,7 +5,6 @@ import "isomorphic-fetch";
 
 import { HomePageAllArticlesQuery } from "../generated/graphql-types";
 import { getHeadTitle } from "../utils/head-title";
-import ArticlePreview from "../components/article-preview";
 import ArticlePreviews from "../components/article-previews";
 
 async function queryAllArticles() {

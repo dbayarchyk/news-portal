@@ -13,3 +13,17 @@
 .headerContentRight {
   flex: 1;
 }
+
+.dateLink {
+  color: inherit;
+  text-decoration: none;
+
+  &:visited {
+    color: inherit;
+  }
+}
+
+.logoLink {
+  display: inline-block;
+  text-decoration: none;
+}

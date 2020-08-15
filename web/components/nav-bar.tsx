@@ -34,7 +34,8 @@ const NavBar: React.FC = () => {
           <li className={styles.listItem} key={item.href}>
             <Link href={item.href}>
               <a
-              //   aria-current={segment === item.href ? "page" : undefined}
+                className={styles.link}
+                //   aria-current={segment === item.href ? "page" : undefined}
               >
                 {item.title}
               </a>

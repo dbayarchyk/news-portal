@@ -1,0 +1,19 @@
+.text {
+  max-width: var(--line-length);
+  font-size: var(--font-size-base);
+}
+
+.normal {
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-normal);
+}
+
+.primary {
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-semibold);
+}
+
+.secondary {
+  color: var(--color-gray-500);
+  font-weight: var(--font-weight-normal);
+}

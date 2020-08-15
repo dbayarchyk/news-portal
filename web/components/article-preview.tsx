@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
+import HeadlineText from "../components/headline-text";
+import BodyText from "../components/body-text";
 import { ArticlePreview_ArticleFragment } from "../generated/graphql-types";
 import styles from "./article-preview.module.scss";
 
@@ -14,13 +16,15 @@ const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
   return (
     <article className={styles.article}>
       <div>
-        <h2>
+        <HeadlineText level="2">
           <Link href={`articles/[slug]`} as={`articles/${article.slug}`}>
             <a className={styles.titleLink}>{article.title}</a>
           </Link>
-        </h2>
+        </HeadlineText>
 
-        <p>{new Date(article.sys.publishedAt).toLocaleDateString()}</p>
+        <BodyText type="secondary">
+          {new Date(article.sys.publishedAt).toLocaleDateString()}
+        </BodyText>
       </div>
 
       <div className={styles.imageWrapper}>

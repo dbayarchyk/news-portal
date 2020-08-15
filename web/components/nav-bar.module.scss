@@ -15,3 +15,14 @@
     margin-right: var(--spacing-6);
   }
 }
+
+.link {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

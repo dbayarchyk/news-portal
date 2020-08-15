@@ -5,6 +5,7 @@ import { ArticleComments_ArticleFragment } from "../generated/graphql-types";
 import { getCommentsByArticleId } from "../api/comment";
 import CommentsTree from "./comments-tree";
 import CommentForm from "./comment-form";
+import HeadlineText from "./headline-text";
 
 type ArticleCommentsProps = {
   article: ArticleComments_ArticleFragment;
@@ -25,7 +26,9 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
 
   return (
     <section>
-      <h1 id="comments">Comments</h1>
+      <HeadlineText level="1" id="comments">
+        Comments
+      </HeadlineText>
 
       {article.areCommentsEnabled ? (
         <>

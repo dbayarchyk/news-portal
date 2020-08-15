@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
+import BodyText from "./body-text";
+import Logo from "./logo";
 import styles from "./header.module.scss";
 
 const Header: React.FC = () => {
@@ -10,14 +12,18 @@ const Header: React.FC = () => {
     <header className={styles.header}>
       <div className={`layout-container ${styles.headerContent}`}>
         <div className={styles.headerContentLeft}>
-          <Link href="/">
-            <a>{nowDate.toLocaleDateString()}</a>
-          </Link>
+          <BodyText type="secondary">
+            <Link href="/">
+              <a className={styles.dateLink}>{nowDate.toLocaleDateString()}</a>
+            </Link>
+          </BodyText>
         </div>
 
         <div className={styles.headerContentRight}>
           <Link href="/">
-            <a>IT Dog</a>
+            <a className={styles.logoLink}>
+              <Logo />
+            </a>
           </Link>
         </div>
       </div>
