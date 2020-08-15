@@ -6,6 +6,7 @@ import { getCommentsByArticleId } from "../api/comment";
 import CommentsTree from "./comments-tree";
 import CommentForm from "./comment-form";
 import HeadlineText from "./headline-text";
+import BodyText from "./body-text";
 
 type ArticleCommentsProps = {
   article: ArticleComments_ArticleFragment;
@@ -14,7 +15,12 @@ type ArticleCommentsProps = {
 const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
   article,
 }) => {
-  const { data, isLoading, refetch } = useQuery(
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery(
     `article-${article}-comments`,
     () => getCommentsByArticleId(article.sys.id),
     { enabled: article.areCommentsEnabled }
@@ -32,22 +38,31 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
 
       {article.areCommentsEnabled ? (
         <>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <CommentsTree
-              describedBy="comments"
-              comments={data.items}
-              onReply={handleCommentCreation}
-            />
-          )}
+          {(() => {
+            if (isLoading) {
+              return <BodyText>Loading...</BodyText>;
+            }
+
+            if (isError) {
+              return <BodyText>Comments could not be loaded.</BodyText>;
+            }
+
+            return (
+              <CommentsTree
+                describedBy="comments"
+                comments={data.items}
+                onReply={handleCommentCreation}
+              />
+            );
+          })()}
+
           <CommentForm
             articleId={article.sys.id}
             onCreate={handleCommentCreation}
           />
         </>
       ) : (
-        <p>Disabled</p>
+        <BodyText>Comments are disabled.</BodyText>
       )}
     </section>
   );
