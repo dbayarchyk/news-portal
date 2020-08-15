@@ -16,6 +16,9 @@ import {
   City,
   Technology,
 } from "../api/market";
+import { TextInput } from "./ui/text-input";
+import { SelectInput } from "./ui/select-input";
+import { PrimaryButton } from "./ui/buttons/primary-button";
 
 type FormValues = {
   positionId: string;
@@ -105,7 +108,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         <FormLabel {...formState} name="positionId">
           Position
         </FormLabel>
-        <FormInput {...formState} as="select" name="positionId">
+        <FormInput {...formState} as={SelectInput} name="positionId">
           <option value="" disabled>
             -- Please choose --
           </option>
@@ -122,7 +125,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         <FormLabel {...formState} name="technologyId">
           Technology
         </FormLabel>
-        <FormInput {...formState} as="select" name="technologyId">
+        <FormInput {...formState} as={SelectInput} name="technologyId">
           <option value="" disabled>
             -- Please choose --
           </option>
@@ -139,7 +142,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         <FormLabel {...formState} name="cityId">
           City
         </FormLabel>
-        <FormInput {...formState} as="select" name="cityId">
+        <FormInput {...formState} as={SelectInput} name="cityId">
           <option value="" disabled>
             -- Please choose --
           </option>
@@ -158,6 +161,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         </FormLabel>
         <FormInput
           {...formState}
+          as={TextInput}
           name="annualSalary"
           inputMode="numeric"
           pattern="[0-9]*"
@@ -171,6 +175,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         </FormLabel>
         <FormInput
           {...formState}
+          as={TextInput}
           name="workExperience"
           inputMode="numeric"
           pattern="[0-9]*"
@@ -178,9 +183,11 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         <FormMessage {...formState} name="workExperience" />
       </div>
 
-      <FormSubmitButton {...formState}>
-        {formState.submitting ? "Submitting..." : "Share my salary"}
-      </FormSubmitButton>
+      <FormSubmitButton
+        {...formState}
+        as={PrimaryButton}
+        title={formState.submitting ? "Submitting..." : "Share my salary"}
+      />
       <p>This is completely anonymous</p>
     </Form>
   );

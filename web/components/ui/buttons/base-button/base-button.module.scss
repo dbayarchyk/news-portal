@@ -1,0 +1,8 @@
+.baseButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--border-radius-base);
+  border-width: var(--border-width-sm);
+  border-color: transparent;
+  border-style: solid;
+  font-weight: var(--font-weight-bold);
+}

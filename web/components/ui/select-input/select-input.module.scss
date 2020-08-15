@@ -1,0 +1,16 @@
+.select {
+  background: var(--color-gray-200);
+  border-color: var(--color-gray-200);
+  color: var(--color-gray-700);
+  padding: var(--spacing-2) var(--spacing-4);
+  appearance: none;
+  border-style: solid;
+  border-width: var(--border-width-sm);
+  border-radius: var(--border-radius-base);
+}
+
+.select:focus {
+  outline: none;
+  background: var(--color-gray-100);
+  border-color: var(--color-primary-500);
+}
