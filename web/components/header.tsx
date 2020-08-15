@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import BodyText from "./body-text";
+import BodyText from "./ui/body-text";
 import Logo from "./logo";
 import styles from "./header.module.scss";
 

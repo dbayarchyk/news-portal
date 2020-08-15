@@ -16,13 +16,13 @@ import {
   City,
   Technology,
 } from "../api/market";
-import { TextInput } from "./ui/text-input";
-import { SelectInput } from "./ui/select-input";
-import { PrimaryButton } from "./ui/buttons/primary-button";
+import TextInput from "./ui/text-input";
+import SelectInput from "./ui/select-input";
+import PrimaryButton from "./ui/buttons/primary-button";
 import Label from "./ui/label";
 import FieldError from "./ui/field-error";
-import HeadlineText from "./headline-text";
-import BodyText from "./body-text";
+import HeadlineText from "./ui/headline-text";
+import BodyText from "./ui/body-text";
 
 type FormValues = {
   positionId: string;

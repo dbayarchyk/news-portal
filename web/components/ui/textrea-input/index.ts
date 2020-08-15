@@ -1,1 +1,1 @@
-export { default as TextareaInput } from "./textarea-input";
+export { default } from "./textarea-input";

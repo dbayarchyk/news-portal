@@ -1,6 +1,6 @@
 import React from "react";
 
-import BodyText from "../../body-text";
+import BodyText from "../body-text";
 
 type LabelProps = {
   htmlFor?: string;

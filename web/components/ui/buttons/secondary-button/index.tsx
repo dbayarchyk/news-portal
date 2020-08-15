@@ -1,1 +1,1 @@
-export { default as SecondaryButton } from "./secondary-button";
+export { default } from "./secondary-button";

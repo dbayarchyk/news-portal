@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BaseButton } from "../base-button";
+import BaseButton from "../base-button";
 import styles from "./primary-button.module.scss";
 
 type PrimaryButtonProps = React.ComponentProps<typeof BaseButton>;

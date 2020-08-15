@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
-import HeadlineText from "../components/headline-text";
-import BodyText from "../components/body-text";
+import HeadlineText from "./ui/headline-text";
+import BodyText from "./ui/body-text";
 import { ArticlePreview_ArticleFragment } from "../generated/graphql-types";
 import styles from "./article-preview.module.scss";
 

@@ -5,8 +5,8 @@ import { ArticleComments_ArticleFragment } from "../generated/graphql-types";
 import { getCommentsByArticleId } from "../api/comment";
 import CommentsTree from "./comments-tree";
 import CommentForm from "./comment-form";
-import HeadlineText from "./headline-text";
-import BodyText from "./body-text";
+import HeadlineText from "./ui/headline-text";
+import BodyText from "./ui/body-text";
 
 type ArticleCommentsProps = {
   article: ArticleComments_ArticleFragment;

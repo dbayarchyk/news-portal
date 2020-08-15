@@ -4,7 +4,7 @@
   position: relative;
   display: inline-flex;
   flex-direction: row-reverse;
-  justify-content: end;
+  justify-content: flex-end;
 
   @include tablet {
     flex-direction: column-reverse;

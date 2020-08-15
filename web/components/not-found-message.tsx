@@ -1,7 +1,7 @@
 import React from "react";
 
-import HeadlineText from "./headline-text";
-import BodyText from "./body-text";
+import HeadlineText from "./ui/headline-text";
+import BodyText from "./ui/body-text";
 import styles from "./not-found-message.module.scss";
 
 const NotFoundMessage: React.FC = () => {

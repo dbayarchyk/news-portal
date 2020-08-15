@@ -1,8 +1,8 @@
 import React from "react";
 
 import ArticleContentCollection from "./article-content-collection";
-import HeadlineText from "./headline-text";
-import BodyText from "./body-text";
+import HeadlineText from "./ui/headline-text";
+import BodyText from "./ui/body-text";
 import { Article_ArticleFragment } from "../generated/graphql-types";
 
 type ArticleProps = {
