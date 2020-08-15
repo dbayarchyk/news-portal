@@ -9,6 +9,8 @@ import CommentsList, { CommentTreeItem } from "./comments-list";
 import CommentForm from "./comment-form";
 import { Comment } from "../api/comment";
 import { FlatButton } from "./ui/buttons/flat-button";
+import BodyText from "./body-text";
+import styles from "./comments-list-item.module.scss";
 
 type CommentsListItemProps = {
   comment: CommentTreeItem;
@@ -52,8 +54,10 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
   return (
     <li>
       <div id={comment.id}>
-        <p>{new Date(comment.createdAt).toLocaleDateString()}</p>
-        <p>{comment.content}</p>
+        <BodyText type="secondary">
+          {new Date(comment.createdAt).toLocaleDateString()}
+        </BodyText>
+        <BodyText>{comment.content}</BodyText>
         <Disclosure {...replyCommentFormDisclosure}>
           {(disclosureProps) => (
             <FlatButton
@@ -66,27 +70,32 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
       </div>
 
       {comment.childrenComments && (
-        <CommentsList
-          describedBy={comment.id}
-          comments={comment.childrenComments}
-          onReply={onReply}
-        />
+        <div className={styles.nestedSection}>
+          <CommentsList
+            describedBy={comment.id}
+            comments={comment.childrenComments}
+            onReply={onReply}
+          />
+        </div>
       )}
 
       <DisclosureContent {...replyCommentFormDisclosure}>
-        <CommentForm
-          textareaRef={replyCommentTextareaEl}
-          articleId={comment.articleId}
-          parentCommentId={comment.id}
-          extraControl={
-            <FlatButton
-              type="button"
-              title="Cancel"
-              onClick={handleReplyFormCanceling}
-            />
-          }
-          onCreate={onReply}
-        />
+        <div className={styles.nestedSection}>
+          <CommentForm
+            textareaRef={replyCommentTextareaEl}
+            articleId={comment.articleId}
+            parentCommentId={comment.id}
+            extraControl={
+              <FlatButton
+                type="button"
+                className={styles.cancelButton}
+                title="Cancel"
+                onClick={handleReplyFormCanceling}
+              />
+            }
+            onCreate={onReply}
+          />
+        </div>
       </DisclosureContent>
     </li>
   );

@@ -90,6 +90,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
 
         <PrimaryButton
           type="submit"
+          className={styles.submitButton}
           title={
             createCommentMutationResult.isLoading
               ? "Posting the comment ..."

@@ -2,6 +2,7 @@ import React from "react";
 
 import CommentsListItem from "./comments-list-item";
 import { Comment } from "../api/comment";
+import styles from "./comments-list.module.scss";
 
 export type CommentTreeItem = Comment & {
   parentComment: Comment;
@@ -20,7 +21,7 @@ const CommentsList: React.FC<CommentsListProps> = ({
   onReply,
 }) => {
   return (
-    <ul aria-describedby={describedBy}>
+    <ul className={styles.list} aria-describedby={describedBy}>
       {comments.map((comment) => (
         <CommentsListItem
           key={comment.id}
