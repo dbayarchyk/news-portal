@@ -19,6 +19,10 @@ import {
 import { TextInput } from "./ui/text-input";
 import { SelectInput } from "./ui/select-input";
 import { PrimaryButton } from "./ui/buttons/primary-button";
+import Label from "./ui/label";
+import FieldError from "./ui/field-error";
+import HeadlineText from "./headline-text";
+import BodyText from "./body-text";
 
 type FormValues = {
   positionId: string;
@@ -101,11 +105,11 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
 
   return (
     <Form {...formState}>
-      <h1>Share your salary</h1>
-      <p>Let's make the German IT market transparent together</p>
+      <HeadlineText level="1">Share your salary</HeadlineText>
+      <BodyText>Let's make the German IT market transparent together</BodyText>
 
       <div>
-        <FormLabel {...formState} name="positionId">
+        <FormLabel {...formState} as={Label} name="positionId">
           Position
         </FormLabel>
         <FormInput {...formState} as={SelectInput} name="positionId">
@@ -118,11 +122,11 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
             </option>
           ))}
         </FormInput>
-        <FormMessage {...formState} name="positionId" />
+        <FormMessage {...formState} as={FieldError as any} name="positionId" />
       </div>
 
       <div>
-        <FormLabel {...formState} name="technologyId">
+        <FormLabel {...formState} as={Label} name="technologyId">
           Technology
         </FormLabel>
         <FormInput {...formState} as={SelectInput} name="technologyId">
@@ -135,11 +139,15 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
             </option>
           ))}
         </FormInput>
-        <FormMessage {...formState} name="technologyId" />
+        <FormMessage
+          {...formState}
+          as={FieldError as any}
+          name="technologyId"
+        />
       </div>
 
       <div>
-        <FormLabel {...formState} name="cityId">
+        <FormLabel {...formState} as={Label} name="cityId">
           City
         </FormLabel>
         <FormInput {...formState} as={SelectInput} name="cityId">
@@ -152,11 +160,11 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
             </option>
           ))}
         </FormInput>
-        <FormMessage {...formState} name="cityId" />
+        <FormMessage {...formState} as={FieldError as any} name="cityId" />
       </div>
 
       <div>
-        <FormLabel {...formState} name="annualSalary">
+        <FormLabel {...formState} as={Label} name="annualSalary">
           Annual Salary
         </FormLabel>
         <FormInput
@@ -166,11 +174,15 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           inputMode="numeric"
           pattern="[0-9]*"
         />
-        <FormMessage {...formState} name="annualSalary" />
+        <FormMessage
+          {...formState}
+          as={FieldError as any}
+          name="annualSalary"
+        />
       </div>
 
       <div>
-        <FormLabel {...formState} name="workExperience">
+        <FormLabel {...formState} as={Label} name="workExperience">
           Work experience
         </FormLabel>
         <FormInput
@@ -180,7 +192,11 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           inputMode="numeric"
           pattern="[0-9]*"
         />
-        <FormMessage {...formState} name="workExperience" />
+        <FormMessage
+          {...formState}
+          as={FieldError as any}
+          name="workExperience"
+        />
       </div>
 
       <FormSubmitButton
@@ -188,7 +204,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         as={PrimaryButton}
         title={formState.submitting ? "Submitting..." : "Share my salary"}
       />
-      <p>This is completely anonymous</p>
+      <BodyText type="secondary">This is completely anonymous</BodyText>
     </Form>
   );
 };

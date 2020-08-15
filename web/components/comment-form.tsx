@@ -5,6 +5,7 @@ import { createComment, Comment } from "../api/comment";
 import { TextareaInput } from "./ui/textrea-input";
 import { PrimaryButton } from "./ui/buttons/primary-button";
 import { VisuallyHidden } from "./ui/visually-hidden";
+import FieldError from "./ui/field-error";
 import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
@@ -77,11 +78,11 @@ const CommentForm: React.FC<CommentFormProps> = ({
           onChange={handleTextAreaChange}
         />
         {createCommentMutationResult.isError && (
-          <p id="content-error" aria-live="assertive" role="alert">
+          <FieldError id="content-error" aria-live="assertive" role="alert">
             {"content" in createCommentMutationResult.error
               ? createCommentMutationResult.error["content"]
               : "Something went wrong"}
-          </p>
+          </FieldError>
         )}
       </div>
 
