@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from "react-query";
 
 import { createComment, Comment } from "../api/comment";
+import { PrimaryButton } from "./ui/buttons/primary-button";
 
 type CommentFormProps = {
   articleId: string;
@@ -83,11 +84,14 @@ const CommentForm: React.FC<CommentFormProps> = ({
       <div>
         {extraControl}
 
-        <button type="submit">
-          {createCommentMutationResult.isLoading
-            ? "Posting the comment ..."
-            : "Leave a comment"}
-        </button>
+        <PrimaryButton
+          type="submit"
+          title={
+            createCommentMutationResult.isLoading
+              ? "Posting the comment ..."
+              : "Leave a comment"
+          }
+        />
       </div>
     </form>
   );

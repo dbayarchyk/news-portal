@@ -8,6 +8,7 @@ import {
 import CommentsList, { CommentTreeItem } from "./comments-list";
 import CommentForm from "./comment-form";
 import { Comment } from "../api/comment";
+import { FlatButton } from "./ui/buttons/flat-button";
 
 type CommentsListItemProps = {
   comment: CommentTreeItem;
@@ -30,12 +31,18 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
 
   const handleReplyFormCanceling = () => {
     replyCommentFormDisclosure.hide();
-    replyButtonEl.current.focus();
+
+    if (replyButtonEl.current) {
+      replyButtonEl.current.focus();
+    }
   };
 
   const handleCommentCreation = (comment: Comment) => {
     replyCommentFormDisclosure.hide();
-    replyButtonEl.current.focus();
+
+    if (replyButtonEl.current) {
+      replyButtonEl.current.focus();
+    }
 
     if (onReply) {
       onReply(comment);
@@ -47,8 +54,14 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
       <div id={comment.id}>
         <p>{new Date(comment.createdAt).toLocaleDateString()}</p>
         <p>{comment.content}</p>
-        <Disclosure {...replyCommentFormDisclosure} ref={replyButtonEl}>
-          Reply
+        <Disclosure {...replyCommentFormDisclosure}>
+          {(disclosureProps) => (
+            <FlatButton
+              {...disclosureProps}
+              ref={replyButtonEl}
+              title="Reply"
+            />
+          )}
         </Disclosure>
       </div>
 
@@ -66,9 +79,11 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
           articleId={comment.articleId}
           parentCommentId={comment.id}
           extraControl={
-            <button type="button" onClick={handleReplyFormCanceling}>
-              Cancel
-            </button>
+            <FlatButton
+              type="button"
+              title="Cancel"
+              onClick={handleReplyFormCanceling}
+            />
           }
           onCreate={onReply}
         />

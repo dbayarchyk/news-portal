@@ -4,19 +4,18 @@ import styles from "./base-button.module.scss";
 
 type BaseButtonProps = JSX.IntrinsicElements["button"];
 
-const BaseButton: React.FC<BaseButtonProps> = ({
-  title,
-  className,
-  ...buttonProps
-}) => {
-  return (
-    <button
-      {...buttonProps}
-      className={[styles.baseButton, className].join(" ")}
-    >
-      {title}
-    </button>
-  );
-};
+const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
+  ({ title, className, ...buttonProps }, ref) => {
+    return (
+      <button
+        ref={ref}
+        {...buttonProps}
+        className={[styles.baseButton, className].join(" ")}
+      >
+        {title}
+      </button>
+    );
+  }
+);
 
 export default BaseButton;
