@@ -2,12 +2,15 @@ import React from "react";
 import { useMutation } from "react-query";
 
 import { createComment, Comment } from "../api/comment";
+import { TextareaInput } from "./ui/textrea-input";
 import { PrimaryButton } from "./ui/buttons/primary-button";
+import { VisuallyHidden } from "./ui/visually-hidden";
+import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
   articleId: string;
   parentCommentId?: string;
-  textareaRef?: React.LegacyRef<HTMLTextAreaElement>;
+  textareaRef?: React.Ref<HTMLTextAreaElement>;
   extraControl?: React.ReactNode;
   onCreate?: (createdComment: Comment) => void;
 };
@@ -60,9 +63,10 @@ const CommentForm: React.FC<CommentFormProps> = ({
     <form onSubmit={handleSubmissions}>
       <div>
         <label htmlFor={inputId}>
-          <div>Comment</div>
+          <VisuallyHidden>Comment</VisuallyHidden>
         </label>
-        <textarea
+        <TextareaInput
+          className={styles.textarea}
           ref={textareaRef}
           id={inputId}
           placeholder="Type your comment here..."
