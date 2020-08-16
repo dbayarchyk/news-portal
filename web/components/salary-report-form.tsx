@@ -1,13 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import {
-  unstable_useFormState as useFormState,
-  unstable_Form as Form,
-  unstable_FormLabel as FormLabel,
-  unstable_FormInput as FormInput,
-  unstable_FormMessage as FormMessage,
-  unstable_FormSubmitButton as FormSubmitButton,
-} from "reakit/Form";
 
 import {
   createSalaryReport,
@@ -16,13 +8,12 @@ import {
   City,
   Technology,
 } from "../api/market";
-import TextInput from "./ui/text-input";
-import SelectInput from "./ui/select-input";
 import PrimaryButton from "./ui/buttons/primary-button";
-import Label from "./ui/label";
-import FieldError from "./ui/field-error";
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
+import SelectField from "./ui/fields/select-field";
+import TextField from "./ui/fields/text-field";
+import useForm from "./ui/form/use-form";
 
 type FormValues = {
   positionId: string;
@@ -85,9 +76,8 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
   cities,
   technologies,
 }) => {
-  const router = useRouter();
-  const formState = useFormState<FormValues>({
-    values: {
+  const formState = useForm({
+    initialValues: {
       positionId: "",
       technologyId: "",
       cityId: "",
@@ -96,117 +86,93 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
     },
     onValidate: validateFormValues,
     onSubmit: async (values) => {
-      debugger;
       const createSalaryReportData = formValuesToCreateSalaryReportDate(values);
 
       await createSalaryReport(createSalaryReportData);
       router.push("./salaries");
     },
   });
+  const router = useRouter();
 
   return (
-    <Form {...formState}>
-      <HeadlineText level="1">Share your salary</HeadlineText>
-      <BodyText>Let's make the German IT market transparent together</BodyText>
-
+    <form onSubmit={formState.onFormSubmit}>
       <div>
-        <FormLabel {...formState} as={Label} name="positionId">
-          Position
-        </FormLabel>
-        <FormInput {...formState} as={SelectInput} name="positionId">
-          <option value="" disabled>
-            -- Please choose --
-          </option>
-          {positions.map((position) => (
-            <option key={position.id} value={position.id}>
-              {position.name}
-            </option>
-          ))}
-        </FormInput>
-        <FormMessage {...formState} as={FieldError as any} name="positionId" />
+        <HeadlineText level="1">Share your salary</HeadlineText>
+        <BodyText>
+          Let's make the German IT market transparent together
+        </BodyText>
       </div>
 
-      <div>
-        <FormLabel {...formState} as={Label} name="technologyId">
-          Technology
-        </FormLabel>
-        <FormInput {...formState} as={SelectInput} name="technologyId">
-          <option value="" disabled>
-            -- Please choose --
-          </option>
-          {technologies.map((technology) => (
-            <option key={technology.id} value={technology.id}>
-              {technology.name}
-            </option>
-          ))}
-        </FormInput>
-        <FormMessage
-          {...formState}
-          as={FieldError as any}
-          name="technologyId"
-        />
-      </div>
-
-      <div>
-        <FormLabel {...formState} as={Label} name="cityId">
-          City
-        </FormLabel>
-        <FormInput {...formState} as={SelectInput} name="cityId">
-          <option value="" disabled>
-            -- Please choose --
-          </option>
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.name}
-            </option>
-          ))}
-        </FormInput>
-        <FormMessage {...formState} as={FieldError as any} name="cityId" />
-      </div>
-
-      <div>
-        <FormLabel {...formState} as={Label} name="annualSalary">
-          Annual Salary
-        </FormLabel>
-        <FormInput
-          {...formState}
-          as={TextInput}
-          name="annualSalary"
-          inputMode="numeric"
-          pattern="[0-9]*"
-        />
-        <FormMessage
-          {...formState}
-          as={FieldError as any}
-          name="annualSalary"
-        />
-      </div>
-
-      <div>
-        <FormLabel {...formState} as={Label} name="workExperience">
-          Work experience
-        </FormLabel>
-        <FormInput
-          {...formState}
-          as={TextInput}
-          name="workExperience"
-          inputMode="numeric"
-          pattern="[0-9]*"
-        />
-        <FormMessage
-          {...formState}
-          as={FieldError as any}
-          name="workExperience"
-        />
-      </div>
-
-      <FormSubmitButton
-        {...formState}
-        as={PrimaryButton}
-        title={formState.submitting ? "Submitting..." : "Share my salary"}
+      <SelectField
+        label="Position"
+        name="positionId"
+        id="positionId"
+        value={formState.values.positionId}
+        options={positions.map((position) => ({
+          value: position.id,
+          label: position.name,
+        }))}
+        errorMessage={formState.errors.positionId}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
       />
-      <BodyText type="secondary">This is completely anonymous</BodyText>
-    </Form>
+
+      <SelectField
+        label="Technology"
+        name="technologyId"
+        id="technologyId"
+        value={formState.values.technologyId}
+        options={technologies.map((technology) => ({
+          value: technology.id,
+          label: technology.name,
+        }))}
+        errorMessage={formState.errors.technologyId}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
+      />
+
+      <SelectField
+        label="City"
+        name="cityId"
+        id="cityId"
+        value={formState.values.cityId}
+        options={cities.map((city) => ({
+          value: city.id,
+          label: city.name,
+        }))}
+        errorMessage={formState.errors.cityId}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
+      />
+
+      <TextField
+        label="Annual salary"
+        name="annualSalary"
+        id="annualSalary"
+        value={formState.values.annualSalary}
+        errorMessage={formState.errors.annualSalary}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
+      />
+
+      <TextField
+        label="Work experience"
+        name="workExperience"
+        id="workExperience"
+        value={formState.values.workExperience}
+        errorMessage={formState.errors.workExperience}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
+      />
+
+      <div>
+        <PrimaryButton
+          type="submit"
+          title={formState.isSubmitting ? "Submitting..." : "Share my salary"}
+        />
+        <BodyText type="secondary">This is completely anonymous</BodyText>
+      </div>
+    </form>
   );
 };
 
