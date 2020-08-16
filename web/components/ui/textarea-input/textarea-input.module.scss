@@ -8,6 +8,10 @@
   border-width: var(--border-width-sm);
   border-radius: var(--border-radius-base);
   max-width: var(--line-length);
+
+  &[aria-invalid="true"] {
+    border-color: var(--color-red-500);
+  }
 }
 
 .textarea:focus {

@@ -6,6 +6,8 @@ import PrimaryButton from "./ui/buttons/primary-button";
 import VisuallyHidden from "./ui/visually-hidden";
 import FieldError from "./ui/field-error";
 import TextareaInput from "./ui/textarea-input";
+import useForm from "./ui/form/use-form";
+import TextareaField from "./ui/fields/textarea-field";
 import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
@@ -23,68 +25,58 @@ const CommentForm: React.FC<CommentFormProps> = ({
   extraControl,
   onCreate,
 }) => {
-  const [content, setContent] = React.useState("");
+  const formState = useForm({
+    initialValues: { content: "" },
+    onSubmit: async (values) => {
+      const createdComment = await executeCreateCommentMutation({
+        articleId,
+        content: values.content,
+        parentCommentId: parentCommentId || null,
+        authorId: "UNKNOWN",
+      });
+
+      if (onCreate) {
+        onCreate(createdComment);
+      }
+    },
+  });
 
   const resetForm = () => {
-    setContent("");
+    formState.resetForm();
     createCommentMutationResult.reset();
   };
 
   const [
     executeCreateCommentMutation,
     createCommentMutationResult,
-  ] = useMutation(createComment, { onSuccess: resetForm });
+  ] = useMutation(createComment, {
+    onError: (error) => {
+      if ("content" in error) {
+        throw error;
+      }
 
-  const handleTextAreaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setContent(event.target.value);
-  };
-
-  const handleSubmissions = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const createdComment = await executeCreateCommentMutation({
-      articleId,
-      content,
-      parentCommentId: parentCommentId || null,
-      authorId: "UNKNOWN",
-    });
-
-    if (onCreate) {
-      onCreate(createdComment);
-    }
-  };
+      throw { content: "Something went wrong." };
+    },
+    onSuccess: resetForm,
+  });
 
   const inputId = parentCommentId
     ? `reply-comment-to-${parentCommentId}`
     : "new-comment";
 
   return (
-    <form onSubmit={handleSubmissions}>
-      <div>
-        <label htmlFor={inputId}>
-          <VisuallyHidden>Comment</VisuallyHidden>
-        </label>
-        <TextareaInput
-          className={styles.textarea}
-          ref={textareaRef}
-          id={inputId}
-          placeholder="Type your comment here..."
-          name="content"
-          value={content}
-          aria-invalid={createCommentMutationResult.isError}
-          aria-describedby="content-error"
-          onChange={handleTextAreaChange}
-        />
-        {createCommentMutationResult.isError && (
-          <FieldError id="content-error" aria-live="assertive" role="alert">
-            {"content" in createCommentMutationResult.error
-              ? createCommentMutationResult.error["content"]
-              : "Something went wrong"}
-          </FieldError>
-        )}
-      </div>
+    <form onSubmit={formState.onFormSubmit}>
+      <TextareaField
+        textareaRef={textareaRef}
+        label="New comment"
+        name="content"
+        id={inputId}
+        placeholder="Type your comment here..."
+        value={formState.values.content}
+        errorMessage={formState.errors.content}
+        onChange={formState.onFieldValueChange}
+        onBlur={formState.onFieldBlur}
+      />
 
       <div>
         {extraControl}
@@ -93,7 +85,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
           type="submit"
           className={styles.submitButton}
           title={
-            createCommentMutationResult.isLoading
+            formState.isSubmitting
               ? "Posting the comment ..."
               : "Leave a comment"
           }

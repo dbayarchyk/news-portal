@@ -96,6 +96,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
     },
     onValidate: validateFormValues,
     onSubmit: async (values) => {
+      debugger;
       const createSalaryReportData = formValuesToCreateSalaryReportDate(values);
 
       await createSalaryReport(createSalaryReportData);

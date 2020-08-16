@@ -13,6 +13,8 @@ type TextareaFieldProps = {
   id: string;
   name?: string;
   value: string;
+  placeholder?: string;
+  textareaRef?: React.Ref<HTMLTextAreaElement>;
   onChange: TextareaInputProps["onChange"];
   onBlur?: TextareaInputProps["onBlur"];
   onFocus?: TextareaInputProps["onFocus"];
@@ -25,6 +27,8 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   id,
   name,
   value,
+  placeholder,
+  textareaRef,
   onChange,
   onBlur,
   onFocus,
@@ -38,9 +42,11 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
       <Label htmlFor={id}>{label}</Label>
 
       <TextareaInput
+        ref={textareaRef}
         id={id}
         value={value}
         name={name}
+        placeholder={placeholder}
         aria-invalid={hasError}
         aria-describedby={errorId}
         onChange={onChange}
