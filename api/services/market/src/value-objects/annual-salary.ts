@@ -20,7 +20,7 @@ export class AnnualSalary extends ValueObject<AnnualSalaryProps> {
   ): Result<AnnualSalary, string> {
     if (
       typeof annualSalary !== "number" ||
-      annualSalary < 0 ||
+      annualSalary <= 0 ||
       annualSalary > 300000
     ) {
       return Result.fail(

@@ -20,7 +20,7 @@ export class WorkExperience extends ValueObject<WorkExperienceProps> {
   ): Result<WorkExperience, string> {
     if (
       typeof workExperience !== "number" ||
-      workExperience < 0 ||
+      workExperience <= 0 ||
       workExperience > 60
     ) {
       return Result.fail(
