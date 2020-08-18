@@ -1,13 +1,3 @@
 .field {
-  display: flex;
-  flex-direction: column;
   max-width: var(--line-length);
-
-  & + & {
-    margin-top: var(--spacing-2);
-  }
-
-  * + * {
-    margin-top: var(--spacing-1);
-  }
 }
