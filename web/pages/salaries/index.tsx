@@ -9,6 +9,8 @@ import {
   getAnnualSalaryReport,
 } from "../../api/market";
 import AnnualSalaryReport from "../../components/annual-salary-report";
+import HeadlineText from "../../components/ui/headline-text";
+import BodyText from "../../components/ui/body-text";
 import { getHeadTitle } from "../../utils/head-title";
 
 type SalariesPageProps = {
@@ -42,9 +44,11 @@ const SalariesPage: NextPage<SalariesPageProps> = ({
 
       <div>
         <div>
-          <h1>Salaries</h1>
+          <HeadlineText level="1">Salaries</HeadlineText>
           <div>
-            <p>Help us to make the German IT market transparent.</p>
+            <BodyText>
+              Help us to make the German IT market transparent.
+            </BodyText>
 
             <Link href="./salaries/share">
               <a>Share your salary</a>
