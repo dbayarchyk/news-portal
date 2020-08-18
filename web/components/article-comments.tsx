@@ -7,6 +7,8 @@ import CommentsTree from "./comments-tree";
 import CommentForm from "./comment-form";
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
+import ErrorMessage from "./ui/error-message";
+import Stack from "./ui/layouts/stack";
 
 type ArticleCommentsProps = {
   article: ArticleComments_ArticleFragment;
@@ -31,7 +33,7 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
   };
 
   return (
-    <section>
+    <Stack scale="3">
       <HeadlineText level="1" id="comments">
         Comments
       </HeadlineText>
@@ -44,7 +46,7 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
             }
 
             if (isError) {
-              return <BodyText>Comments could not be loaded.</BodyText>;
+              return <ErrorMessage>Comments could not be loaded.</ErrorMessage>;
             }
 
             return (
@@ -64,7 +66,7 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
       ) : (
         <BodyText>Comments are disabled.</BodyText>
       )}
-    </section>
+    </Stack>
   );
 };
 
