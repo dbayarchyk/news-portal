@@ -14,6 +14,7 @@ import BodyText from "./ui/body-text";
 import SelectField from "./ui/fields/select-field";
 import TextField from "./ui/fields/text-field";
 import useForm from "./ui/form/use-form";
+import Stack from "./ui/layouts/stack";
 
 type FormValues = {
   positionId: string;
@@ -96,82 +97,88 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
 
   return (
     <form onSubmit={formState.onFormSubmit}>
-      <div>
-        <HeadlineText level="1">Share your salary</HeadlineText>
-        <BodyText>
-          Let's make the German IT market transparent together
-        </BodyText>
-      </div>
+      <Stack scale="6">
+        <Stack scale="1">
+          <HeadlineText level="1">Share your salary</HeadlineText>
+          <BodyText>
+            Let's make the German IT market transparent together
+          </BodyText>
+        </Stack>
 
-      <SelectField
-        label="Position"
-        name="positionId"
-        id="positionId"
-        value={formState.values.positionId}
-        options={positions.map((position) => ({
-          value: position.id,
-          label: position.name,
-        }))}
-        errorMessage={formState.errors.positionId}
-        onChange={formState.onFieldValueChange}
-        onBlur={formState.onFieldBlur}
-      />
-
-      <SelectField
-        label="Technology"
-        name="technologyId"
-        id="technologyId"
-        value={formState.values.technologyId}
-        options={technologies.map((technology) => ({
-          value: technology.id,
-          label: technology.name,
-        }))}
-        errorMessage={formState.errors.technologyId}
-        onChange={formState.onFieldValueChange}
-        onBlur={formState.onFieldBlur}
-      />
-
-      <SelectField
-        label="City"
-        name="cityId"
-        id="cityId"
-        value={formState.values.cityId}
-        options={cities.map((city) => ({
-          value: city.id,
-          label: city.name,
-        }))}
-        errorMessage={formState.errors.cityId}
-        onChange={formState.onFieldValueChange}
-        onBlur={formState.onFieldBlur}
-      />
-
-      <TextField
-        label="Annual salary"
-        name="annualSalary"
-        id="annualSalary"
-        value={formState.values.annualSalary}
-        errorMessage={formState.errors.annualSalary}
-        onChange={formState.onFieldValueChange}
-        onBlur={formState.onFieldBlur}
-      />
-
-      <TextField
-        label="Work experience"
-        name="workExperience"
-        id="workExperience"
-        value={formState.values.workExperience}
-        errorMessage={formState.errors.workExperience}
-        onChange={formState.onFieldValueChange}
-        onBlur={formState.onFieldBlur}
-      />
-
-      <div>
-        <PrimaryButton
-          type="submit"
-          title={formState.isSubmitting ? "Submitting..." : "Share my salary"}
+        <SelectField
+          label="Position"
+          name="positionId"
+          id="positionId"
+          value={formState.values.positionId}
+          options={positions.map((position) => ({
+            value: position.id,
+            label: position.name,
+          }))}
+          errorMessage={formState.errors.positionId}
+          onChange={formState.onFieldValueChange}
+          onBlur={formState.onFieldBlur}
         />
-        <BodyText type="secondary">This is completely anonymous</BodyText>
-      </div>
+
+        <SelectField
+          label="Technology"
+          name="technologyId"
+          id="technologyId"
+          value={formState.values.technologyId}
+          options={technologies.map((technology) => ({
+            value: technology.id,
+            label: technology.name,
+          }))}
+          errorMessage={formState.errors.technologyId}
+          onChange={formState.onFieldValueChange}
+          onBlur={formState.onFieldBlur}
+        />
+
+        <SelectField
+          label="City"
+          name="cityId"
+          id="cityId"
+          value={formState.values.cityId}
+          options={cities.map((city) => ({
+            value: city.id,
+            label: city.name,
+          }))}
+          errorMessage={formState.errors.cityId}
+          onChange={formState.onFieldValueChange}
+          onBlur={formState.onFieldBlur}
+        />
+
+        <TextField
+          label="Annual salary"
+          name="annualSalary"
+          id="annualSalary"
+          value={formState.values.annualSalary}
+          errorMessage={formState.errors.annualSalary}
+          onChange={formState.onFieldValueChange}
+          onBlur={formState.onFieldBlur}
+        />
+
+        <TextField
+          label="Work experience"
+          name="workExperience"
+          id="workExperience"
+          value={formState.values.workExperience}
+          errorMessage={formState.errors.workExperience}
+          onChange={formState.onFieldValueChange}
+          onBlur={formState.onFieldBlur}
+        />
+
+        <Stack scale="1">
+          <div>
+            <PrimaryButton
+              type="submit"
+              title={
+                formState.isSubmitting ? "Submitting..." : "Share my salary"
+              }
+            />
+          </div>
+          <BodyText type="secondary">This is completely anonymous</BodyText>
+        </Stack>
+      </Stack>
     </form>
   );
 };
