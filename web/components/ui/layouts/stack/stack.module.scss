@@ -1,0 +1,18 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+@for $i from 1 through 8 {
+  .stack#{$i} {
+    > * + * {
+      margin-top: var(--spacing-#{$i});
+    }
+  }
+}
