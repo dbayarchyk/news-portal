@@ -3,9 +3,6 @@ import { useMutation } from "react-query";
 
 import { createComment, Comment } from "../api/comment";
 import PrimaryButton from "./ui/buttons/primary-button";
-import VisuallyHidden from "./ui/visually-hidden";
-import FieldError from "./ui/field-error";
-import TextareaInput from "./ui/textarea-input";
 import useForm from "./ui/form/use-form";
 import TextareaField from "./ui/fields/textarea-field";
 import styles from "./comment-form.module.scss";
