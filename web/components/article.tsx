@@ -6,6 +6,7 @@ import BodyText from "./ui/body-text";
 import Stack from "./ui/layouts/stack";
 import Center from "./ui/layouts/center";
 import { Article_ArticleFragment } from "../generated/graphql-types";
+import styles from "./article.module.scss";
 
 type ArticleProps = {
   article: Article_ArticleFragment;
@@ -26,6 +27,7 @@ const Article: React.FCWithFragments<ArticleProps> = ({ article }) => {
 
         <img
           src={article.previewImage.url}
+          className={styles.previewImage}
           title={article.previewImage.title}
           alt={article.previewImage.description}
         />
