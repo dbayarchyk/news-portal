@@ -5,6 +5,7 @@ import "isomorphic-fetch";
 
 import Article from "../../components/article";
 import ArticleComments from "../../components/article-comments";
+import Center from "../../components/ui/layouts/center";
 import { ArticlePageQuery } from "../../generated/graphql-types";
 import { getHeadTitle } from "../../utils/head-title";
 
@@ -105,10 +106,10 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
         <title>{getHeadTitle(article.title)}</title>
       </Head>
 
-      <div>
+      <Center max="var(--line-length)">
         <Article article={article} />
         <ArticleComments article={article} />
-      </div>
+      </Center>
     </>
   );
 };

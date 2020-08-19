@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
+import Container from "./ui/layouts/container";
 import styles from "./nav-bar.module.scss";
 
 const NAV_ITEMS = [
@@ -29,20 +30,22 @@ const NAV_ITEMS = [
 const NavBar: React.FC = () => {
   return (
     <nav>
-      <ul className={`layout-container ${styles.list}`}>
-        {NAV_ITEMS.map((item) => (
-          <li className={styles.listItem} key={item.href}>
-            <Link href={item.href}>
-              <a
-                className={styles.link}
-                //   aria-current={segment === item.href ? "page" : undefined}
-              >
-                {item.title}
-              </a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Container>
+        <ul className={styles.list}>
+          {NAV_ITEMS.map((item) => (
+            <li className={styles.listItem} key={item.href}>
+              <Link href={item.href}>
+                <a
+                  className={styles.link}
+                  //   aria-current={segment === item.href ? "page" : undefined}
+                >
+                  {item.title}
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Container>
     </nav>
   );
 };

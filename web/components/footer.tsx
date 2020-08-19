@@ -1,11 +1,12 @@
 import React from "react";
 
+import Container from "./ui/layouts/container";
 import styles from "./footer.module.scss";
 
 const Footer: React.FC = () => {
   return (
     <footer className={styles.footer}>
-      <div className="layout-container">Footer</div>
+      <Container>Footer</Container>
     </footer>
   );
 };

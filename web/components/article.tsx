@@ -4,6 +4,7 @@ import ArticleContentCollection from "./article-content-collection";
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
 import Stack from "./ui/layouts/stack";
+import Center from "./ui/layouts/center";
 import { Article_ArticleFragment } from "../generated/graphql-types";
 
 type ArticleProps = {
@@ -14,12 +15,14 @@ const Article: React.FCWithFragments<ArticleProps> = ({ article }) => {
   return (
     <article>
       <Stack scale="4">
-        <Stack scale="2">
-          <HeadlineText level="1">{article.title}</HeadlineText>
-          <BodyText type="secondary">
-            {new Date(article.sys.publishedAt).toLocaleDateString()}
-          </BodyText>
-        </Stack>
+        <Center isTextCentered>
+          <Stack scale="2">
+            <HeadlineText level="1">{article.title}</HeadlineText>
+            <BodyText type="secondary">
+              {new Date(article.sys.publishedAt).toLocaleDateString()}
+            </BodyText>
+          </Stack>
+        </Center>
 
         <img
           src={article.previewImage.url}
