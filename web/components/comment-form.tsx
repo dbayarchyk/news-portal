@@ -6,6 +6,7 @@ import PrimaryButton from "./ui/buttons/primary-button";
 import useForm from "./ui/form/use-form";
 import TextareaField from "./ui/fields/textarea-field";
 import Stack from "./ui/layouts/stack";
+import Cluster from "./ui/layouts/cluster";
 import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
@@ -77,19 +78,21 @@ const CommentForm: React.FC<CommentFormProps> = ({
           onBlur={formState.onFieldBlur}
         />
 
-        <div>
-          {extraControl}
+        <Cluster scale="2">
+          <div>
+            {extraControl}
 
-          <PrimaryButton
-            type="submit"
-            className={styles.submitButton}
-            title={
-              formState.isSubmitting
-                ? "Posting the comment ..."
-                : "Leave a comment"
-            }
-          />
-        </div>
+            <PrimaryButton
+              type="submit"
+              className={styles.submitButton}
+              title={
+                formState.isSubmitting
+                  ? "Posting the comment ..."
+                  : "Leave a comment"
+              }
+            />
+          </div>
+        </Cluster>
       </Stack>
     </form>
   );

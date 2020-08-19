@@ -88,7 +88,6 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
             extraControl={
               <FlatButton
                 type="button"
-                className={styles.cancelButton}
                 title="Cancel"
                 onClick={handleReplyFormCanceling}
               />

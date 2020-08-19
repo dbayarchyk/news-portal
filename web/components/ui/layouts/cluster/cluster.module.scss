@@ -1,0 +1,28 @@
+.cluster {
+  /* Suppress horizontal scrolling caused by
+  the negative margin in some circumstances */
+  overflow: hidden;
+
+  & > * {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+
+@for $i from 1 through 8 {
+  .cluster#{$i} {
+    > * + * {
+      margin-top: var(--spacing-#{$i});
+    }
+
+    & > * {
+      margin: calc(var(--spacing-#{$i}) / 2 * -1);
+
+      & > * {
+        margin: calc(var(--spacing-#{$i}) / 2);
+      }
+    }
+  }
+}
