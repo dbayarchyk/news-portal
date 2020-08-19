@@ -16,16 +16,24 @@ const SCALE_CLASSNAMES = {
 type StackProps = {
   className?: string;
   scale: keyof typeof SCALE_CLASSNAMES;
+  as?: "ul" | "ol" | "div";
+  "aria-describedby"?: string;
 };
 
-const Stack: React.FC<StackProps> = ({ className, scale, children }) => {
-  return (
-    <div
-      className={[className, SCALE_CLASSNAMES[scale], styles.stack].join(" ")}
-    >
-      {children}
-    </div>
-  );
+const Stack: React.FC<StackProps> = ({
+  className,
+  scale,
+  children,
+  as = "div",
+  "aria-describedby": ariaDescribedby,
+}) => {
+  const element = React.createElement(as, {
+    children,
+    className: [className, SCALE_CLASSNAMES[scale], styles.stack].join(" "),
+    "aria-describedby": ariaDescribedby,
+  });
+
+  return element;
 };
 
 export default Stack;
