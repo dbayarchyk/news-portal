@@ -13,6 +13,7 @@ import {
   getTechnologies,
 } from "../../api/market";
 import { getHeadTitle } from "../../utils/head-title";
+import styles from "./share.module.scss";
 
 type ShareSalaryPageProps = {
   positions: Position[];
@@ -47,12 +48,14 @@ const ShareSalaryPage: NextPage<ShareSalaryPageProps> = ({
         <title>{getHeadTitle("Share Salary")}</title>
       </Head>
 
-      <div>
+      <div className={styles.content}>
         <SalaryReportForm
           positions={positions}
           cities={cities}
           technologies={technologies}
         />
+
+        <img className={styles.illustration} src="/data-report.svg" alt="" />
       </div>
     </>
   );

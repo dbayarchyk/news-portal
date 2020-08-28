@@ -1,0 +1,21 @@
+@import "../../styles//media.scss";
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.illustration {
+  display: none;
+
+  @include tablet {
+    display: inline-block;
+    margin-left: var(--spacing-2);
+    width: 25%;
+  }
+
+  @include desktop {
+    width: 33.333333%;
+  }
+}
