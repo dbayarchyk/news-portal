@@ -13,7 +13,7 @@ const AnnualSalaryReportData: React.FC<AnnualSalaryReportDataProps> = ({
   annualSalaryReport,
 }) => {
   return (
-    <>
+    <div>
       <div className={styles.tableContainer}>
         <AnnualSalaryReportTable annualSalaryReport={annualSalaryReport} />
       </div>
@@ -21,7 +21,7 @@ const AnnualSalaryReportData: React.FC<AnnualSalaryReportDataProps> = ({
       <div className={styles.listContainer}>
         <AnnualSalaryReportList annualSalaryReport={annualSalaryReport} />
       </div>
-    </>
+    </div>
   );
 };
 

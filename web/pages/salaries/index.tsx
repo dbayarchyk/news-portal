@@ -44,10 +44,10 @@ const SalariesPage: NextPage<SalariesPageProps> = ({
         <title>{getHeadTitle("Salaries")}</title>
       </Head>
 
-      <Stack scale="6">
-        <Stack scale="2">
+      <Stack scale="8">
+        <Stack scale="1">
           <HeadlineText level="1">Salaries</HeadlineText>
-          <Stack scale="1">
+          <Stack scale="2">
             <BodyText>
               Help us to make the German IT market transparent.
             </BodyText>

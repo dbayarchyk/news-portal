@@ -31,28 +31,30 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
   }, [tabState.selectedId]);
 
   return (
-    <Stack scale="4">
-      <TabList {...tabState} aria-label="Annual salary report">
-        <Tab {...tabState} id="technology">
-          Technology
-        </Tab>
-        <Tab {...tabState} id="position">
-          Position
-        </Tab>
-        <Tab {...tabState} id="city">
-          City
-        </Tab>
-      </TabList>
+    <Stack scale="6">
+      <Stack scale="4">
+        <TabList {...tabState} aria-label="Annual salary report">
+          <Tab {...tabState} id="technology">
+            Technology
+          </Tab>
+          <Tab {...tabState} id="position">
+            Position
+          </Tab>
+          <Tab {...tabState} id="city">
+            City
+          </Tab>
+        </TabList>
 
-      <TabPanel {...tabState} id="technology">
-        <AnnualSalaryReportData annualSalaryReport={data} />
-      </TabPanel>
-      <TabPanel {...tabState} id="position">
-        <AnnualSalaryReportData annualSalaryReport={data} />
-      </TabPanel>
-      <TabPanel {...tabState} id="city">
-        <AnnualSalaryReportData annualSalaryReport={data} />
-      </TabPanel>
+        <TabPanel {...tabState} id="technology">
+          <AnnualSalaryReportData annualSalaryReport={data} />
+        </TabPanel>
+        <TabPanel {...tabState} id="position">
+          <AnnualSalaryReportData annualSalaryReport={data} />
+        </TabPanel>
+        <TabPanel {...tabState} id="city">
+          <AnnualSalaryReportData annualSalaryReport={data} />
+        </TabPanel>
+      </Stack>
 
       <AnnualSalaryReportMissingData />
     </Stack>
