@@ -13,6 +13,7 @@ type SelectFieldProps = {
   id: string;
   name?: string;
   value: string;
+  placeholder?: string;
   options: Array<{ value: string; label: string }>;
   onChange: SelectInputProps["onChange"];
   onBlur?: SelectInputProps["onBlur"];
@@ -26,6 +27,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   id,
   name,
   value,
+  placeholder,
   options,
   onChange,
   onBlur,
@@ -49,6 +51,12 @@ const SelectField: React.FC<SelectFieldProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
       >
+        {placeholder && (
+          <option value="" disabled selected>
+            --- {placeholder} ---
+          </option>
+        )}
+
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

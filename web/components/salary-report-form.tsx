@@ -110,6 +110,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           name="positionId"
           id="positionId"
           value={formState.values.positionId}
+          placeholder="Please pick the position"
           options={positions.map((position) => ({
             value: position.id,
             label: position.name,
@@ -124,6 +125,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           name="technologyId"
           id="technologyId"
           value={formState.values.technologyId}
+          placeholder="Please pick the technology"
           options={technologies.map((technology) => ({
             value: technology.id,
             label: technology.name,
@@ -138,6 +140,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           name="cityId"
           id="cityId"
           value={formState.values.cityId}
+          placeholder="Please pick the city"
           options={cities.map((city) => ({
             value: city.id,
             label: city.name,
