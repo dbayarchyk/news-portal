@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 
+import Stack from "./ui/layouts/stack";
 import AnnualSalaryReportTable from "./annual-salary-report-table";
 import { AnnualSalaryReportItem, getAnnualSalaryReport } from "../api/market";
 
@@ -29,7 +30,7 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
   }, [tabState.selectedId]);
 
   return (
-    <section>
+    <Stack scale="4">
       <TabList {...tabState} aria-label="Annual salary report">
         <Tab {...tabState} id="technology">
           Technology
@@ -51,7 +52,7 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
       <TabPanel {...tabState} id="city">
         <AnnualSalaryReportTable annualSalaryReport={data} />
       </TabPanel>
-    </section>
+    </Stack>
   );
 };
 

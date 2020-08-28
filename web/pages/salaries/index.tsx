@@ -11,6 +11,7 @@ import {
 import AnnualSalaryReport from "../../components/annual-salary-report";
 import HeadlineText from "../../components/ui/headline-text";
 import BodyText from "../../components/ui/body-text";
+import Stack from "../../components/ui/layouts/stack";
 import { getHeadTitle } from "../../utils/head-title";
 
 type SalariesPageProps = {
@@ -42,10 +43,10 @@ const SalariesPage: NextPage<SalariesPageProps> = ({
         <title>{getHeadTitle("Salaries")}</title>
       </Head>
 
-      <div>
-        <div>
+      <Stack scale="6">
+        <Stack scale="2">
           <HeadlineText level="1">Salaries</HeadlineText>
-          <div>
+          <Stack scale="1">
             <BodyText>
               Help us to make the German IT market transparent.
             </BodyText>
@@ -53,14 +54,14 @@ const SalariesPage: NextPage<SalariesPageProps> = ({
             <Link href="./salaries/share">
               <a>Share your salary</a>
             </Link>
-          </div>
-        </div>
+          </Stack>
+        </Stack>
 
         <AnnualSalaryReport
           initialAnnualSalaryReport={annualSalaryReport}
           initialGroupBy={annualSalaryReportGroupBy}
         />
-      </div>
+      </Stack>
     </>
   );
 };
