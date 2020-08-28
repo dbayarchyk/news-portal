@@ -15,7 +15,10 @@ const ArticlePreviews: React.FCWithFragments<ArticlePreviewsProps> = ({
     <ul className={styles.list}>
       {articleCollection.items.map((article) => (
         <li key={article.slug}>
-          <ArticlePreview article={article} />
+          <ArticlePreview
+            className={styles.listItemContent}
+            article={article}
+          />
         </li>
       ))}
     </ul>

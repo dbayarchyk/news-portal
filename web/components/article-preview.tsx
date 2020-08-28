@@ -8,15 +8,17 @@ import { ArticlePreview_ArticleFragment } from "../generated/graphql-types";
 import styles from "./article-preview.module.scss";
 
 type ArticlePreviewProps = {
+  className?: string;
   article: ArticlePreview_ArticleFragment;
 };
 
 const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
+  className,
   article,
 }) => {
   return (
-    <article className={styles.article}>
-      <Stack scale="2">
+    <article className={[className, styles.article].join(" ")}>
+      <Stack className={styles.header} scale="2">
         <HeadlineText level="2">
           <Link href={`articles/[slug]`} as={`articles/${article.slug}`}>
             <a className={styles.titleLink}>{article.title}</a>

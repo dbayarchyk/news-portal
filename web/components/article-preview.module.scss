@@ -5,10 +5,20 @@
   display: inline-flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  box-sizing: border-box;
 
   @include tablet {
     flex-direction: column-reverse;
     justify-content: start;
+  }
+}
+
+.header {
+  margin-left: var(--spacing-2);
+
+  @include tablet {
+    margin-top: var(--spacing-2);
+    margin-left: 0;
   }
 }
 
