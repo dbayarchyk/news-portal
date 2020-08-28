@@ -4,6 +4,7 @@ import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 
 import Stack from "./ui/layouts/stack";
 import AnnualSalaryReportData from "./annual-salary-report-data";
+import AnnualSalaryReportMissingData from "./annual-salary-report-missing-data";
 import { AnnualSalaryReportItem, getAnnualSalaryReport } from "../api/market";
 
 type AnnualSalaryReportProps = {
@@ -52,6 +53,8 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
       <TabPanel {...tabState} id="city">
         <AnnualSalaryReportData annualSalaryReport={data} />
       </TabPanel>
+
+      <AnnualSalaryReportMissingData />
     </Stack>
   );
 };

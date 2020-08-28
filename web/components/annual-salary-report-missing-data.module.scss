@@ -1,0 +1,16 @@
+@import "../styles/media.scss";
+
+.card {
+  overflow: hidden;
+  border: var(--border-width-sm) solid var(--color-gray-400);
+  padding: var(--spacing-6) var(--spacing-4);
+  border-radius: var(--border-radius-base);
+}
+
+.illustration {
+  width: 6rem;
+
+  @include tablet {
+    width: 10rem;
+  }
+}
