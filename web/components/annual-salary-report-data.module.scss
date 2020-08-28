@@ -1,0 +1,15 @@
+@import "../styles/media.scss";
+
+.tableContainer {
+  display: none;
+
+  @include tablet {
+    display: block;
+  }
+}
+
+.listContainer {
+  @include tablet {
+    display: none;
+  }
+}

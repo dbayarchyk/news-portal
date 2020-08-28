@@ -1,0 +1,8 @@
+.card {
+  overflow: hidden;
+  border: var(--border-width-sm) solid var(--color-gray-200);
+  padding: var(--spacing-6) var(--spacing-4);
+  border-radius: var(--border-radius-base);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

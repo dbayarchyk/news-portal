@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 
 import Stack from "./ui/layouts/stack";
-import AnnualSalaryReportTable from "./annual-salary-report-table";
+import AnnualSalaryReportData from "./annual-salary-report-data";
 import { AnnualSalaryReportItem, getAnnualSalaryReport } from "../api/market";
 
 type AnnualSalaryReportProps = {
@@ -44,13 +44,13 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
       </TabList>
 
       <TabPanel {...tabState} id="technology">
-        <AnnualSalaryReportTable annualSalaryReport={data} />
+        <AnnualSalaryReportData annualSalaryReport={data} />
       </TabPanel>
       <TabPanel {...tabState} id="position">
-        <AnnualSalaryReportTable annualSalaryReport={data} />
+        <AnnualSalaryReportData annualSalaryReport={data} />
       </TabPanel>
       <TabPanel {...tabState} id="city">
-        <AnnualSalaryReportTable annualSalaryReport={data} />
+        <AnnualSalaryReportData annualSalaryReport={data} />
       </TabPanel>
     </Stack>
   );
