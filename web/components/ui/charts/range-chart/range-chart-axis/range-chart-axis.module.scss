@@ -1,0 +1,48 @@
+.axis {
+  display: flex;
+  position: relative;
+  border-bottom-width: var(--border-width-sm);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-gray-500);
+  width: 100%;
+
+  & > {
+    .label {
+      color: var(--color-gray-500);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      display: block;
+
+      &:not(:first-child) {
+        position: absolute;
+      }
+
+      &:not(:first-child):not(:last-child) {
+        transform: translateX(50%);
+      }
+
+      &::after {
+        content: "";
+        background-color: var(--color-gray-500);
+        height: 3px;
+        width: 2px;
+        display: block;
+        position: absolute;
+        bottom: 0;
+      }
+
+      &:not(:first-child):not(:last-child)::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &:first-child::after {
+        left: 0;
+      }
+
+      &:last-child::after {
+        right: 0;
+      }
+    }
+  }
+}

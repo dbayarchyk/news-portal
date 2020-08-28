@@ -1,8 +1,12 @@
 import React from "react";
 
 import Table, { TableCell } from "./ui/table";
-// import Center from "./ui/layouts/center";
+import RangeChart, {
+  RangeChartAxis,
+  RangeChartBar,
+} from "./ui/charts/range-chart";
 import { AnnualSalaryReportItem } from "../api/market";
+import styles from "./annual-salary-report-table.module.scss";
 
 type AnnualSalaryReportTableProps = {
   annualSalaryReport: AnnualSalaryReportItem[];
@@ -11,6 +15,11 @@ type AnnualSalaryReportTableProps = {
 const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
   annualSalaryReport,
 }) => {
+  const minAnnualSalary =
+    Math.min(...annualSalaryReport.map((item) => item.min)) || 0;
+  const maxAnnualSalary =
+    Math.max(...annualSalaryReport.map((item) => item.max)) || 0;
+
   return (
     <Table>
       <thead>
@@ -27,7 +36,15 @@ const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
           <TableCell as="th" align="right">
             Max
           </TableCell>
-          <TableCell as="th" align="center"></TableCell>
+          <TableCell as="th" className={styles.rangeChartColumn} align="center">
+            <RangeChart
+              globalMin={minAnnualSalary}
+              globalMax={maxAnnualSalary}
+              ticksCount={4}
+            >
+              {(options) => <RangeChartAxis {...options} />}
+            </RangeChart>
+          </TableCell>
           <TableCell as="th" align="right">
             📄
           </TableCell>
@@ -50,11 +67,20 @@ const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
               {reportItem.max}
             </TableCell>
             <TableCell as="td" align="center">
-              {/* <SalaryRangeChartAxis
-              lowerBound={salaryChartLowerBound}
-              upperBound={salaryChartUpperBound}
-              tickRange={salaryChartTickRange}
-            /> */}
+              <RangeChart
+                globalMin={minAnnualSalary}
+                globalMax={maxAnnualSalary}
+                ticksCount={4}
+              >
+                {(options) => (
+                  <RangeChartBar
+                    {...options}
+                    min={reportItem.min}
+                    max={reportItem.max}
+                    average={reportItem.median}
+                  />
+                )}
+              </RangeChart>
             </TableCell>
             <TableCell as="td" align="right">
               {reportItem.count}
