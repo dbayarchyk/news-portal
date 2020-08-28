@@ -1,6 +1,21 @@
 import React from "react";
 
-const hasErrors = (errors: object) => Object.values(errors).some(Boolean);
+const extendErrorsForUpdatedFields = <TValues>(
+  newValues: TValues,
+  validationErrors: ValueErrors<TValues>,
+  existingErrors: ValueErrors<TValues>
+): ValueErrors<TValues> => {
+  return Object.keys(newValues).reduce((newErrors, fieldName) => {
+    if (!(fieldName in newValues)) {
+      return newErrors;
+    }
+
+    return {
+      ...newErrors,
+      [fieldName]: validationErrors[fieldName],
+    };
+  }, existingErrors);
+};
 
 type ValueErrors<TValues> = { [name in keyof TValues]?: string };
 type Touched<TValues> = { [name in keyof TValues]?: boolean };
@@ -35,8 +50,10 @@ const useForm = <TValues extends object>({
       }
 
       setErrors({});
-    } catch (errors) {
-      setErrors(errors);
+    } catch (validationErrors) {
+      setErrors(
+        extendErrorsForUpdatedFields(newValues, validationErrors, errors)
+      );
     }
   };
 
@@ -66,14 +83,14 @@ const useForm = <TValues extends object>({
     const newValues = { ...values, [name]: value };
 
     setValues(newValues);
-    validateValues(newValues);
+    validateValues({ [name]: newValues[name] } as TValues);
   };
 
   const onFieldBlur = (event: Event) => {
     const { name } = event.target;
 
     setTouched({ ...touched, [name]: true });
-    validateValues(values);
+    validateValues({ [name]: values[name] } as TValues);
   };
 
   const resetForm = () => {
