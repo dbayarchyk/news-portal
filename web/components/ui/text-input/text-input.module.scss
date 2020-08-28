@@ -7,6 +7,10 @@
   border-style: solid;
   border-width: var(--border-width-sm);
   border-radius: var(--border-radius-base);
+
+  &[aria-invalid="true"] {
+    border-color: var(--color-red-500);
+  }
 }
 
 .input:focus {
