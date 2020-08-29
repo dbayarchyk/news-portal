@@ -1,6 +1,7 @@
 import React from "react";
 
 import Paragraph from "./paragraph";
+import Stack from "./ui/layouts/stack";
 import { ArticleContentCollection_ArticleFragment } from "../generated/graphql-types";
 
 type ArticleContentCollectionProps = {
@@ -11,7 +12,7 @@ const ArticleContentCollection: React.FCWithFragments<ArticleContentCollectionPr
   article,
 }) => {
   return (
-    <>
+    <Stack scale="6">
       {article.contentCollection.items.map((item) => {
         switch (item.__typename) {
           case "Paragraph": {
@@ -23,7 +24,7 @@ const ArticleContentCollection: React.FCWithFragments<ArticleContentCollectionPr
           }
         }
       })}
-    </>
+    </Stack>
   );
 };
 

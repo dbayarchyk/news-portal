@@ -1,0 +1,7 @@
+.blockquote {
+  position: relative;
+  padding: var(--spacing-4);
+  font-style: italic;
+  background-color: var(--color-gray-100);
+  border-left: var(--border-width-md) solid var(--color-primary-500);
+}

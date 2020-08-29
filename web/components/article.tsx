@@ -14,7 +14,7 @@ type ArticleProps = {
 
 const Article: React.FCWithFragments<ArticleProps> = ({ article }) => {
   return (
-    <article>
+    <article className={styles.article}>
       <Stack scale="4">
         <Center isTextCentered>
           <Stack scale="2">
