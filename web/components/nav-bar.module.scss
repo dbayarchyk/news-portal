@@ -1,5 +1,11 @@
 @import "../styles/media.scss";
 
+.container {
+  padding-top: var(--spacing-5);
+  padding-bottom: var(--spacing-5);
+  border-bottom: var(--border-width-xs) solid var(--color-gray-400);
+}
+
 .list {
   list-style: none;
   padding: var(--spacing-0);

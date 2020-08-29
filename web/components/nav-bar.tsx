@@ -32,22 +32,24 @@ const NavBar: React.FC = () => {
   return (
     <nav>
       <Container>
-        <Cluster scale="6">
-          <ul className={styles.list}>
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>
-                  <a
-                    className={styles.link}
-                    //   aria-current={segment === item.href ? "page" : undefined}
-                  >
-                    {item.title}
-                  </a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Cluster>
+        <div className={styles.container}>
+          <Cluster scale="6">
+            <ul className={styles.list}>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>
+                    <a
+                      className={styles.link}
+                      //   aria-current={segment === item.href ? "page" : undefined}
+                    >
+                      {item.title}
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Cluster>
+        </div>
       </Container>
     </nav>
   );

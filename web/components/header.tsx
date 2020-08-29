@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const nowDate = new Date();
 
   return (
-    <header className={styles.header}>
+    <header>
       <Container>
         <div className={styles.headerContent}>
           <div className={styles.headerContentLeft}>

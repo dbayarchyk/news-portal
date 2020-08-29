@@ -1,12 +1,10 @@
-.header {
-  padding-top: var(--spacing-4);
-  padding-bottom: var(--spacing-4);
-}
-
 .headerContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: var(--spacing-4);
+  padding-bottom: var(--spacing-4);
+  border-bottom: var(--border-width-xs) solid var(--color-gray-400);
 }
 
 .headerContentLeft,
