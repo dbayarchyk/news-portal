@@ -1,5 +1,26 @@
 @import "../styles/media.scss";
 
+.nav {
+  &.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #fff;
+    border-bottom: var(--border-width-xs) solid var(--color-gray-200);
+    box-shadow: 0 6px 5px -4px rgba(0, 0, 0, 0.1);
+
+    .container {
+      border-bottom: none;
+    }
+  }
+}
+
+.stickyNavQualifier {
+  & + nav {
+    margin-top: 0;
+  }
+}
+
 .container {
   padding-top: var(--spacing-5);
   padding-bottom: var(--spacing-5);

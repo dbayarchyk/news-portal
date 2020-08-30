@@ -29,29 +29,60 @@ const NAV_ITEMS = [
 ];
 
 const NavBar: React.FC = () => {
+  const stickyNavQualifierRef = React.useRef<HTMLDivElement>(null);
+  const navRef = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    if (
+      typeof IntersectionObserver !== "function" ||
+      !stickyNavQualifierRef.current
+    ) {
+      return;
+    }
+
+    const observer = new IntersectionObserver((records) => {
+      for (const record of records) {
+        if (record.isIntersecting) {
+          navRef.current.classList.remove(styles.sticky);
+        } else {
+          navRef.current.classList.add(styles.sticky);
+        }
+      }
+    });
+
+    observer.observe(stickyNavQualifierRef.current);
+
+    return () => {
+      observer.unobserve(stickyNavQualifierRef.current);
+    };
+  }, []);
+
   return (
-    <nav>
-      <Container>
-        <div className={styles.container}>
-          <Cluster scale="6">
-            <ul className={styles.list}>
-              {NAV_ITEMS.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href}>
-                    <a
-                      className={styles.link}
-                      //   aria-current={segment === item.href ? "page" : undefined}
-                    >
-                      {item.title}
-                    </a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Cluster>
-        </div>
-      </Container>
-    </nav>
+    <>
+      <div className={styles.stickyNavQualifier} ref={stickyNavQualifierRef} />
+      <nav className={styles.nav} ref={navRef}>
+        <Container>
+          <div className={styles.container}>
+            <Cluster scale="6">
+              <ul className={styles.list}>
+                {NAV_ITEMS.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href}>
+                      <a
+                        className={styles.link}
+                        //   aria-current={segment === item.href ? "page" : undefined}
+                      >
+                        {item.title}
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Cluster>
+          </div>
+        </Container>
+      </nav>
+    </>
   );
 };
 
