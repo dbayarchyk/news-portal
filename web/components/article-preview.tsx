@@ -1,8 +1,9 @@
 import React from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
+import Link from "./ui/link";
 import Stack from "./ui/layouts/stack";
 import { ArticlePreview_ArticleFragment } from "../generated/graphql-types";
 import styles from "./article-preview.module.scss";
@@ -20,9 +21,9 @@ const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
     <article className={[className, styles.article].join(" ")}>
       <Stack className={styles.header} scale="2">
         <HeadlineText level="2">
-          <Link href={`articles/[slug]`} as={`articles/${article.slug}`}>
-            <a className={styles.titleLink}>{article.title}</a>
-          </Link>
+          <NextLink href={`articles/[slug]`} as={`articles/${article.slug}`}>
+            <Link className={styles.titleLink}>{article.title}</Link>
+          </NextLink>
         </HeadlineText>
 
         <BodyText type="secondary">
