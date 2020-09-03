@@ -43,7 +43,7 @@
     },
     "slug": {
       "type": "string",
-      "required": true,
+      "required": false,
       "unique": true
     },
     "dynamicContent": {
@@ -51,7 +51,8 @@
       "components": [
         "articles.rich-text",
         "articles.image-gallery"
-      ]
+      ],
+      "required": true
     },
     "publishedAt": {
       "type": "datetime"

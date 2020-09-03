@@ -15,12 +15,20 @@ module.exports = {
       if (data.title) {
         data.slug = slugify(data.title, { lower: true });
       }
+
+      if (!data.publishedAt && data.status === "PUBLISHED") {
+        data.publishedAt = new Date();
+      }
     },
     async beforeUpdate(params, data) {
       strapi.log.debug("beforeUpdate");
 
       if (data.title) {
         data.slug = slugify(data.title, { lower: true });
+      }
+
+      if (!data.publishedAt && data.status === "PUBLISHED") {
+        data.publishedAt = new Date();
       }
     },
   },
