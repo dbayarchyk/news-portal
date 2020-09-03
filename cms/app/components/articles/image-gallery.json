@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_articles_image_galleries",
+  "info": {
+    "name": "Image Gallery",
+    "icon": "images"
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": true
+    }
+  }
+}
