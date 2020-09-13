@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 
-const COMMENT_SERVICE_API = "http://localhost:8000";
+const COMMENT_SERVICE_API = process.env.NEXT_COMMENT_SERVICE_API_URL;
 
 export type Comment = {
   id: string;
