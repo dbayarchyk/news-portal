@@ -1,75 +1,108 @@
 version: 2.1
 orbs:
   docker: circleci/docker@1.2.1
+jobs:
+  # Market service jobs:
+  build-market-service-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build -t dbayarchyk/itdog-market-service -f ~/project/api/services/market/Dockerfile ~/project/api/services/market
+      - run: docker save -o ~/project/persisted-market-service-image dbayarchyk/itdog-market-service
+      - persist_to_workspace:
+          root: ~/project
+          # Must be relative path from root
+          paths:
+            - ./persisted-market-service-image
+  lint-market-service:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-market-service-image
+      - run: docker run -t dbayarchyk/itdog-market-service npm run lint
+  test-market-service:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-market-service-image
+      - run: docker run -e CI=true -t dbayarchyk/itdog-market-service npm run test
+  push-market-service-docker-image:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-market-service-image
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: docker push dbayarchyk/itdog-market-service
+
+  # Comment service jobs:
+  build-comment-service-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build -t dbayarchyk/itdog-comment-service -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
+      - run: docker save -o ~/project/persisted-comment-service-image dbayarchyk/itdog-comment-service
+      - persist_to_workspace:
+          root: ~/project
+          # Must be relative path from root
+          paths:
+            - ./persisted-comment-service-image
+  lint-comment-service:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-comment-service-image
+      - run: docker run -t dbayarchyk/itdog-comment-service npm run lint
+  test-comment-service:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-comment-service-image
+      - run: docker run -e CI=true -t dbayarchyk/itdog-comment-service npm run test
+  push-comment-service-docker-image:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-comment-service-image
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: docker push dbayarchyk/itdog-comment-service
 workflows:
   build-and-publish-docker-images:
     jobs:
-      - docker/publish:
-          name: Publish api auth service docker image
-          image: dbayarchyk/itdog-api-auth-service
-          path: ~/project/legacy/api/services/auth
-          dockerfile: Dockerfile
-          docker-context: ~/project/legacy/api/services/auth
+      - build-market-service-docker-image
+      - build-comment-service-docker-image
+
+      - lint-market-service:
+          requires:
+            - build-market-service-docker-image
+      - lint-comment-service:
+          requires:
+            - build-comment-service-docker-image
+
+      - test-market-service:
+          requires:
+            - build-market-service-docker-image
+      - test-comment-service:
+          requires:
+            - build-comment-service-docker-image
+
+      - push-market-service-docker-image:
+          requires:
+            - lint-market-service
+            - test-market-service
           filters:
             branches:
               only:
                 - master
-      - docker/publish:
-          name: Publish api article service docker image
-          image: dbayarchyk/itdog-api-article-service
-          path: ~/project/legacy/api/services/article
-          dockerfile: Dockerfile
-          docker-context: ~/project/legacy/api/services/article
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          name: Publish api comment service docker image
-          image: dbayarchyk/itdog-api-comment-service
-          path: ~/project/legacy/api/services/comment
-          dockerfile: Dockerfile
-          docker-context: ~/project/legacy/api/services/comment
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          name: Publish api market service docker image
-          image: dbayarchyk/itdog-api-market-service
-          path: ~/project/legacy/api/services/market
-          dockerfile: Dockerfile
-          docker-context: ~/project/legacy/api/services/market
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          name: Publish api gateway service docker image
-          image: dbayarchyk/itdog-api-gateway-service
-          path: ~/project/legacy/api/services/gateway
-          dockerfile: Dockerfile
-          docker-context: ~/project/legacy/api/services/gateway
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          name: Publish admin docker image
-          image: dbayarchyk/itdog-admin
-          path: ~/project/legacy/admin
-          dockerfile: Dockerfile
-          docker-context: ~/project/admin
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          name: Publish client docker image
-          image: dbayarchyk/itdog-client
-          path: ~/project/legacy/client
-          dockerfile: Dockerfile
-          docker-context: ~/project/client
+      - push-comment-service-docker-image:
+          requires:
+            - lint-comment-service
+            - test-comment-service
           filters:
             branches:
               only:
