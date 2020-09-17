@@ -71,11 +71,47 @@ jobs:
       - run: docker load -i ~/project/persisted-comment-service-image
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-comment-service
+
+  # Web jobs:
+  build-web-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build -t dbayarchyk/itdog-web -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
+      - run: docker save -o ~/project/persisted-web-image dbayarchyk/itdog-web
+      - persist_to_workspace:
+          root: ~/project
+          # Must be relative path from root
+          paths:
+            - ./persisted-web-image
+  lint-web:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-web-image
+      - run: docker run -t dbayarchyk/itdog-web npm run lint
+  test-web:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-web-image
+      - run: docker run -e CI=true -t dbayarchyk/itdog-web npm run test
+  push-web-docker-image:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: docker load -i ~/project/persisted-web-image
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: docker push dbayarchyk/itdog-web
 workflows:
   build-and-publish-docker-images:
     jobs:
       - build-market-service-docker-image
       - build-comment-service-docker-image
+      - build-web-docker-image
 
       - lint-market-service:
           requires:
@@ -83,6 +119,9 @@ workflows:
       - lint-comment-service:
           requires:
             - build-comment-service-docker-image
+      - lint-web:
+          requires:
+            - build-web-docker-image
 
       - test-market-service:
           requires:
@@ -90,6 +129,9 @@ workflows:
       - test-comment-service:
           requires:
             - build-comment-service-docker-image
+      - test-web:
+          requires:
+            - build-web-docker-image
 
       - push-market-service-docker-image:
           requires:
@@ -103,6 +145,14 @@ workflows:
           requires:
             - lint-comment-service
             - test-comment-service
+          filters:
+            branches:
+              only:
+                - master
+      - push-web-docker-image:
+          requires:
+            - lint-web
+            - test-web
           filters:
             branches:
               only:
