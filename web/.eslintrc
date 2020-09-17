@@ -1,0 +1,32 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "no-console": "error",
+    "@typescript-eslint/explicit-member-accessibility": "error",
+    "@typescript-eslint/member-ordering": [
+      2,
+      {
+        "default": [
+          // Fields
+          "public-field", // = ["public-static-field", "public-instance-field"]
+          "protected-field", // = ["protected-static-field", "protected-instance-field"]
+          "private-field", // = ["private-static-field", "private-instance-field"]
+
+          "constructor",
+
+          // Methods
+          "public-method", // = ["public-static-method", "public-instance-method"]
+          "protected-method", // = ["protected-static-method", "protected-instance-method"]
+          "private-method" // = ["private-static-method", "private-instance-method"]
+        ]
+      }
+    ]
+  }
+}

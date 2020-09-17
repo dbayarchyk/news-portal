@@ -21,13 +21,14 @@ type ValueErrors<TValues> = { [name in keyof TValues]?: string };
 type Touched<TValues> = { [name in keyof TValues]?: boolean };
 type Event = { target: { name: string; value: string } };
 
-type UseFormProps<TValues extends object> = {
+type UseFormProps<TValues extends Record<string, unknown>> = {
   initialValues: TValues;
   onSubmit: (values: TValues) => void | never | Promise<void | never>;
   onValidate?: (values: TValues) => void | never | Promise<void | never>;
 };
 
-const useForm = <TValues extends object>({
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const useForm = <TValues extends Record<string, unknown>>({
   initialValues,
   onSubmit,
   onValidate,
