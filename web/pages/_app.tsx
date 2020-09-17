@@ -7,7 +7,7 @@ import "../styles/theme.scss";
 import "../styles/global.scss";
 
 class MyApp extends App {
-  public render() {
+  public render(): JSX.Element {
     const { Component, pageProps } = this.props;
 
     return (

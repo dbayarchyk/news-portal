@@ -22,7 +22,10 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
     refetch,
   } = useQuery(
     `annual-salary-report-${tabState.selectedId}`,
-    () => getAnnualSalaryReport(tabState.selectedId as any),
+    () =>
+      getAnnualSalaryReport(
+        tabState.selectedId as Parameters<typeof getAnnualSalaryReport>[0]
+      ),
     { initialData: initialAnnualSalaryReport }
   );
 

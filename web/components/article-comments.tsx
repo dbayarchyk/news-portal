@@ -17,15 +17,12 @@ type ArticleCommentsProps = {
 const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
   article,
 }) => {
-  const {
-    data,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery(
-    `article-${article}-comments`,
+  const { data, isLoading, isError, refetch } = useQuery(
+    `article-${article.sys.id}-comments`,
     () => getCommentsByArticleId(article.sys.id),
-    { enabled: article.areCommentsEnabled }
+    {
+      enabled: article.areCommentsEnabled,
+    }
   );
 
   const handleCommentCreation = () => {
