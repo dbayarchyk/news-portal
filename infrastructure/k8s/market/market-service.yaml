@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: market-service
+spec:
+  selector:
+    app: market
+  type: ClusterIP
+  ports:
+    - name: market
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
