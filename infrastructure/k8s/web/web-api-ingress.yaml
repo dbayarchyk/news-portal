@@ -1,17 +1,21 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: market-ingress
+  name: web-api-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-    - host: api.itdog.de
+    - host: itdog.de
       http:
         paths:
-          - path: /market(/|$)(.*)
+          - path: /api/comment(/|$)(.*)
+            backend:
+              serviceName: comment-service
+              servicePort: 8000
+          - path: /api/market(/|$)(.*)
             backend:
               serviceName: market-service
               servicePort: 8000
