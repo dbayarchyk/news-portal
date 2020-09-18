@@ -77,7 +77,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN ~/project/web
+      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_API_URL_ARG=$NEXT_PUBLIC_API_URL ~/project/web
       - run: docker save -o ~/project/persisted-web-image dbayarchyk/itdog-web
       - persist_to_workspace:
           root: ~/project
