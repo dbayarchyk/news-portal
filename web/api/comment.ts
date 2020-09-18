@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 
-const COMMENT_SERVICE_API = process.env.NEXT_PUBLIC_COMMENT_SERVICE_API_URL;
+const COMMENT_SERVICE_API = `${process.env.NEXT_PUBLIC_API_URL}/comment`;
 
 export type Comment = {
   id: string;

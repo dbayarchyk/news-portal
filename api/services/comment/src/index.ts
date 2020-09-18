@@ -5,7 +5,7 @@ import cors from "cors";
 import { router } from "./routes";
 import { connect } from "./database/connect";
 
-connect(process.env["MONGODB_URL"] || "");
+connect(process.env.MONGODB_URL || "");
 
 const app = express();
 
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use(bodyParser.json());
 app.use(router);
 
-const port = process.env["PORT"] || 8000;
+const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
