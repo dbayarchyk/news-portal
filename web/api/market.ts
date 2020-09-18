@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 
-const MARKET_SERVICE_API = process.env.NEXT_MARKET_SERVICE_API_URL;
+const MARKET_SERVICE_API = process.env.NEXT_PUBLIC_MARKET_SERVICE_API_URL;
 
 export type City = {
   id: string;

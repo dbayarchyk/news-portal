@@ -1,10 +1,10 @@
 {
   "build": {
     "env": {
-      "NEXT_PUBLIC_CONTENTFUL_SPACE_ID": "@contentful_space_id",
-      "NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN": "@contentful_access_token",
-      "NEXT_MARKET_SERVICE_API_URL": "@market_service_api_url",
-      "NEXT_COMMENT_SERVICE_API_URL": "@comment_service_api_url"
+      "CONTENTFUL_SPACE_ID": "@contentful_space_id",
+      "CONTENTFUL_ACCESS_TOKEN": "@contentful_access_token",
+      "NEXT_PUBLIC_MARKET_SERVICE_API_URL": "@next_public_market_service_api_url",
+      "NEXT_PUBLIC_COMMENT_SERVICE_API_URL": "@next_public_comment_service_api_url"
     }
   }
 }
