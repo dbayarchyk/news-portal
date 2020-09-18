@@ -77,7 +77,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-web -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
+      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile ~/project/web
       - run: docker save -o ~/project/persisted-web-image dbayarchyk/itdog-web
       - persist_to_workspace:
           root: ~/project
