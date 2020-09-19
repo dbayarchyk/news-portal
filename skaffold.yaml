@@ -1,0 +1,42 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infrastructure/k8s/**/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: dbayarchyk/itdog-web
+      context: web
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "**/*.tsx?"
+            dest: .
+          - src: ".next/**/*"
+            dest: .
+          - src: "public/**/*"
+            dest: .
+          - src: "styles/**/*"
+            dest: .
+          - src: "out/**/*"
+            dest: .
+    - image: dbayarchyk/itdog-comment-service
+      context: api/services/comment
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: dbayarchyk/itdog-market-service
+      context: api/services/market
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
