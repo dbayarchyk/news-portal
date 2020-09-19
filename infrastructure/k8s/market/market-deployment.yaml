@@ -14,4 +14,10 @@ spec:
     spec:
       containers:
         - name: market
-          image: dbayarchyk/itdog-market-service:latest
+          image: dbayarchyk/itdog-market-service
+          env:
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: market-generic-secret
+                  key: MONGODB_URL
