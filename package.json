@@ -1,0 +1,15 @@
+{
+  "name": "news-portal",
+  "version": "0.0.1",
+  "description": "A mass media portal about the IT market in Germany 🇩🇪",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dimb000/news-portal.git"
+  },
+  "author": "Dzmitry Bayarchyk <dzmitry.bayarchyk@gmail.com>",
+  "private": true,
+  "scripts": {
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run --headless --browser chrome"
+  }
+}
