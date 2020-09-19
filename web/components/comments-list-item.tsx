@@ -98,7 +98,7 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
                   onClick={handleReplyFormCanceling}
                 />
               }
-              onCreate={onReply}
+              onCreate={handleCommentCreation}
             />
           </div>
         </DisclosureContent>
