@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: web
-          image: dbayarchyk/itdog-web:latest
+          image: dbayarchyk/itdog-web
