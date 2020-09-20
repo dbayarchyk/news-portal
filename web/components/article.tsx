@@ -30,6 +30,7 @@ const Article: React.FCWithFragments<ArticleProps> = ({ article }) => {
           className={styles.previewImage}
           title={article.previewImage.title}
           alt={article.previewImage.description}
+          data-testid="article-preview-image"
         />
 
         <ArticleContentCollection article={article} />

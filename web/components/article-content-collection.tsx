@@ -12,7 +12,7 @@ const ArticleContentCollection: React.FCWithFragments<ArticleContentCollectionPr
   article,
 }) => {
   return (
-    <Stack scale="6">
+    <Stack scale="6" data-testid="article-content">
       {article.contentCollection.items.map((item) => {
         switch (item.__typename) {
           case "Paragraph": {
