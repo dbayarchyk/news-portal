@@ -1,159 +1,215 @@
 version: 2.1
 orbs:
+  node: circleci/node@4.0.0
   docker: circleci/docker@1.2.1
+  kubernetes: circleci/kubernetes@0.11.1
+  cypress: cypress-io/cypress@1.26.0
 jobs:
-  # Market service jobs:
-  build-market-service-docker-image:
+  # --- START: Market service jobs: ---
+  init-market-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      # - run: cd api/services/market && npm install
+      - node/install-packages:
+          app-dir: ./api/services/market
+      - persist_to_workspace:
+          root: ./api/services/market
+          paths:
+            - node_modules/*
+
+  lint-market-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/market
+      - run: cd api/services/market && npm run lint
+
+  test-market-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/market
+      - run: cd api/services/market && npm run test
+
+  build-and-push-market-service-docker-image:
     machine: true
     steps:
       - checkout
       - run: docker build -t dbayarchyk/itdog-market-service -f ~/project/api/services/market/Dockerfile ~/project/api/services/market
-      - run: docker save -o ~/project/persisted-market-service-image dbayarchyk/itdog-market-service
-      - persist_to_workspace:
-          root: ~/project
-          # Must be relative path from root
-          paths:
-            - ./persisted-market-service-image
-  lint-market-service:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-market-service-image
-      - run: docker run -t dbayarchyk/itdog-market-service npm run lint
-  test-market-service:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-market-service-image
-      - run: docker run -e CI=true -t dbayarchyk/itdog-market-service npm run test
-  push-market-service-docker-image:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-market-service-image
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-market-service
+  # --- END: Market service jobs ---
 
-  # Comment service jobs:
-  build-comment-service-docker-image:
+  # --- START: Comment service jobs: ---
+  init-comment-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      # - run: cd api/services/comment && npm install
+      - node/install-packages:
+          app-dir: ./api/services/comment
+      - persist_to_workspace:
+          root: ./api/services/comment
+          paths:
+            - node_modules/*
+
+  lint-comment-service:
+    executor:
+      name: node/default
+
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/comment
+      - run: cd api/services/comment && npm run lint
+
+  test-comment-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/comment
+      - run: cd api/services/comment && npm run test
+
+  build-and-push-comment-service-docker-image:
     machine: true
     steps:
       - checkout
       - run: docker build -t dbayarchyk/itdog-comment-service -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
-      - run: docker save -o ~/project/persisted-comment-service-image dbayarchyk/itdog-comment-service
-      - persist_to_workspace:
-          root: ~/project
-          # Must be relative path from root
-          paths:
-            - ./persisted-comment-service-image
-  lint-comment-service:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-comment-service-image
-      - run: docker run -t dbayarchyk/itdog-comment-service npm run lint
-  test-comment-service:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-comment-service-image
-      - run: docker run -e CI=true -t dbayarchyk/itdog-comment-service npm run test
-  push-comment-service-docker-image:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-comment-service-image
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-comment-service
+  # --- END: Comment service jobs ---
 
-  # Web jobs:
-  build-web-docker-image:
+  # --- START: Web jobs: ---
+  init-web:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      # - run: cd web && npm install
+      - node/install-packages:
+          app-dir: ./web
+      - persist_to_workspace:
+          root: ./web
+          paths:
+            - node_modules/*
+
+  lint-web:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./web
+      - run: cd web && npm run lint
+
+  test-web:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./web
+      - run: cd web && npm run test
+
+  build-and-push-web-docker-image:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_API_URL_ARG=$NEXT_PUBLIC_API_URL ~/project/web
-      - run: docker save -o ~/project/persisted-web-image dbayarchyk/itdog-web
-      - persist_to_workspace:
-          root: ~/project
-          # Must be relative path from root
-          paths:
-            - ./persisted-web-image
-  lint-web:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-web-image
-      - run: docker run -t dbayarchyk/itdog-web npm run lint
-  test-web:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-web-image
-      - run: docker run -e CI=true -t dbayarchyk/itdog-web npm run test
-  push-web-docker-image:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: docker load -i ~/project/persisted-web-image
+      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile ~/project/web
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-web
+  # --- END: Web jobs ---
+
+  # --- START: End to End jobs: ---
+  e2e-tests:
+    machine: true
+    steps:
+      - checkout
+      - kubernetes/install-kubectl
+      - run: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      - run: sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      - run: minikube start
+      - run: echo "$(minikube ip) itdog.de" >> /etc/hosts
+      - run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo install skaffold /usr/local/bin/
+      - run: skaffold run
+  # --- END: End to End jobs ---
 workflows:
   build-and-publish-docker-images:
     jobs:
-      - build-market-service-docker-image
-      - build-comment-service-docker-image
-      - build-web-docker-image
+      - init-market-service
+      - init-comment-service
+      - init-web
 
       - lint-market-service:
           requires:
-            - build-market-service-docker-image
+            - init-market-service
       - lint-comment-service:
           requires:
-            - build-comment-service-docker-image
+            - init-comment-service
       - lint-web:
           requires:
-            - build-web-docker-image
+            - init-web
 
       - test-market-service:
           requires:
-            - build-market-service-docker-image
+            - init-market-service
       - test-comment-service:
           requires:
-            - build-comment-service-docker-image
+            - init-comment-service
       - test-web:
           requires:
-            - build-web-docker-image
+            - init-web
 
-      - push-market-service-docker-image:
-          requires:
-            - lint-market-service
-            - test-market-service
-          filters:
-            branches:
-              only:
-                - master
-      - push-comment-service-docker-image:
-          requires:
-            - lint-comment-service
-            - test-comment-service
-          filters:
-            branches:
-              only:
-                - master
-      - push-web-docker-image:
-          requires:
-            - lint-web
-            - test-web
-          filters:
-            branches:
-              only:
-                - master
+      # - cypress/install:
+      #     requires:
+      #       - lint-market-service
+      #       - lint-comment-service
+      #       - lint-web
+      #       - test-market-service
+      #       - test-comment-service
+      #       - test-web
+      #     post-checkout:
+      #       - kubernetes/install-kubectl
+      #       - run: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      #       - run: sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      #       - run: minikube start
+      #       - run: echo "$(minikube ip) itdog.de" | sudo tee -a /etc/hosts
+      #       - run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+      #       - run: sudo install skaffold /usr/local/bin/
+      # - cypress/run:
+      #     requires:
+      #       - cypress/install
+      #     start: skaffold run
+      #     wait-on: http://itdog.de
+      #     store_artifacts: true
+
+      # - build-and-push-market-service-docker-image:
+      #     requires:
+      #       - cypress/run
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      # - build-and-push-comment-service-docker-image:
+      #     requires:
+      #       - cypress/run
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      # - build-and-push-web-docker-image:
+      #     requires:
+      #       - cypress/run
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
