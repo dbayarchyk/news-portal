@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@4.0.0
   docker: circleci/docker@1.2.1
-  kubernetes: circleci/kubernetes@0.11.1
+  # kubernetes: circleci/kubernetes@0.11.1
   cypress: cypress-io/cypress@1.26.0
 jobs:
   # --- START: Market service jobs: ---
@@ -130,61 +130,104 @@ jobs:
   # --- END: Web jobs ---
 
   # --- START: End to End jobs: ---
-  e2e-tests:
+  run-e2e-tests:
     machine: true
+    environment:
+      CHANGE_MINIKUBE_NONE_USER: true
+      K8S_VERSION: v1.19.0
+      MINIKUBE_VERSION: v1.13.0
     steps:
       - checkout
-      - kubernetes/install-kubectl
-      - run: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      - run: sudo install minikube-linux-amd64 /usr/local/bin/minikube
-      - run: minikube start
-      - run: echo "$(minikube ip) itdog.de" >> /etc/hosts
-      - run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo install skaffold /usr/local/bin/
-      - run: skaffold run
+      - run:
+          name: Install conntrack
+          command: |
+            sudo -E apt-get update -y && sudo -E apt-get install -y conntrack
+      - run:
+          name: Setup kubectl
+          command: |
+            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kubectl && chmod +x kubectl && sudo -E mv kubectl /usr/local/bin/
+            mkdir -p ${HOME}/.kube
+            touch ${HOME}/.kube/config
+      - run:
+          name: Setup minikube
+          command: |
+            curl -LO https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-linux-amd64 && sudo -E install minikube-linux-amd64 /usr/local/bin/minikube
+      - run:
+          name: Start minikube
+          command: |
+            # sudo -E minikube config set WantReportErrorPrompt false
+            # sudo -E minikube start --vm-driver=none --bootstrapper=localkube --kubernetes-version=${K8S_VERSION} --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+            # --cpus 2 --memory 4096 --extra-config=kubelet.cgroup-driver=systemd
+
+            sudo -E minikube start --vm-driver=none --kubernetes-version=${K8S_VERSION} --extra-config=kubelet.cgroup-driver=systemd
+      - run:
+          name: Enable minikube ingress
+          command: |
+            minikube addons enable ingress
+      - run:
+          name: Adjust local /etc/hosts
+          command: |
+            echo "$(minikube ip) itdog.de" | tee -a /etc/hosts
+      - run:
+          name: Create kubernetes secrets
+          command: |
+            kubectl create secret generic comment-generic-secret --from-literal MONGODB_URL=$COMMENT_SERVICE_MONGODB_URL
+            kubectl create secret generic market-generic-secret --from-literal MONGODB_URL=$MARKET_SERVICE_MONGODB_URL
+      - run:
+          name: Setup skaffold
+          command: |
+            curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo -E install skaffold /usr/local/bin/
+      - run:
+          name: Start skaffold
+          command: |
+            skaffold run
+      # - run: npm run cypress:headless
   # --- END: End to End jobs ---
 workflows:
   build-and-publish-docker-images:
     jobs:
-      - init-market-service
-      - init-comment-service
-      - init-web
+      # - init-market-service
+      # - init-comment-service
+      # - init-web
 
-      - lint-market-service:
-          requires:
-            - init-market-service
-      - lint-comment-service:
-          requires:
-            - init-comment-service
-      - lint-web:
-          requires:
-            - init-web
+      # - lint-market-service:
+      #     requires:
+      #       - init-market-service
+      # - lint-comment-service:
+      #     requires:
+      #       - init-comment-service
+      # - lint-web:
+      #     requires:
+      #       - init-web
 
-      - test-market-service:
-          requires:
-            - init-market-service
-      - test-comment-service:
-          requires:
-            - init-comment-service
-      - test-web:
-          requires:
-            - init-web
+      # - test-market-service:
+      #     requires:
+      #       - init-market-service
+      # - test-comment-service:
+      #     requires:
+      #       - init-comment-service
+      # - test-web:
+      #     requires:
+      #       - init-web
+
+      - run-e2e-tests
 
       # - cypress/install:
-      #     requires:
-      #       - lint-market-service
-      #       - lint-comment-service
-      #       - lint-web
-      #       - test-market-service
-      #       - test-comment-service
-      #       - test-web
+      #     # requires:
+      #     #   - lint-market-service
+      #     #   - lint-comment-service
+      #     #   - lint-web
+      #     #   - test-market-service
+      #     #   - test-comment-service
+      #     #   - test-web
       #     post-checkout:
       #       - kubernetes/install-kubectl
       #       - run: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      #       - run: sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      #       - run: install minikube-linux-amd64 /usr/local/bin/minikube
       #       - run: minikube start
-      #       - run: echo "$(minikube ip) itdog.de" | sudo tee -a /etc/hosts
+      #       - run: echo "$(minikube ip) itdog.de" | tee -a /etc/hosts
       #       - run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-      #       - run: sudo install skaffold /usr/local/bin/
+      #       - run: install skaffold /usr/local/bin/
       # - cypress/run:
       #     requires:
       #       - cypress/install
