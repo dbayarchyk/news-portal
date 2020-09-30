@@ -5,8 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./build/index.js",
-    "dev": "tsnd --respawn ./src/index.ts",
+    "start": "node ./build/infrastructure/http/server.js",
+    "dev": "tsnd --respawn ./src/infrastructure/http/server.ts",
     "test": "jest",
     "lint": "eslint . --ext .ts"
   },
@@ -21,7 +21,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "inversify": "^5.0.1",
+    "inversify-express-utils": "^6.3.2",
     "mongoose": "^5.9.27",
+    "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
     "uuid": "^8.3.0"
   },
@@ -37,6 +40,8 @@
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "@typescript-eslint/parser": "^3.7.1",
     "babel-jest": "^26.2.2",
+    "babel-plugin-syntax-class-properties": "^6.13.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "eslint": "^7.6.0",
     "husky": "^4.2.5",
     "jest": "^26.2.2",
