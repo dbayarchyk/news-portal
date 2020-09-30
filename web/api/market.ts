@@ -1,6 +1,9 @@
 import "isomorphic-fetch";
 
-const MARKET_SERVICE_API = `${process.env.NEXT_PUBLIC_API_URL}/market`;
+const MARKET_SERVICE_API =
+  typeof window !== "undefined"
+    ? `${process.env.NEXT_PUBLIC_API_URL}/market`
+    : `http://market-service:8000`;
 
 export type City = {
   id: string;
