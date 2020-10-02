@@ -8,7 +8,7 @@ import { UseCase } from "../../shared/domain/use-case";
 import { CommentRepository } from "../../domain/comment/comment-repository";
 import { Result } from "../../shared/logic/result";
 import { CommentDTO } from "../dto/comment-dto";
-import { CommentMapper } from "../../mapper/comment-mapper";
+import { CommentEntityToDTOMapper } from "../mappers/comment-entity-to-dto-mapper";
 
 interface CreateCommentRequest {
   content: string;
@@ -40,7 +40,7 @@ export class CreateCommentUseCase
 
     await this.commentRepository.save(comment);
 
-    const commentDTO = CommentMapper.toDTOFromEntity(comment);
+    const commentDTO = CommentEntityToDTOMapper.mapEntityToDTO(comment);
 
     return Result.ok(commentDTO);
   }
