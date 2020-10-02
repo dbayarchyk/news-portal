@@ -8,7 +8,7 @@ import {
 } from "inversify-express-utils";
 
 import TYPES from "../../ioc/types";
-import { CommentServiceLocator } from "../../service-locator/comment-service-locator";
+import { CommentServiceLocator } from "../../service-locators/comment-service-locator";
 
 @controller("/comments")
 export class CommentController extends BaseHttpController {

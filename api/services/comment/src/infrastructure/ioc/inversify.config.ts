@@ -3,7 +3,7 @@ import { Container } from "inversify";
 import TYPES from "./types";
 import { CommentRepository } from "../../domain/comment/comment-repository";
 import { CommentRepositoryMongoose } from "../persistence/mongoose/comment-repository-mongoose";
-import { CommentServiceLocator } from "../service-locator/comment-service-locator";
+import { CommentServiceLocator } from "../service-locators/comment-service-locator";
 
 export const iocContainer = new Container();
 
