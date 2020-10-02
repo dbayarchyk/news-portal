@@ -3,11 +3,11 @@ import { CommentRepository } from "../../domain/comment/comment-repository";
 import { CommentDTO } from "../../application/dto/comment-dto";
 import { CommentEntityToDTOMapper } from "../mappers/comment-entity-to-dto-mapper";
 
-interface GetCommentsByArticleIdRequest {
+export interface GetCommentsByArticleIdRequest {
   articleId: string;
 }
 
-type GetCommentsByArticleIdResponse = CommentDTO[];
+export type GetCommentsByArticleIdResponse = CommentDTO[];
 
 export class GetCommentsByArticleIdUseCase
   implements

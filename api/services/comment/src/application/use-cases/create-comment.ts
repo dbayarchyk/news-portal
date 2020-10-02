@@ -10,18 +10,21 @@ import { Result } from "../../shared/logic/result";
 import { CommentDTO } from "../dto/comment-dto";
 import { CommentEntityToDTOMapper } from "../mappers/comment-entity-to-dto-mapper";
 
-interface CreateCommentRequest {
+export interface CreateCommentRequest {
   content: string;
   articleId: string;
   authorId: string;
   parentCommentId: string | null;
 }
 
-type CreateCommentValidationErrors = Partial<
+export type CreateCommentValidationErrors = Partial<
   Record<keyof CreateCommentRequest, string>
 >;
 
-type CreateCommentResponse = Result<CommentDTO, CreateCommentValidationErrors>;
+export type CreateCommentResponse = Result<
+  CommentDTO,
+  CreateCommentValidationErrors
+>;
 
 export class CreateCommentUseCase
   implements UseCase<CreateCommentRequest, Promise<CreateCommentResponse>> {
