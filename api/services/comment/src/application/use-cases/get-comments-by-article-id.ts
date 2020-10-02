@@ -1,7 +1,7 @@
 import { UseCase } from "../../shared/domain/use-case";
 import { CommentRepository } from "../../domain/comment/comment-repository";
 import { CommentDTO } from "../../application/dto/comment-dto";
-import { CommentMapper } from "../../mapper/comment-mapper";
+import { CommentEntityToDTOMapper } from "../mappers/comment-entity-to-dto-mapper";
 
 interface GetCommentsByArticleIdRequest {
   articleId: string;
@@ -24,6 +24,8 @@ export class GetCommentsByArticleIdUseCase
       request.articleId
     );
 
-    return comments.map((comment) => CommentMapper.toDTOFromEntity(comment));
+    return comments.map((comment) =>
+      CommentEntityToDTOMapper.mapEntityToDTO(comment)
+    );
   }
 }

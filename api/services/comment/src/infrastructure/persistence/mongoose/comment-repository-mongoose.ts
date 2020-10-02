@@ -3,7 +3,8 @@ import { injectable } from "inversify";
 import { CommentRepository } from "../../../domain/comment/comment-repository";
 import { Comment } from "../../../domain/comment/comment";
 import { CommentModel } from "./comment-model";
-import { CommentMapper } from "../../../mapper/comment-mapper";
+import { CommentEntityToPersistanceMapper } from "./mappers/comment-entity-to-persistance-mapper";
+import { CommentPersistanceToEntityMapper } from "./mappers/comment-persistance-to-entity-mapper";
 
 @injectable()
 export class CommentRepositoryMongoose implements CommentRepository {
@@ -15,13 +16,15 @@ export class CommentRepositoryMongoose implements CommentRepository {
       .lean();
 
     return rawComments.map((rawComment) =>
-      CommentMapper.toEntityFromPersistance(rawComment)
+      CommentPersistanceToEntityMapper.mapPersistanceToEntity(rawComment)
     );
   }
 
   public async save(comment: Comment): Promise<void> {
     const commentExists = await this.exists(comment);
-    const commentPersistence = CommentMapper.toPersistenceFromEntity(comment);
+    const commentPersistence = CommentEntityToPersistanceMapper.mapEntityToPersistance(
+      comment
+    );
 
     if (commentExists) {
       await CommentModel.update(
