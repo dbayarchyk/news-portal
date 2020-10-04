@@ -5,17 +5,22 @@ export class CommentEntityToPersistanceMapper {
   public static mapEntityToPersistance(comment: Comment): CommentPersistance {
     const parentCommentId = comment.getParentCommentId();
     const parentCommentIdValue = parentCommentId.getValue();
+    const content = comment.getContent();
+    const articleId = comment.getArticleId();
+    const authorId = comment.getAuthorId();
+    const createdAt = comment.getCreatedAt();
+    const updatedAt = comment.getUpdatedAt();
 
     return {
       _id: comment.id.toString(),
-      content: comment.getContent().getValue(),
-      articleId: comment.getArticleId().getValue().toValue(),
-      authorId: comment.getAuthorId().getValue().toValue(),
+      content: content.getValue(),
+      articleId: articleId.getValue().toValue(),
+      authorId: authorId.getValue().toValue(),
       parentCommentId: parentCommentIdValue
         ? parentCommentIdValue.toValue()
         : null,
-      createdAt: comment.getCreatedAt().getValue(),
-      updatedAt: comment.getUpdatedAt().getValue(),
+      createdAt: createdAt.getValue(),
+      updatedAt: updatedAt.getValue(),
     };
   }
 }
