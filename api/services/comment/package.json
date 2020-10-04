@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./build/infrastructure/http/server.js",
-    "dev": "tsnd --respawn ./src/infrastructure/http/server.ts",
+    "dev": "ts-node-dev --poll src/infrastructure/http/server.ts",
     "test": "jest",
     "lint": "eslint . --ext .ts"
   },
