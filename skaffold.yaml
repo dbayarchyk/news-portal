@@ -14,15 +14,11 @@ build:
         dockerfile: Dockerfile.dev
       sync:
         manual:
+          - src: "**/*.js"
+            dest: .
           - src: "**/*.tsx?"
             dest: .
-          - src: ".next/**/*"
-            dest: .
-          - src: "public/**/*"
-            dest: .
           - src: "styles/**/*"
-            dest: .
-          - src: "out/**/*"
             dest: .
     - image: dbayarchyk/itdog-comment-service
       context: api/services/comment
