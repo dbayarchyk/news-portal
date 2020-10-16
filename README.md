@@ -24,3 +24,9 @@ TODO: write a short overview about the tools we use to build our infrastructure:
 
 - Kubernetes
 - Terraform
+
+`minikube addons enable ingress`
+
+`kubectl create secret generic comment-generic-secret --from-literal MONGODB_URL='mongodb://itdog-comment-service:!itdog24@ds163825.mlab.com:63825/itdog-comment-service'`
+
+`kubectl create secret generic market-generic-secret --from-literal MONGODB_URL='mongodb://itdog-market-service:!itdog24@ds163825.mlab.com:63825/itdog-market-service'`
