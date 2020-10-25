@@ -42,6 +42,10 @@ export class User extends Entity {
     return this.email;
   }
 
+  public getHashedPassword(): HashedPassword {
+    return this.hashedPassword;
+  }
+
   public getStatus(): Status {
     return this.status;
   }
