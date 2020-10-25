@@ -9,17 +9,17 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     public readonly value: Type extends EitherType.Left ? Left : Right
   ) {}
 
-  static mergeInOne<L1, R1>(values: [Either<L1, R1>]): Either<L1, [R1]>;
-  static mergeInOne<L1, R1, L2, R2>(
+  public static mergeInOne<L1, R1>(values: [Either<L1, R1>]): Either<L1, [R1]>;
+  public static mergeInOne<L1, R1, L2, R2>(
     values: [Either<L1, R1>, Either<L2, R2>]
   ): Either<L1 | L2, [R1, R2]>;
-  static mergeInOne<L1, R1, L2, R2, L3, R3>(
+  public static mergeInOne<L1, R1, L2, R2, L3, R3>(
     values: [Either<L1, R1>, Either<L2, R2>, Either<L3, R3>]
   ): Either<L1 | L2 | L3, [R1, R2, R3]>;
-  static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4>(
+  public static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4>(
     values: [Either<L1, R1>, Either<L2, R2>, Either<L3, R3>, Either<L4, R4>]
   ): Either<L1 | L2 | L3 | L4, [R1, R2, R3, R4]>;
-  static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5>(
+  public static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5>(
     values: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -28,7 +28,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
       Either<L5, R5>
     ]
   ): Either<L1 | L2 | L3 | L4 | L5, [R1, R2, R3, R4, R5]>;
-  static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6>(
+  public static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6>(
     values: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -38,7 +38,22 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
       Either<L6, R6>
     ]
   ): Either<L1 | L2 | L3 | L4 | L5 | L6, [R1, R2, R3, R4, R5, R6]>;
-  static mergeInOne<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6, L7, R7>(
+  public static mergeInOne<
+    L1,
+    R1,
+    L2,
+    R2,
+    L3,
+    R3,
+    L4,
+    R4,
+    L5,
+    R5,
+    L6,
+    R6,
+    L7,
+    R7
+  >(
     values: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -49,7 +64,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
       Either<L7, R7>
     ]
   ): Either<L1 | L2 | L3 | L4 | L5 | L6 | L7, [R1, R2, R3, R4, R5, R6, R7]>;
-  static mergeInOne<
+  public static mergeInOne<
     L1,
     R1,
     L2,
@@ -81,7 +96,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8,
     [R1, R2, R3, R4, R5, R6, R7, R8]
   >;
-  static mergeInOne<
+  public static mergeInOne<
     L1,
     R1,
     L2,
@@ -116,7 +131,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8 | L9,
     [R1, R2, R3, R4, R5, R6, R7, R8, R9]
   >;
-  static mergeInOne<
+  public static mergeInOne<
     L1,
     R1,
     L2,
@@ -154,8 +169,8 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8 | L9 | L10,
     [R1, R2, R3, R4, R5, R6, R7, R8, R9, R10]
   >;
-  static mergeInOne<L, R>(either: Array<Either<L, R>>): Either<L, R[]>;
-  static mergeInOne(eithers: Array<Either<unknown, unknown>>) {
+  public static mergeInOne<L, R>(either: Array<Either<L, R>>): Either<L, R[]>;
+  public static mergeInOne(eithers: Array<Either<unknown, unknown>>) {
     return eithers.reduce(
       (res: Either<unknown, Array<unknown>>, v) =>
         v.chain((v) => res.map((res) => res.concat([v]))),
@@ -163,21 +178,22 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     );
   }
 
-  static merge = EitherConstructor.mergeInOne;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public static merge = EitherConstructor.mergeInOne;
 
-  static mergeInMany<L1, R1>(
+  public static mergeInMany<L1, R1>(
     eithers: [Either<L1, R1>]
   ): Either<Array<L1>, [R1]>;
-  static mergeInMany<L1, R1, L2, R2>(
+  public static mergeInMany<L1, R1, L2, R2>(
     eithers: [Either<L1, R1>, Either<L2, R2>]
   ): Either<Array<L1 | L2>, [R1, R2]>;
-  static mergeInMany<L1, R1, L2, R2, L3, R3>(
+  public static mergeInMany<L1, R1, L2, R2, L3, R3>(
     eithers: [Either<L1, R1>, Either<L2, R2>, Either<L3, R3>]
   ): Either<Array<L1 | L2 | L3>, [R1, R2, R3]>;
-  static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4>(
+  public static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4>(
     eithers: [Either<L1, R1>, Either<L2, R2>, Either<L3, R3>, Either<L4, R4>]
   ): Either<Array<L1 | L2 | L3 | L4>, [R1, R2, R3, R4]>;
-  static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5>(
+  public static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5>(
     eithers: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -186,7 +202,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
       Either<L5, R5>
     ]
   ): Either<Array<L1 | L2 | L3 | L4 | L5>, [R1, R2, R3, R4, R5]>;
-  static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6>(
+  public static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6>(
     eithers: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -196,7 +212,22 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
       Either<L6, R6>
     ]
   ): Either<Array<L1 | L2 | L3 | L4 | L5 | L6>, [R1, R2, R3, R4, R5, R6]>;
-  static mergeInMany<L1, R1, L2, R2, L3, R3, L4, R4, L5, R5, L6, R6, L7, R7>(
+  public static mergeInMany<
+    L1,
+    R1,
+    L2,
+    R2,
+    L3,
+    R3,
+    L4,
+    R4,
+    L5,
+    R5,
+    L6,
+    R6,
+    L7,
+    R7
+  >(
     eithers: [
       Either<L1, R1>,
       Either<L2, R2>,
@@ -210,7 +241,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     Array<L1 | L2 | L3 | L4 | L5 | L6 | L7>,
     [R1, R2, R3, R4, R5, R6, R7]
   >;
-  static mergeInMany<
+  public static mergeInMany<
     L1,
     R1,
     L2,
@@ -242,7 +273,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     Array<L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8>,
     [R1, R2, R3, R4, R5, R6, R7, R8]
   >;
-  static mergeInMany<
+  public static mergeInMany<
     L1,
     R1,
     L2,
@@ -277,7 +308,7 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     Array<L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8 | L9>,
     [R1, R2, R3, R4, R5, R6, R7, R8, R9]
   >;
-  static mergeInMany<
+  public static mergeInMany<
     L1,
     R1,
     L2,
@@ -315,8 +346,10 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     Array<L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8 | L9 | L10>,
     [R1, R2, R3, R4, R5, R6, R7, R8, R9, R10]
   >;
-  static mergeInMany<L, R>(eithers: Array<Either<L, R>>): Either<L[], R[]>;
-  static mergeInMany(eithers: Array<Either<unknown, unknown>>) {
+  public static mergeInMany<L, R>(
+    eithers: Array<Either<L, R>>
+  ): Either<L[], R[]>;
+  public static mergeInMany(eithers: Array<Either<unknown, unknown>>) {
     return eithers.reduce(
       (
         mergedEither: Either<Array<unknown>, Array<unknown>>,
