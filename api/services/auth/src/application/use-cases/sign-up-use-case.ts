@@ -24,7 +24,8 @@ export class SignUpUseCase {
     const errorOrUser = await this.createNewUser(requestDTO);
 
     if (errorOrUser.isLeft()) {
-      return left(errorOrUser.value);
+      const error = errorOrUser.value;
+      return left(error);
     }
 
     const user = errorOrUser.value;
@@ -76,7 +77,8 @@ export class SignUpUseCase {
     const username = errorOrUsername.value;
 
     if (await this.isUsernameTaken(username)) {
-      return left(new Error("This username is already taken."));
+      const error = new Error("This username is already taken.");
+      return left(error);
     }
 
     return right(username);
@@ -98,7 +100,8 @@ export class SignUpUseCase {
     const email = errorOrEmail.value;
 
     if (await this.isEmailTaken(email)) {
-      return left(new Error("This email is already taken."));
+      const error = new Error("This email is already taken.");
+      return left(error);
     }
 
     return right(email);
