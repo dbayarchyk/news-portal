@@ -10,10 +10,10 @@ export class Identifier<T> {
       return false;
     }
 
-    return id.toValue() === this.value;
+    return id.getValue() === this.value;
   }
 
-  public toValue(): T {
+  public getValue(): T {
     return this.value;
   }
 }
