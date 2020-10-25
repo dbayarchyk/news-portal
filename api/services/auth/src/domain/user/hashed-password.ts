@@ -1,5 +1,5 @@
+import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
-import { Result } from "../../shared/logic/result";
 
 interface HashedPasswordData {
   value: string;
@@ -20,21 +20,21 @@ export class HashedPassword extends ValueObject<HashedPasswordData> {
 
   public static createFromUnHashedPassword(
     unHashedPassword: string
-  ): Result<HashedPassword, Error> {
+  ): Either<Error, HashedPassword> {
     try {
       HashedPassword.validateUnHashedPassword(unHashedPassword);
 
       const hashedPassword = HashedPassword.hashPassword(unHashedPassword);
 
-      return Result.ok(new HashedPassword({ value: hashedPassword }));
+      return right(new HashedPassword({ value: hashedPassword }));
     } catch (error) {
-      return Result.fail(error);
+      return left(error);
     }
   }
 
   public static createFromHashedPassword(
     hashedPassword: string
-  ): HashedPassword | never {
+  ): HashedPassword {
     return new HashedPassword({ value: hashedPassword });
   }
 

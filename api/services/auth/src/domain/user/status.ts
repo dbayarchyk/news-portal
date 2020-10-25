@@ -1,55 +1,44 @@
+import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
-import { Result } from "../../shared/logic/result";
 
-type AllowedStatus =
-  | "CONFIRMED"
-  | "UNCONFIRMED"
-  | "ARCHIVED"
-  | "COMPROMISED"
-  | "UNKNOWN"
-  | "RESET_REQUIRED"
-  | "FORCE_CHANGE_PASSWORD";
+export enum AllowedStatus {
+  CONFIRMED = "CONFIRMED",
+  UNCONFIRMED = "UNCONFIRMED",
+  ARCHIVED = "ARCHIVED",
+  COMPROMISED = "COMPROMISED",
+  UNKNOWN = "UNKNOWN",
+  RESET_REQUIRED = "RESET_REQUIRED",
+  FORCE_CHANGE_PASSWORD = "FORCE_CHANGE_PASSWORD",
+}
 
 interface StatusData {
   value: AllowedStatus;
 }
 
 export class Status extends ValueObject<StatusData> {
-  private static readonly ALLOWED_STATUSES: Readonly<Array<AllowedStatus>> = [
-    "CONFIRMED",
-    "UNCONFIRMED",
-    "ARCHIVED",
-    "COMPROMISED",
-    "UNKNOWN",
-    "RESET_REQUIRED",
-    "FORCE_CHANGE_PASSWORD",
-  ];
-
   private constructor(data: StatusData) {
     super(data);
   }
 
-  public getValue(): string {
+  public getValue(): AllowedStatus {
     return this.data.value;
   }
 
-  public static create(value: AllowedStatus): Result<Status, Error> {
+  public static create(value: string): Either<Error, Status> {
     if (!Status.isAllowedStatusValue(value)) {
-      return Result.fail(
+      return left(
         new Error(
-          `Invalid status, only the following statuses are allowed: ${Status.ALLOWED_STATUSES.join(
-            ", "
-          )}`
+          `Invalid status, only the following statuses are allowed: ${Object.values(
+            AllowedStatus
+          ).join(", ")}`
         )
       );
     }
 
-    return Result.ok(new Status({ value }));
+    return right(new Status({ value }));
   }
 
-  private static isAllowedStatusValue(
-    value: string
-  ): value is StatusData["value"] {
-    return Status.ALLOWED_STATUSES.indexOf(value as AllowedStatuses) !== 1;
+  private static isAllowedStatusValue(value: string): value is AllowedStatus {
+    return Object.values(AllowedStatus).indexOf(value as AllowedStatus) !== 1;
   }
 }

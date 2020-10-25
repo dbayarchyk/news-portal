@@ -11,7 +11,7 @@ export class UserEntityToDTOMapper {
     const updatedAt = user.getUpdatedAt();
 
     return {
-      id: id.toValue(),
+      id: id.getValue(),
       username: username.getValue(),
       email: email.getValue(),
       status: status.getValue(),

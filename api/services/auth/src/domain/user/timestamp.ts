@@ -1,5 +1,5 @@
+import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
-import { Result } from "../../shared/logic/result";
 
 interface TimestampData {
   value: string;
@@ -14,7 +14,7 @@ export class Timestamp extends ValueObject<TimestampData> {
     return this.data.value;
   }
 
-  public static create(value?: string | null): Result<Timestamp, Error> {
+  public static create(value?: string | null): Either<Error, Timestamp> {
     try {
       Timestamp.validateValue(value);
 
@@ -24,9 +24,9 @@ export class Timestamp extends ValueObject<TimestampData> {
         value: date.toISOString(),
       });
 
-      return Result.ok(timestamp);
+      return right(timestamp);
     } catch (error) {
-      return Result.fail(error);
+      return left(error);
     }
   }
 

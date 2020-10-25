@@ -1,5 +1,5 @@
+import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
-import { Result } from "../../shared/logic/result";
 
 interface UsernameData {
   value: string;
@@ -14,13 +14,13 @@ export class Username extends ValueObject<UsernameData> {
     return this.data.value;
   }
 
-  public static create(value: string): Result<Username, Error> {
+  public static create(value: string): Either<Error, Username> {
     try {
       Username.validateUsername(value);
 
-      return Result.ok(new Username({ value }));
+      return right(new Username({ value }));
     } catch (error) {
-      return Result.fail(error);
+      return left(error);
     }
   }
 

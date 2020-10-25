@@ -4,131 +4,109 @@ import { User } from "../../domain/user/user";
 import { Timestamp } from "../../domain/user/timestamp";
 import { Email } from "../../domain/user/email";
 import { Username } from "../../domain/user/username";
-import { Status } from "../../domain/user/status";
-import { Result } from "../../shared/logic/result";
-import { CombinedResultErrorToFieldErrorsDTOMapper } from "../mappers/combined-result-error-to-field-errors-dto-mapper";
+import { Status, AllowedStatus } from "../../domain/user/status";
+import { UserDTO } from "../dto/user-dto";
+import { UserEntityToDTOMapper } from "../mappers/user-entity-to-dto-mapper";
+import { Either, left, right, mergeInMany } from "../../shared/logic/either";
 
-export interface SignUpRequest {
+export interface SignUpRequestDTO {
   username: string;
   email: string;
   password: string;
 }
 
-export type SignUpValidationErrors = Partial<
-  Record<keyof SignUpRequest, string>
->;
-
 export class SignUpUseCase {
   public constructor(private userRepository: UserRepository) {}
 
   public async execute(
-    request: SignUpRequest
-  ): Promise<Result<void, SignUpValidationErrors>> {
-    const userOrErrorResult = await this.createUserOrErrorResult(request);
+    requestDTO: SignUpRequestDTO
+  ): Promise<Either<Error[], UserDTO>> {
+    const errorOrUser = await this.createNewUser(requestDTO);
 
-    if (userOrErrorResult.checkStatus("failure")) {
-      return this.handleUserErrorResult(userOrErrorResult);
+    if (errorOrUser.isLeft()) {
+      return left(errorOrUser.value);
     }
 
-    const user = userOrErrorResult.getValue();
+    const user = errorOrUser.value;
 
     await this.userRepository.save(user);
 
-    return Result.ok();
+    return right(UserEntityToDTOMapper.toDTOFromEntity(user));
   }
 
-  private async createUserOrErrorResult(request: SignUpRequest) {
-    const userDataOrErrorResult = await this.createUserDataOrErrorResult(
-      request
+  private async createNewUser(
+    requestDTO: SignUpRequestDTO
+  ): Promise<Either<Error[], User>> {
+    const errorOrUsername = await this.createUsername(requestDTO.username);
+    const errorOrEmail = await this.createEmail(requestDTO.email);
+    const errorOrHashedPassword = HashedPassword.createFromUnHashedPassword(
+      requestDTO.password
     );
 
-    if (userDataOrErrorResult.checkStatus("failure")) {
-      return Result.fail(userDataOrErrorResult.getError());
+    return mergeInMany([
+      errorOrUsername,
+      errorOrEmail,
+      errorOrHashedPassword,
+      Status.create(AllowedStatus.UNCONFIRMED),
+      Timestamp.create(),
+      Timestamp.create(),
+    ]).map(
+      ([username, email, hashedPassword, status, createdAt, updatedAt]) => {
+        return new User({
+          username: username,
+          email: email,
+          hashedPassword: hashedPassword,
+          status,
+          createdAt,
+          updatedAt,
+        });
+      }
+    );
+  }
+
+  private async createUsername(
+    rawUsername: string
+  ): Promise<Either<Error, Username>> {
+    const errorOrUsername = Username.create(rawUsername);
+
+    if (errorOrUsername.isLeft()) {
+      return errorOrUsername;
     }
 
-    const userData = userDataOrErrorResult.getValue();
-    const user = new User({
-      username: userData.username.getValue(),
-      email: userData.email.getValue(),
-      hashedPassword: userData.hashedPassword.getValue(),
-      status: userData.status.getValue(),
-      createdAt: userData.createdAt.getValue(),
-      updatedAt: userData.updatedAt.getValue(),
-    });
+    const username = errorOrUsername.value;
 
-    return Result.ok(user);
-  }
-
-  private async createUserDataOrErrorResult(request: SignUpRequest) {
-    const usernameResult = await this.createUsernameOrErrorResult(
-      request.username
-    );
-    const emailResult = await this.createEmailOrErrorResult(request.email);
-
-    const userDataOrErrorResult = Result.combine({
-      username: usernameResult,
-      email: emailResult,
-      hashedPassword: HashedPassword.createFromUnHashedPassword(
-        request.password
-      ),
-      status: Status.create("UNCONFIRMED"),
-      createdAt: Timestamp.create(),
-      updatedAt: Timestamp.create(),
-    });
-
-    return userDataOrErrorResult;
-  }
-
-  private async createUsernameOrErrorResult(
-    username: string
-  ): Promise<Result<Username, Error>> {
     if (await this.isUsernameTaken(username)) {
-      return Result.fail(new Error("This username is already taken."));
+      return left(new Error("This username is already taken."));
     }
 
-    return Username.create(username);
+    return right(username);
   }
 
-  private async isUsernameTaken(username: string): Promise<boolean> {
+  private async isUsernameTaken(username: Username): Promise<boolean> {
     const user = await this.userRepository.findUserByUsername(username);
 
     return user !== null;
   }
 
-  private async createEmailOrErrorResult(
-    email: string
-  ): Promise<Result<Email, Error>> {
-    if (await this.isEmailTaken(email)) {
-      return Result.fail(new Error("This email is already taken."));
+  private async createEmail(rawEmail: string): Promise<Either<Error, Email>> {
+    const errorOrEmail = Email.create(rawEmail);
+
+    if (errorOrEmail.isLeft()) {
+      return errorOrEmail;
     }
 
-    return Email.create(email);
+    const email = errorOrEmail.value;
+
+    if (await this.isEmailTaken(email)) {
+      return left(new Error("This email is already taken."));
+    }
+
+    return right(email);
   }
 
-  private async isEmailTaken(email: string): Promise<boolean> {
+  private async isEmailTaken(email: Email): Promise<boolean> {
     const user = await this.userRepository.findUserByEmail(email);
 
     return user !== null;
-  }
-
-  private handleUserErrorResult(
-    errorResult: Result<
-      unknown,
-      {
-        username?: Result<unknown, Error>;
-        email?: Result<unknown, Error>;
-        hashedPassword?: Result<unknown, Error>;
-        status?: Result<unknown, Error>;
-        createdAt?: Result<unknown, Error>;
-        updatedAt?: Result<unknown, Error>;
-      }
-    >
-  ) {
-    const combinedResultErrors = errorResult.getError();
-    const errorsDTO = CombinedResultErrorToFieldErrorsDTOMapper.toFieldErrorsDTOFromCombinedResultError(
-      combinedResultErrors
-    );
-
-    return Result.fail(errorsDTO);
   }
 }
