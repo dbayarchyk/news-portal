@@ -8,6 +8,7 @@ import { Status, AllowedStatus } from "../../domain/user/status";
 import { UserDTO } from "../dto/user-dto";
 import { UserEntityToDTOMapper } from "../mappers/user-entity-to-dto-mapper";
 import { Either, left, right, mergeInMany } from "../../shared/logic/either";
+import { UseCase } from "../../shared/application/use-case";
 
 export interface SignUpRequestDTO {
   username: string;
@@ -15,7 +16,8 @@ export interface SignUpRequestDTO {
   password: string;
 }
 
-export class SignUpUseCase {
+export class SignUpUseCase
+  implements UseCase<SignUpRequestDTO, Either<Error[], UserDTO>> {
   public constructor(private userRepository: UserRepository) {}
 
   public async execute(

@@ -4,6 +4,7 @@ import { HashedPassword } from "../../domain/user/hashed-password";
 import { AllowedStatus } from "../../domain/user/status";
 import { User } from "../../domain/user/user";
 import { Either, left, right } from "../../shared/logic/either";
+import { UseCase } from "../../shared/application/use-case";
 
 export interface SignIRequestDTO {
   email: string;
@@ -16,7 +17,8 @@ export interface AuthCredentials {
   status: AllowedStatus;
 }
 
-export class SignInUseCase {
+export class SignInUseCase
+  implements UseCase<SignIRequestDTO, Either<Error[], AuthCredentials>> {
   public constructor(private userRepository: UserRepository) {}
 
   public async execute(
