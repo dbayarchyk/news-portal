@@ -1,5 +1,6 @@
 import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
+import { ValidationError } from "../../shared/errors/validation-error";
 
 export enum AllowedStatus {
   CONFIRMED = "CONFIRMED",
@@ -24,10 +25,10 @@ export class Status extends ValueObject<StatusData> {
     return this.data.value;
   }
 
-  public static create(value: string): Either<Error, Status> {
+  public static create(value: string): Either<ValidationError, Status> {
     if (!Status.isAllowedStatusValue(value)) {
       return left(
-        new Error(
+        new ValidationError(
           `Invalid status, only the following statuses are allowed: ${Object.values(
             AllowedStatus
           ).join(", ")}`
@@ -39,6 +40,6 @@ export class Status extends ValueObject<StatusData> {
   }
 
   private static isAllowedStatusValue(value: string): value is AllowedStatus {
-    return Object.values(AllowedStatus).indexOf(value as AllowedStatus) !== 1;
+    return Object.values(AllowedStatus).includes(value as AllowedStatus);
   }
 }

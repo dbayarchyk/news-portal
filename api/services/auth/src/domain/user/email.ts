@@ -1,5 +1,6 @@
 import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
+import { ValidationError } from "../../shared/errors/validation-error";
 
 interface EmailData {
   value: string;
@@ -17,7 +18,7 @@ export class Email extends ValueObject<EmailData> {
     return this.data.value;
   }
 
-  public static create(value: string): Either<Error, Email> {
+  public static create(value: string): Either<ValidationError, Email> {
     try {
       Email.validateEmail(value);
 
@@ -29,19 +30,13 @@ export class Email extends ValueObject<EmailData> {
 
   private static validateEmail(email: string): void | never {
     if (!email) {
-      throw new Error("Email must not be empty");
+      throw new ValidationError("Email must not be empty");
     }
 
     if (!Email.EMAIL_REGEX.test(email)) {
-      throw new Error("Email has an invalid format, e.g example@test.com");
+      throw new ValidationError(
+        "Email has an invalid format, e.g example@test.com"
+      );
     }
   }
-}
-
-const eitherEmail = Email.create("");
-
-if (eitherEmail.isRight()) {
-  const error = eitherEmail.value;
-} else {
-  const error = eitherEmail.value;
 }

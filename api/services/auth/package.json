@@ -5,8 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./build/infrastructure/http/server.js",
-    "dev": "ts-node-dev --poll src/infrastructure/http/server.ts",
+    "start": "node ./build/interface/http/server.js",
+    "dev": "ts-node-dev --poll src/interface/http/server.ts",
     "test": "jest",
     "lint": "eslint . --ext .ts"
   },

@@ -36,3 +36,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: dbayarchyk/itdog-auth-service
+      context: api/services/auth
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .

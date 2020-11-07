@@ -1,3 +1,5 @@
+import { injectable, inject } from "inversify";
+
 import { UserRepository } from "../../domain/user/user-repository";
 import { Email } from "../../domain/user/email";
 import { HashedPassword } from "../../domain/user/hashed-password";
@@ -5,6 +7,9 @@ import { AllowedStatus } from "../../domain/user/status";
 import { User } from "../../domain/user/user";
 import { Either, left, right } from "../../shared/logic/either";
 import { UseCase } from "../../shared/application/use-case";
+import { ValidationError } from "../../shared/errors/validation-error";
+import { FieldsValidationError } from "../../shared/errors/fields-validation-error";
+import { IOCTypes } from '../../infrastructure/ioc/types';
 
 export interface SignIRequestDTO {
   email: string;
@@ -17,13 +22,18 @@ export interface AuthCredentials {
   status: AllowedStatus;
 }
 
+@injectable()
 export class SignInUseCase
-  implements UseCase<SignIRequestDTO, Either<Error[], AuthCredentials>> {
-  public constructor(private userRepository: UserRepository) {}
+  implements
+    UseCase<SignIRequestDTO, Either<FieldsValidationError, AuthCredentials>> {
+  public constructor(
+    @inject(IOCTypes.UserRepository)
+    private userRepository: UserRepository
+  ) {}
 
   public async execute(
     requestDTO: SignIRequestDTO
-  ): Promise<Either<Error[], AuthCredentials>> {
+  ): Promise<Either<FieldsValidationError, AuthCredentials>> {
     const errorOrUser = await this.getMatchingUser(requestDTO);
 
     if (errorOrUser.isLeft()) {
@@ -39,20 +49,33 @@ export class SignInUseCase
 
   private async getMatchingUser(
     requestDTO: SignIRequestDTO
-  ): Promise<Either<Error[], User>> {
+  ): Promise<Either<FieldsValidationError, User>> {
     const errorOrEmail = Email.create(requestDTO.email);
 
     if (errorOrEmail.isLeft()) {
-      const error = errorOrEmail.value;
-      return left([error]);
+      const error = new FieldsValidationError([
+        { field: "email", error: errorOrEmail.value },
+      ]);
+      return left(error);
     }
 
     const email = errorOrEmail.value;
     const user = await this.userRepository.findUserByEmail(email);
 
+    if (user) {
+      await this.userRepository.findUserByEmail(user.getUsername());
+    }
+
     if (!user) {
-      const error = new Error("The user with this email does not exist.");
-      return left([error]);
+      const error = new FieldsValidationError([
+        {
+          field: "email",
+          error: new ValidationError(
+            "The user with this email does not exist."
+          ),
+        },
+      ]);
+      return left(error);
     }
 
     const errorOrHashedPassword = HashedPassword.createFromUnHashedPassword(
@@ -63,8 +86,13 @@ export class SignInUseCase
       errorOrHashedPassword.isLeft() ||
       !user.isPasswordEqual(errorOrHashedPassword.value)
     ) {
-      const error = new Error("The password does not match.");
-      return left([error]);
+      const error = new FieldsValidationError([
+        {
+          field: "password",
+          error: new ValidationError("The password does not match."),
+        },
+      ]);
+      return left(error);
     }
 
     return right(user);

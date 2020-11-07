@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-import { UserRepository } from "../../../domain/User/user-repository";
+import { UserRepository } from "../../../domain/user/user-repository";
 import { User } from "../../../domain/user/user";
 import { Email } from "../../../domain/user/email";
 import { Username } from "../../../domain/user/username";

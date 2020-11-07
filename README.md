@@ -7,6 +7,7 @@ This is a monorepo that contains all the necessary services:
 - [🖥 Web](./web/README.md)
 - [📊 Market service](./api/services/market/README.md)
 - [💬 Comment service](./api/services/comment/README.md)
+- [💬 Auth service](./api/services/auth/README.md)
 
 ## CI / CD 🚀
 
@@ -30,3 +31,5 @@ TODO: write a short overview about the tools we use to build our infrastructure:
 `kubectl create secret generic comment-generic-secret --from-literal MONGODB_URL='mongodb://itdog-comment-service:!itdog24@ds163825.mlab.com:63825/itdog-comment-service'`
 
 `kubectl create secret generic market-generic-secret --from-literal MONGODB_URL='mongodb://itdog-market-service:!itdog24@ds163825.mlab.com:63825/itdog-market-service'`
+
+`kubectl create secret generic auth-generic-secret --from-literal MONGODB_URL='mongodb://itdog-auth-service:!itdog24@ds033754.mlab.com:33754/itdog-auth-service'`

@@ -1,7 +1,7 @@
 FROM node:alpine AS base
 WORKDIR /base
 COPY package.json ./
-COPY package-lock.json ./
+# COPY package-lock.json ./
 RUN npm install
 COPY . .
 
@@ -20,7 +20,7 @@ FROM node:alpine AS production
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /build/package.json ./
-COPY --from=build /build/package-lock.json ./
+# COPY --from=build /build/package-lock.json ./
 COPY --from=build /build/build ./build
 RUN npm install --only=production
 
