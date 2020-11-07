@@ -30,5 +30,5 @@ const UserSchema = new Schema(
 export const UserModel = mongoose.model<UserPersistanceDocument>(
   "User",
   UserSchema,
-  "users"
+  "users",
 );

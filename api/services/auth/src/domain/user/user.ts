@@ -57,8 +57,4 @@ export class User extends Entity {
   public getUpdatedAt(): Timestamp {
     return this.updatedAt;
   }
-
-  public isPasswordEqual(hashedPassword: HashedPassword) {
-    return this.hashedPassword.equals(hashedPassword);
-  }
 }

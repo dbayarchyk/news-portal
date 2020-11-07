@@ -51,7 +51,7 @@ export class SignUpUseCase
   ): Promise<Either<FieldsValidationError, User>> {
     const errorOrUsername = await this.createUsername(requestDTO.username);
     const errorOrEmail = await this.createEmail(requestDTO.email);
-    const errorOrHashedPassword = HashedPassword.createFromUnHashedPassword(
+    const errorOrHashedPassword = await HashedPassword.createFromUnHashedPassword(
       requestDTO.password
     );
 
