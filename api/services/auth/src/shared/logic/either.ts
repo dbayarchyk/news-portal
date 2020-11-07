@@ -395,6 +395,18 @@ class EitherConstructor<Left, Right, Type extends EitherType> {
     return this.type === EitherType.Right;
   }
 
+  public mapRight<NewRight>(f: (r: Right) => NewRight): Either<Left, NewRight> {
+    return this.map(f);
+  }
+
+  public mapLeft<NewLeft>(f: (l: Left) => NewLeft): Either<NewLeft, Right> {
+    if (this.isLeft()) {
+      return EitherConstructor.left<NewLeft, Right>(f(this.value as Left));
+    }
+
+    return EitherConstructor.right<NewLeft, Right>(this.value as Right);
+  }
+
   public map<NewRight>(
     mapper: (value: Right) => NewRight
   ): Either<Left, NewRight> {
@@ -423,7 +435,7 @@ export type Either<Left, Right> =
   | EitherConstructor<Left, Right, EitherType.Right>;
 
 export const {
-  //   mergeInOne,
+  mergeInOne,
   mergeInMany,
   left,
   right,

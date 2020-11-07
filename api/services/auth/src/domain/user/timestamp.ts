@@ -1,5 +1,6 @@
 import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
+import { ValidationError } from "../../shared/errors/validation-error";
 
 interface TimestampData {
   value: string;
@@ -14,7 +15,9 @@ export class Timestamp extends ValueObject<TimestampData> {
     return this.data.value;
   }
 
-  public static create(value?: string | null): Either<Error, Timestamp> {
+  public static create(
+    value?: string | null
+  ): Either<ValidationError, Timestamp> {
     try {
       Timestamp.validateValue(value);
 
@@ -41,7 +44,7 @@ export class Timestamp extends ValueObject<TimestampData> {
     const isDateInvalid = isNaN(date.getTime());
 
     if (isDateInvalid) {
-      throw new Error("Timestamp value is invalid");
+      throw new ValidationError("Timestamp value is invalid");
     }
   }
 }

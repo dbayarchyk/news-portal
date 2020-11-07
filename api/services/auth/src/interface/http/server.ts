@@ -5,8 +5,8 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import "./controllers/sign-up-controller";
 import "./controllers/sign-in-controller";
 
-import { iocContainer } from "../ioc/inversify.config";
-import { connect } from "../persistence/mongoose/connect";
+import { iocContainer } from "../../infrastructure/ioc/inversify.config";
+import { connect } from "../../infrastructure/persistence/mongoose/connect";
 
 connect(process.env.MONGODB_URL || "");
 

@@ -1,3 +1,5 @@
+import { injectable, inject } from "inversify";
+
 import { UserRepository } from "../../domain/user/user-repository";
 import { HashedPassword } from "../../domain/user/hashed-password";
 import { User } from "../../domain/user/user";
@@ -9,6 +11,9 @@ import { UserDTO } from "../dto/user-dto";
 import { UserEntityToDTOMapper } from "../mappers/user-entity-to-dto-mapper";
 import { Either, left, right, mergeInMany } from "../../shared/logic/either";
 import { UseCase } from "../../shared/application/use-case";
+import { ValidationError } from "../../shared/errors/validation-error";
+import { FieldsValidationError } from "../../shared/errors/fields-validation-error";
+import { IOCTypes } from '../../infrastructure/ioc/types';
 
 export interface SignUpRequestDTO {
   username: string;
@@ -16,13 +21,17 @@ export interface SignUpRequestDTO {
   password: string;
 }
 
+@injectable()
 export class SignUpUseCase
-  implements UseCase<SignUpRequestDTO, Either<Error[], UserDTO>> {
-  public constructor(private userRepository: UserRepository) {}
+  implements UseCase<SignUpRequestDTO, Either<FieldsValidationError, UserDTO>> {
+  public constructor(
+    @inject(IOCTypes.UserRepository)
+    private userRepository: UserRepository
+  ) {}
 
   public async execute(
     requestDTO: SignUpRequestDTO
-  ): Promise<Either<Error[], UserDTO>> {
+  ): Promise<Either<FieldsValidationError, UserDTO>> {
     const errorOrUser = await this.createNewUser(requestDTO);
 
     if (errorOrUser.isLeft()) {
@@ -39,7 +48,7 @@ export class SignUpUseCase
 
   private async createNewUser(
     requestDTO: SignUpRequestDTO
-  ): Promise<Either<Error[], User>> {
+  ): Promise<Either<FieldsValidationError, User>> {
     const errorOrUsername = await this.createUsername(requestDTO.username);
     const errorOrEmail = await this.createEmail(requestDTO.email);
     const errorOrHashedPassword = HashedPassword.createFromUnHashedPassword(
@@ -47,29 +56,20 @@ export class SignUpUseCase
     );
 
     return mergeInMany([
-      errorOrUsername,
-      errorOrEmail,
-      errorOrHashedPassword,
-      Status.create(AllowedStatus.UNCONFIRMED),
-      Timestamp.create(),
-      Timestamp.create(),
-    ]).map(
-      ([username, email, hashedPassword, status, createdAt, updatedAt]) => {
-        return new User({
-          username: username,
-          email: email,
-          hashedPassword: hashedPassword,
-          status,
-          createdAt,
-          updatedAt,
-        });
-      }
-    );
+      errorOrUsername.mapLeft(this.mapToFieldError("username")),
+      errorOrEmail.mapLeft(this.mapToFieldError("email")),
+      errorOrHashedPassword.mapLeft(this.mapToFieldError("password")),
+      Status.create(AllowedStatus.UNCONFIRMED).mapLeft(this.mapToFieldError("status")),
+      Timestamp.create().mapLeft(this.mapToFieldError("createdAt")),
+      Timestamp.create().mapLeft(this.mapToFieldError("updatedAt")),
+    ])
+      .mapLeft((attributesErrors) => new FieldsValidationError(attributesErrors))
+      .mapRight((attributes) => this.mapUserAttributesToUser(attributes));
   }
 
   private async createUsername(
     rawUsername: string
-  ): Promise<Either<Error, Username>> {
+  ): Promise<Either<ValidationError, Username>> {
     const errorOrUsername = Username.create(rawUsername);
 
     if (errorOrUsername.isLeft()) {
@@ -79,7 +79,7 @@ export class SignUpUseCase
     const username = errorOrUsername.value;
 
     if (await this.isUsernameTaken(username)) {
-      const error = new Error("This username is already taken.");
+      const error = new ValidationError("This username is already taken.");
       return left(error);
     }
 
@@ -92,7 +92,9 @@ export class SignUpUseCase
     return user !== null;
   }
 
-  private async createEmail(rawEmail: string): Promise<Either<Error, Email>> {
+  private async createEmail(
+    rawEmail: string
+  ): Promise<Either<ValidationError, Email>> {
     const errorOrEmail = Email.create(rawEmail);
 
     if (errorOrEmail.isLeft()) {
@@ -102,7 +104,7 @@ export class SignUpUseCase
     const email = errorOrEmail.value;
 
     if (await this.isEmailTaken(email)) {
-      const error = new Error("This email is already taken.");
+      const error = new ValidationError("This email is already taken.");
       return left(error);
     }
 
@@ -113,5 +115,27 @@ export class SignUpUseCase
     const user = await this.userRepository.findUserByEmail(email);
 
     return user !== null;
+  }
+
+  private mapToFieldError(field: string) {
+    return <TError>(error: TError) => ({ field, error });
+  }
+
+  private mapUserAttributesToUser([
+    username,
+    email,
+    hashedPassword,
+    status,
+    createdAt,
+    updatedAt,
+  ]: [Username, Email, HashedPassword, Status, Timestamp, Timestamp]): User {
+    return new User({
+      username: username,
+      email: email,
+      hashedPassword: hashedPassword,
+      status,
+      createdAt,
+      updatedAt,
+    });
   }
 }

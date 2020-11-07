@@ -6,27 +6,27 @@ import {
   httpPost,
 } from "inversify-express-utils";
 
-import TYPES from "../../ioc/types";
-import { UserServiceLocator } from "../../service-locators/user-service-locator";
+import { IOCTypes } from "../../../infrastructure/ioc/types";
+import { SignInUseCase } from "../../../application/use-cases/sign-in-use-case";
 
 @controller("/sign-in")
 export class SignInController extends BaseHttpController {
   public constructor(
-    @inject(TYPES.UserServiceLocator)
-    private readonly userService: UserServiceLocator
+    @inject(IOCTypes.SignInUseCase)
+    private readonly signInUseCase: SignInUseCase
   ) {
     super();
   }
 
   @httpPost("/")
   public async createComment(req: Request, res: Response): Promise<void> {
-    const errorsOrAuthCredentials = await this.userService.signInUseCase.execute(
+    const errorsOrAuthCredentials = await this.signInUseCase.execute(
       req.body
     );
 
     if (errorsOrAuthCredentials.isLeft()) {
       const errors = errorsOrAuthCredentials.value;
-      res.send(errors);
+      res.send(errors.serialize());
       return;
     }
 

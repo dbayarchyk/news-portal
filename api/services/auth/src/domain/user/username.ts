@@ -1,5 +1,6 @@
 import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
+import { ValidationError } from "../../shared/errors/validation-error";
 
 interface UsernameData {
   value: string;
@@ -14,7 +15,7 @@ export class Username extends ValueObject<UsernameData> {
     return this.data.value;
   }
 
-  public static create(value: string): Either<Error, Username> {
+  public static create(value: string): Either<ValidationError, Username> {
     try {
       Username.validateUsername(value);
 
@@ -26,7 +27,7 @@ export class Username extends ValueObject<UsernameData> {
 
   private static validateUsername(email: string): void | never {
     if (!email) {
-      throw new Error("Username must not be empty");
+      throw new ValidationError("Username must not be empty");
     }
   }
 }
