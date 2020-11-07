@@ -2,7 +2,6 @@ import { injectable, inject } from "inversify";
 
 import { UserRepository } from "../../domain/user/user-repository";
 import { Email } from "../../domain/user/email";
-import { HashedPassword } from "../../domain/user/hashed-password";
 import { AllowedStatus } from "../../domain/user/status";
 import { User } from "../../domain/user/user";
 import { Either, left, right } from "../../shared/logic/either";
@@ -78,14 +77,10 @@ export class SignInUseCase
       return left(error);
     }
 
-    const errorOrHashedPassword = HashedPassword.createFromUnHashedPassword(
-      requestDTO.password
-    );
+    const hashedPassword = user.getHashedPassword();
+    const isPasswordEqual = await hashedPassword.equalsToPlainTextPassword(requestDTO.password);
 
-    if (
-      errorOrHashedPassword.isLeft() ||
-      !user.isPasswordEqual(errorOrHashedPassword.value)
-    ) {
+    if (!isPasswordEqual) {
       const error = new FieldsValidationError([
         {
           field: "password",

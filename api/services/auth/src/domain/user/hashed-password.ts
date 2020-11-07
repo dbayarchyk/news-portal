@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+
 import { Either, left, right } from "../../shared/logic/either";
 import { ValueObject } from "../../shared/domain/value-object";
 import { ValidationError } from "../../shared/errors/validation-error";
@@ -20,13 +22,17 @@ export class HashedPassword extends ValueObject<HashedPasswordData> {
     return this.data.value;
   }
 
-  public static createFromUnHashedPassword(
+  public async equalsToPlainTextPassword(plainTextPassword: string): Promise<boolean> {
+    return bcrypt.compare(plainTextPassword, this.getValue());
+  }
+
+  public static async createFromUnHashedPassword(
     unHashedPassword: string
-  ): Either<ValidationError, HashedPassword> {
+  ): Promise<Either<ValidationError, HashedPassword>> {
     try {
       HashedPassword.validateUnHashedPassword(unHashedPassword);
 
-      const hashedPassword = HashedPassword.hashPassword(unHashedPassword);
+      const hashedPassword = await HashedPassword.hashPassword(unHashedPassword);
 
       return right(new HashedPassword({ value: hashedPassword }));
     } catch (error) {
@@ -69,7 +75,10 @@ export class HashedPassword extends ValueObject<HashedPasswordData> {
     }
   }
 
-  private static hashPassword(unHashedPassword: string): string {
-    return unHashedPassword;
+  private static async hashPassword(plainTextPassword: string): Promise<string> {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+
+    return hashedPassword;
   }
 }
