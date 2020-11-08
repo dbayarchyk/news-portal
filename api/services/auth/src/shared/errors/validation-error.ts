@@ -3,7 +3,7 @@ import { BaseError, SerializedError } from "./base-error";
 export class ValidationError extends BaseError {
   public constructor(message: string) {
     super(message);
-    Object.setPrototypeOf(this, BaseError.prototype);
+    Object.setPrototypeOf(this, ValidationError.prototype);
   }
 
   public serialize(): SerializedError[] {
