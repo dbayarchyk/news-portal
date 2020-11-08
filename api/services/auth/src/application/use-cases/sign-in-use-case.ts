@@ -2,23 +2,17 @@ import { injectable, inject } from "inversify";
 
 import { UserRepository } from "../../domain/user/user-repository";
 import { Email } from "../../domain/user/email";
-import { AllowedStatus } from "../../domain/user/status";
 import { User } from "../../domain/user/user";
 import { Either, left, right } from "../../shared/logic/either";
 import { UseCase } from "../../shared/application/use-case";
 import { ValidationError } from "../../shared/errors/validation-error";
 import { FieldsValidationError } from "../../shared/errors/fields-validation-error";
 import { IOCTypes } from '../../infrastructure/ioc/types';
+import { AuthService, AuthCredentials } from '../services/auth-service';
 
 export interface SignIRequestDTO {
   email: string;
   password: string;
-}
-
-export interface AuthCredentials {
-  accessToken: string;
-  refreshToken: string;
-  status: AllowedStatus;
 }
 
 @injectable()
@@ -41,7 +35,7 @@ export class SignInUseCase
     }
 
     const user = errorOrUser.value;
-    const authCredentials = this.createAuthCredentials(user);
+    const authCredentials = AuthService.createAuthCredentials(user);
 
     return right(authCredentials);
   }
@@ -91,14 +85,5 @@ export class SignInUseCase
     }
 
     return right(user);
-  }
-
-  private createAuthCredentials(user: User): AuthCredentials {
-    // TODO: create real auth tokens.
-    return {
-      accessToken: "" + user.getEmail().getValue(),
-      refreshToken: "" + user.getEmail().getValue(),
-      status: user.getStatus().getValue(),
-    };
   }
 }

@@ -32,6 +32,18 @@ export class SignInController extends BaseHttpController {
 
     const authCredentials = errorsOrAuthCredentials.value;
 
-    res.send(authCredentials);
+    res.cookie(
+      'refresh-token',
+      authCredentials.refreshToken,
+      { maxAge: authCredentials.refreshTokenExpiresInMilliseconds, httpOnly: true }
+    );
+    res.cookie(
+      'access-token',
+      authCredentials.accessToken,
+      { maxAge: authCredentials.refreshTokenExpiresInMilliseconds, httpOnly: true }
+    );
+    res.send({
+      ok: true
+    });
   }
 }

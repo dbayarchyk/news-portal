@@ -32,4 +32,4 @@ TODO: write a short overview about the tools we use to build our infrastructure:
 
 `kubectl create secret generic market-generic-secret --from-literal MONGODB_URL='mongodb://itdog-market-service:!itdog24@ds163825.mlab.com:63825/itdog-market-service'`
 
-`kubectl create secret generic auth-generic-secret --from-literal MONGODB_URL='mongodb://itdog-auth-service:!itdog24@ds033754.mlab.com:33754/itdog-auth-service'`
+`kubectl create secret generic auth-generic-secret --from-literal MONGODB_URL='mongodb://itdog-auth-service:!itdog24@ds033754.mlab.com:33754/itdog-auth-service' --from-literal ACCESS_TOKEN_SECRET='access' --from-literal REFRESH_TOKEN_SECRET='refresh'`

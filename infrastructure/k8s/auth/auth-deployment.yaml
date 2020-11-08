@@ -21,3 +21,13 @@ spec:
                 secretKeyRef:
                   name: auth-generic-secret
                   key: MONGODB_URL
+            - name: ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-generic-secret
+                  key: ACCESS_TOKEN_SECRET
+            - name: REFRESH_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-generic-secret
+                  key: REFRESH_TOKEN_SECRET
