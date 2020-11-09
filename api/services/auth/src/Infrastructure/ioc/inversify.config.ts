@@ -6,6 +6,7 @@ import { UserRepositoryMongoose } from "../persistence/mongoose/user-repository-
 import { SignInUseCase } from "../../application/use-cases/sign-in-use-case";
 import { SignUpUseCase } from "../../application/use-cases/sign-up-use-case";
 import { GetCurrentUserUseCase } from "../../application/use-cases/get-current-user-use-case";
+import { RefreshTokensUseCase } from "../../application/use-cases/refresh-tokens-use-case";
 
 export const iocContainer = new Container();
 
@@ -24,3 +25,7 @@ iocContainer
 iocContainer
   .bind<GetCurrentUserUseCase>(IOCTypes.GetCurrentUserUseCase)
   .to(GetCurrentUserUseCase);
+
+iocContainer
+  .bind<RefreshTokensUseCase>(IOCTypes.RefreshTokensUseCase)
+  .to(RefreshTokensUseCase);

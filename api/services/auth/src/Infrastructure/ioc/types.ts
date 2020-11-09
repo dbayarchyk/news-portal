@@ -3,4 +3,5 @@ export enum IOCTypes {
   SignInUseCase = 'SignInUseCase',
   SignUpUseCase = 'SignUpUseCase',
   GetCurrentUserUseCase = 'GetCurrentUserUseCase',
+  RefreshTokensUseCase = 'RefreshTokensUseCase',
 }
