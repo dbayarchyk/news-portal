@@ -3,7 +3,7 @@ import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
-  httpGet,
+  httpPost,
 } from "inversify-express-utils";
 
 import { IOCTypes } from "../../../infrastructure/ioc/types";
@@ -19,7 +19,7 @@ export class RefreshTokensController extends BaseHttpController {
     super();
   }
 
-  @httpGet("/")
+  @httpPost("/")
   public async refreshTokens(req: Request, res: Response): Promise<void> {
     const errorOrAuthCredentials= await this.refreshTokensUseCase.execute({ refreshToken: req.cookies['refresh-token'] });
 
