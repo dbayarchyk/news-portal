@@ -8,6 +8,7 @@ import {
 
 import { IOCTypes } from "../../../infrastructure/ioc/types";
 import { RefreshTokensUseCase } from "../../../application/use-cases/refresh-tokens-use-case";
+import { AuthCookiesService } from '../services/auth-cookies-service';
 
 @controller("/refresh")
 export class RefreshTokensController extends BaseHttpController {
@@ -30,16 +31,7 @@ export class RefreshTokensController extends BaseHttpController {
 
     const authCredentials = errorOrAuthCredentials.value;
 
-    res.cookie(
-      'refresh-token',
-      authCredentials.refreshToken,
-      { maxAge: authCredentials.refreshTokenExpiresInMilliseconds, httpOnly: true }
-    );
-    res.cookie(
-      'access-token',
-      authCredentials.accessToken,
-      { maxAge: authCredentials.refreshTokenExpiresInMilliseconds, httpOnly: true }
-    );
+    AuthCookiesService.setAuthCookies(authCredentials, res.cookie.bind(res));
     res.send({
       ok: true
     });
