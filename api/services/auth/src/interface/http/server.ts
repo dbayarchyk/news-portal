@@ -7,6 +7,7 @@ import "./controllers/sign-up-controller";
 import "./controllers/sign-in-controller";
 import "./controllers/get-current-user-controller";
 import "./controllers/refresh-tokens-controller";
+import "./controllers/sign-out-controller";
 
 import { iocContainer } from "../../infrastructure/ioc/inversify.config";
 import { connect } from "../../infrastructure/persistence/mongoose/connect";

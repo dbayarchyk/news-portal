@@ -17,4 +17,17 @@ export class AuthCookiesService {
       { maxAge: authCredentials.refreshTokenExpiresInMilliseconds, httpOnly: true }
     );
   }
+
+  public static removeAuthCookies(setCookie: SetCookie): void {
+    setCookie(
+      'refresh-token',
+      '',
+      { maxAge: 0, httpOnly: true }
+    );
+    setCookie(
+      'access-token',
+      '',
+      { maxAge: 0, httpOnly: true }
+    );
+  }
 }
