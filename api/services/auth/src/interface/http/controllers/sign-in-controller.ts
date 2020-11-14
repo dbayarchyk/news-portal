@@ -26,8 +26,9 @@ export class SignInController extends BaseHttpController {
     );
 
     if (errorsOrAuthCredentials.isLeft()) {
-      const errors = errorsOrAuthCredentials.value;
-      res.send(errors.serialize());
+      const error = errorsOrAuthCredentials.value;
+      res.status(error.statusCode);
+      res.send(error.serialize());
       return;
     }
 

@@ -23,8 +23,9 @@ export class SignUpController extends BaseHttpController {
     const errorsOrUser = await this.signUpUseCase.execute(req.body);
 
     if (errorsOrUser.isLeft()) {
-      const errors = errorsOrUser.value;
-      res.send(errors.serialize());
+      const error = errorsOrUser.value;
+      res.status(error.statusCode);
+      res.send(error.serialize());
       return;
     }
 
