@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import Container from "./ui/layouts/container";
 import Cluster from "./ui/layouts/cluster";
+import Switcher from "./ui/layouts/switcher";
+import SignInLink from './sign-in-link';
 import styles from "./nav-bar.module.scss";
 
 const NAV_ITEMS = [
@@ -63,22 +65,30 @@ const NavBar: React.FC = () => {
       <nav className={styles.nav} ref={navRef}>
         <Container>
           <div className={styles.container}>
-            <Cluster scale="6">
-              <ul className={styles.list}>
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href}>
-                      <a
-                        className={styles.link}
-                        //   aria-current={segment === item.href ? "page" : undefined}
-                      >
-                        {item.title}
-                      </a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Cluster>
+            <Switcher scale="6" threshold={20}>
+              <div>
+                <Cluster scale="6">
+                  <ul className={styles.list}>
+                    {NAV_ITEMS.map((item) => (
+                      <li key={item.href}>
+                        <Link href={item.href}>
+                          <a
+                            className={styles.link}
+                            //   aria-current={segment === item.href ? "page" : undefined}
+                          >
+                            {item.title}
+                          </a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </Cluster>
+
+                <div className={styles.menuContainer}>
+                  <SignInLink className={styles.link} />
+                </div>
+              </div>
+            </Switcher>
           </div>
         </Container>
       </nav>
