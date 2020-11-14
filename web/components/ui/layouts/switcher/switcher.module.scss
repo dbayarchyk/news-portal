@@ -1,0 +1,28 @@
+.switcher {
+  > * {
+    display: flex;
+    flex-wrap: wrap;
+    // margin: calc(($ {(props) => props.theme.spacings[props.scale]}px / 2) * -1);
+  }
+
+  > * > * {
+    flex-grow: 1;
+    /* Prevent the width from exploding in IE11 */
+    max-width: 100%;
+  }
+}
+
+@for $i from 1 through 8 {
+  .switcher#{$i} {
+    > * {
+      margin: calc((var(--spacing-#{$i}) / 2) * -1);
+    }
+
+    > * > * {
+      flex-basis: calc(
+        (var(--threshold) - (100% - var(--spacing-#{$i}))) * 999
+      );
+      margin: calc(var(--spacing-#{$i}) / 2);
+    }
+  }
+}
