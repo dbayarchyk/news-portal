@@ -6,6 +6,7 @@ import HeadlineText from "../ui/headline-text";
 import TextField from "../ui/fields/text-field";
 import useForm from "../ui/form/use-form";
 import Stack from "../ui/layouts/stack";
+import signIn from '../../api/auth/sign-in';
 
 const SignInForm: React.FC = () => {
   const formState = useForm<FormValues>({
@@ -15,6 +16,7 @@ const SignInForm: React.FC = () => {
     },
     onValidate: validateFormValues,
     onSubmit: async (values) => {
+      await signIn(values);
       navigateToNextPage();
     },
   });
