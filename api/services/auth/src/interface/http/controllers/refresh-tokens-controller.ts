@@ -25,7 +25,8 @@ export class RefreshTokensController extends BaseHttpController {
 
     if (errorOrAuthCredentials.isLeft()) {
       const error = errorOrAuthCredentials.value;
-      res.send(error.serialize ? error.serialize() : error.message);
+      res.status(error.statusCode);
+      res.send(error.serialize());
       return;
     }
 

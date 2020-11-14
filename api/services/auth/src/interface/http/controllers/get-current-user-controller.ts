@@ -24,7 +24,8 @@ export class GetCurrentUserController extends BaseHttpController {
 
     if (errorOrCurrentUser.isLeft()) {
       const error = errorOrCurrentUser.value;
-      res.send(error.serialize ? error.serialize() : error.message);
+      res.status(error.statusCode);
+      res.send(error.serialize());
       return;
     }
 
