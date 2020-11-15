@@ -7,6 +7,8 @@ import TextField from "../ui/fields/text-field";
 import useForm from "../ui/form/use-form";
 import Stack from "../ui/layouts/stack";
 import signIn from '../../api/auth/sign-in';
+import getCurrentUser from '../../api/auth/get-current-user';
+import { useAuth } from '../../context/auth';
 
 const SignInForm: React.FC = () => {
   const formState = useForm<FormValues>({
@@ -17,10 +19,12 @@ const SignInForm: React.FC = () => {
     onValidate: validateFormValues,
     onSubmit: async (values) => {
       await signIn(values);
+      auth.signIn(await getCurrentUser({}));
       navigateToNextPage();
     },
   });
   const router = useRouter();
+  const auth = useAuth();
 
   const navigateToNextPage = () => {
     const returnLink = router.query.returnLink;
