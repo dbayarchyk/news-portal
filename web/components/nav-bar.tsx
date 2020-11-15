@@ -4,7 +4,7 @@ import Link from "next/link";
 import Container from "./ui/layouts/container";
 import Cluster from "./ui/layouts/cluster";
 import Switcher from "./ui/layouts/switcher";
-import SignInLink from './sign-in-link';
+import UserMenu from './user-menu';
 import styles from "./nav-bar.module.scss";
 
 const NAV_ITEMS = [
@@ -85,7 +85,7 @@ const NavBar: React.FC = () => {
                 </Cluster>
 
                 <div className={styles.menuContainer}>
-                  <SignInLink className={styles.link} />
+                  <UserMenu />
                 </div>
               </div>
             </Switcher>
