@@ -6,13 +6,13 @@ type SignInLinkProps = {
   className?: string;
 };
 
-const SignInLink: React.FC<SignInLinkProps> = ({ className }) => {
+const SignInLink: React.FC<SignInLinkProps> = ({ className, children = "Sign In"  }) => {
   const router = useRouter();
 
   return (
     <Link href={`/sign-in?returnLink=${router.asPath}`}>
       <a className={className}>
-        Sign In
+        {children}
       </a>
     </Link>
   );

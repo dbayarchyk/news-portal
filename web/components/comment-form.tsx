@@ -3,10 +3,13 @@ import { useMutation } from "react-query";
 
 import { createComment, Comment } from "../api/comment";
 import PrimaryButton from "./ui/buttons/primary-button";
+import SecondaryButton from "./ui/buttons/secondary-button";
 import useForm from "./ui/form/use-form";
 import TextareaField from "./ui/fields/textarea-field";
 import Stack from "./ui/layouts/stack";
 import Cluster from "./ui/layouts/cluster";
+import { useAuth } from '../context/auth';
+import SignInLink from './sign-in-link';
 import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
@@ -39,6 +42,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
       }
     },
   });
+  const auth = useAuth();
 
   const resetForm = () => {
     formState.resetForm();
@@ -62,6 +66,17 @@ const CommentForm: React.FC<CommentFormProps> = ({
   const inputId = parentCommentId
     ? `reply-comment-to-${parentCommentId}`
     : "new-comment";
+
+  if (!auth.isSignedIn) {
+    return (
+      <SignInLink>
+        <SecondaryButton
+          className={styles.signInButton}
+          tabIndex={-1} title="Sign in to leave a comment"
+        />
+      </SignInLink>
+    )
+  }
 
   return (
     <form onSubmit={formState.onFormSubmit}>

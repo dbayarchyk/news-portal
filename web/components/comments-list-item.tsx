@@ -5,6 +5,7 @@ import {
   DisclosureContent,
 } from "reakit/Disclosure";
 
+import { useAuth } from '../context/auth';
 import CommentsList, { CommentTreeItem } from "./comments-list";
 import CommentForm from "./comment-form";
 import { Comment } from "../api/comment";
@@ -31,6 +32,8 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
       replyCommentTextareaEl.current.focus();
     }
   }, [replyCommentTextareaEl.current, replyCommentFormDisclosure.visible]);
+
+  const auth = useAuth();
 
   const handleReplyFormCanceling = () => {
     replyCommentFormDisclosure.hide();
@@ -62,7 +65,7 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
             </BodyText>
             <BodyText>{comment.content}</BodyText>
             <Disclosure {...replyCommentFormDisclosure}>
-              {(disclosureProps) => (
+              {(disclosureProps) => auth.isSignedIn ? (
                 <div>
                   <FlatButton
                     {...disclosureProps}
@@ -70,7 +73,7 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
                     title="Reply"
                   />
                 </div>
-              )}
+              ): null}
             </Disclosure>
           </Stack>
         </div>
