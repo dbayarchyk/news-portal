@@ -1,15 +1,11 @@
-import AUTH_SERVICE_API from './api';
-
 export type User = {
   id: string;
   email: string;
   username: string;
 };
-  
-const getCurrentUser = async (headers: Record<string, string>): Promise<User> => {
-  const response = await fetch(
-    `${AUTH_SERVICE_API}/me/`, { headers }
-  );
+
+const getCurrentUser = async (fetch: typeof window.fetch): Promise<User> => {
+  const response = await fetch('/auth/me/');
 
   switch (response.status) {
     case 200: {
