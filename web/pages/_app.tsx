@@ -4,6 +4,7 @@ import App, { AppContext, AppInitialProps } from "next/app";
 import SiteLayout from "../components/site-layout";
 import { AuthProvider }  from '../context/auth';
 import getCurrentUser, { User } from '../api/auth/get-current-user';
+import getAPIFetch from '../api/get-api-fetch';
 import "../styles/normalize.scss";
 import "../styles/theme.scss";
 import "../styles/global.scss";
@@ -18,7 +19,7 @@ class MyApp extends App<MyAppInitialProps> {
 
     try {
       const currentUser = await getCurrentUser(
-        context.ctx.req ? context.ctx.req.headers as Record<string, string> : {},
+        getAPIFetch(context.ctx)
       );
 
       return {
