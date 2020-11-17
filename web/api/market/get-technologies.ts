@@ -7,7 +7,7 @@ type TechnologyCollection = {
   items: Technology[];
 };
 
-const getTechnologies = async (): Promise<TechnologyCollection> => {
+const getTechnologies = async (fetch: typeof window.fetch): Promise<TechnologyCollection> => {
   const response = await fetch("/market/technologies/");
 
   switch (response.status) {

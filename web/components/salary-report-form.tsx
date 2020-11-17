@@ -1,13 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-import {
-  createSalaryReport,
-  CreateSalaryReportData,
-  Position,
-  City,
-  Technology,
-} from "../api/market";
+import createSalaryReport, { CreateSalaryReportData } from "../api/market/create-salary-report";
+import type { Position } from "../api/market/get-positions";
+import type { City } from "../api/market/get-cities";
+import type { Technology } from "../api/market/get-technologies";
+import fetchAPI from "../api/fetch-api";
 import PrimaryButton from "./ui/buttons/primary-button";
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
@@ -89,7 +87,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
     onSubmit: async (values) => {
       const createSalaryReportData = formValuesToCreateSalaryReportDate(values);
 
-      await createSalaryReport(createSalaryReportData);
+      await createSalaryReport(fetchAPI, createSalaryReportData);
       router.push("./salaries");
     },
   });

@@ -11,7 +11,7 @@ const createComment = async (
   fetch: typeof window.fetch,
   data: CreateCommentData
 ): Promise<Comment | never> => {
-  const response = await fetch("/comments/", {
+  const response = await fetch("/comment/comments/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

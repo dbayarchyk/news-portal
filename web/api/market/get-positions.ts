@@ -7,7 +7,7 @@ type PositionCollection = {
   items: Position[];
 };
 
-const getPositions = async (): Promise<PositionCollection> => {
+const getPositions = async (fetch: typeof window.fetch): Promise<PositionCollection> => {
   const response = await fetch("/market/positions/");
 
   switch (response.status) {

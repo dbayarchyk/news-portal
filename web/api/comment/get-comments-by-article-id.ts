@@ -17,7 +17,7 @@ const getCommentsByArticleId = async (
   articleId: string
 ): Promise<CommentCollection> => {
   const response = await fetch(
-    `/comments/article/${articleId}/`
+    `/comment/comments/article/${articleId}/`
   );
 
   switch (response.status) {

@@ -7,6 +7,8 @@ import SalaryReportForm from "../../components/salary-report-form";
 import getTechnologies, { Technology } from "../../api/market/get-technologies";
 import getCities, { City } from "../../api/market/get-cities";
 import getPositions, { Position } from "../../api/market/get-positions";
+import fetchAPI from "../../api/fetch-api";
+import extendFetchWithSSRContext from "../../api/extend-fetch-with-ssr-context";
 import { getHeadTitle } from "../../utils/head-title";
 import styles from "./share.module.scss";
 
@@ -16,10 +18,11 @@ type ShareSalaryPageProps = {
   technologies: Technology[];
 };
 
-export const getServerSideProps: GetServerSideProps<ShareSalaryPageProps> = async () => {
-  const cityCollection = await getCities().catch(() => ({ items: [] }));
-  const positionCollection = await getPositions().catch(() => ({ items: [] }));
-  const technologyCollection = await getTechnologies().catch(() => ({
+export const getServerSideProps: GetServerSideProps<ShareSalaryPageProps> = async (context) => {
+  const fetchAPIWithSSRContext = extendFetchWithSSRContext(context, fetchAPI);
+  const cityCollection = await getCities(fetchAPIWithSSRContext).catch(() => ({ items: [] }));
+  const positionCollection = await getPositions(fetchAPIWithSSRContext).catch(() => ({ items: [] }));
+  const technologyCollection = await getTechnologies(fetchAPIWithSSRContext).catch(() => ({
     items: [],
   }));
 
