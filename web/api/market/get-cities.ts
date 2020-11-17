@@ -7,7 +7,7 @@ type CityCollection = {
   items: City[];
 };
 
-const getCities = async (): Promise<CityCollection> => {
+const getCities = async (fetch: typeof window.fetch): Promise<CityCollection> => {
   const response = await fetch("/market/cities/");
 
   switch (response.status) {

@@ -1,6 +1,9 @@
-import { NextPageContext } from 'next';
+import { NextPageContext, GetServerSidePropsContext } from 'next';
 
-const extendFetchWithSSRContext = (context: NextPageContext, fetch: typeof window.fetch) =>
+const extendFetchWithSSRContext = (
+  context: NextPageContext | GetServerSidePropsContext,
+  fetch: typeof window.fetch,
+) =>
   (input: RequestInfo, init: RequestInit = {}): ReturnType<typeof window.fetch> =>
     fetch(
       input,

@@ -1,5 +1,5 @@
-import type {City} from './get-cities';
-import type {Technology} from './get-technologies';
+import type { City } from './get-cities';
+import type { Technology } from './get-technologies';
 
 export type SalaryReport = {
   id: string;
@@ -20,9 +20,10 @@ export type CreateSalaryReportData = {
 };
   
 const createSalaryReport = async (
+  fetch: typeof window.fetch,
   data: CreateSalaryReportData
 ): Promise<SalaryReport | never> => {
-  const response = await fetch("market/salary-reports/", {
+  const response = await fetch("/market/salary-reports/", {
     method: "POST",
     credentials: "omit",
     headers: {

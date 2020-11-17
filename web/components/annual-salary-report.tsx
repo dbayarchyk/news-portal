@@ -5,7 +5,8 @@ import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 import Stack from "./ui/layouts/stack";
 import AnnualSalaryReportData from "./annual-salary-report-data";
 import AnnualSalaryReportMissingData from "./annual-salary-report-missing-data";
-import { AnnualSalaryReportItem, getAnnualSalaryReport } from "../api/market";
+import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../api/market/get-annual-salary-report";
+import fetchAPI from "../api/fetch-api";
 
 type AnnualSalaryReportProps = {
   initialAnnualSalaryReport: AnnualSalaryReportItem[];
@@ -24,7 +25,8 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
     `annual-salary-report-${tabState.selectedId}`,
     () =>
       getAnnualSalaryReport(
-        tabState.selectedId as Parameters<typeof getAnnualSalaryReport>[0]
+        fetchAPI,
+        tabState.selectedId as Parameters<typeof getAnnualSalaryReport>[1]
       ),
     { initialData: initialAnnualSalaryReport }
   );

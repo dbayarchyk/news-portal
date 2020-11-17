@@ -5,6 +5,8 @@ import Head from "next/head";
 import "isomorphic-fetch";
 
 import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../../api/market/get-annual-salary-report";
+import fetchAPI from "../../api/fetch-api";
+import extendFetchWithSSRContext from "../../api/extend-fetch-with-ssr-context";
 import AnnualSalaryReport from "../../components/annual-salary-report";
 import HeadlineText from "../../components/ui/headline-text";
 import BodyText from "../../components/ui/body-text";
@@ -17,9 +19,10 @@ type SalariesPageProps = {
   annualSalaryReportGroupBy: string;
 };
 
-export const getServerSideProps: GetServerSideProps<SalariesPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<SalariesPageProps> = async (context) => {
   const annualSalaryReportGroupBy = "technology";
   const annualSalaryReport = await getAnnualSalaryReport(
+    extendFetchWithSSRContext(context, fetchAPI),
     annualSalaryReportGroupBy
   );
 

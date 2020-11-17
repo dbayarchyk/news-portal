@@ -10,6 +10,7 @@ export type AnnualSalaryReportItem = {
 };
 
 const getAnnualSalaryReport = async (
+  fetch: typeof window.fetch,
   groupBy: "city" | "position" | "technology"
 ): Promise<AnnualSalaryReportItem[] | never> => {
   const response = await fetch(
