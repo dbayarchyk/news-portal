@@ -1,16 +1,13 @@
-import "isomorphic-fetch";
-
-import AUTH_SERVICE_API from './api';
-
 export type SingInData = {
   email: string;
   password: string;
 };
 
 const signIn = async (
+  fetch: typeof window.fetch,
   data: SingInData
 ): Promise<void | never> => {
-  const response = await fetch(`${AUTH_SERVICE_API}/sign-in/`, {
+  const response = await fetch('/auth/sign-in/', {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

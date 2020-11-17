@@ -4,14 +4,9 @@ import Head from "next/head";
 import "isomorphic-fetch";
 
 import SalaryReportForm from "../../components/salary-report-form";
-import {
-  Position,
-  City,
-  Technology,
-  getCities,
-  getPositions,
-  getTechnologies,
-} from "../../api/market";
+import getTechnologies, { Technology } from "../../api/market/get-technologies";
+import getCities, { City } from "../../api/market/get-cities";
+import getPositions, { Position } from "../../api/market/get-positions";
 import { getHeadTitle } from "../../utils/head-title";
 import styles from "./share.module.scss";
 

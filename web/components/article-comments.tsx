@@ -2,7 +2,8 @@ import React from "react";
 import { useQuery } from "react-query";
 
 import { ArticleComments_ArticleFragment } from "../generated/graphql-types";
-import { getCommentsByArticleId } from "../api/comment";
+import getCommentsByArticleId from "../api/comment/get-comments-by-article-id";
+import fetchAPI from '../api/fetch-api';
 import CommentsTree from "./comments-tree";
 import CommentForm from "./comment-form";
 import HeadlineText from "./ui/headline-text";
@@ -19,7 +20,7 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
 }) => {
   const { data, isLoading, isError, refetch } = useQuery(
     `article-${article.sys.id}-comments`,
-    () => getCommentsByArticleId(article.sys.id),
+    () => getCommentsByArticleId(fetchAPI, article.sys.id),
     {
       enabled: article.areCommentsEnabled,
     }

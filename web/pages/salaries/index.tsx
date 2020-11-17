@@ -4,10 +4,7 @@ import Link from "next/link";
 import Head from "next/head";
 import "isomorphic-fetch";
 
-import {
-  AnnualSalaryReportItem,
-  getAnnualSalaryReport,
-} from "../../api/market";
+import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../../api/market/get-annual-salary-report";
 import AnnualSalaryReport from "../../components/annual-salary-report";
 import HeadlineText from "../../components/ui/headline-text";
 import BodyText from "../../components/ui/body-text";

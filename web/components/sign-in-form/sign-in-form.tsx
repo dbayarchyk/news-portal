@@ -8,7 +8,7 @@ import useForm from "../ui/form/use-form";
 import Stack from "../ui/layouts/stack";
 import signIn from '../../api/auth/sign-in';
 import getCurrentUser from '../../api/auth/get-current-user';
-import getAPIFetch from '../../api/get-api-fetch';
+import fetchAPI from '../../api/fetch-api';
 import { useAuth } from '../../context/auth';
 
 const SignInForm: React.FC = () => {
@@ -19,9 +19,8 @@ const SignInForm: React.FC = () => {
     },
     onValidate: validateFormValues,
     onSubmit: async (values) => {
-      await signIn(values);
-      const fetch = getAPIFetch();
-      auth.signIn(await getCurrentUser(fetch));
+      await signIn(fetchAPI, values);
+      auth.signIn(await getCurrentUser(fetchAPI));
       navigateToNextPage();
     },
   });
