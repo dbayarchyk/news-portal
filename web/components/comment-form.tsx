@@ -1,7 +1,9 @@
 import React from "react";
 import { useMutation } from "react-query";
 
-import { createComment, Comment } from "../api/comment";
+import { Comment } from "../api/comment/get-comments-by-article-id";
+import createComment, { CreateCommentData } from "../api/comment/create-comment";
+import fetchAPI from '../api/fetch-api';
 import PrimaryButton from "./ui/buttons/primary-button";
 import SecondaryButton from "./ui/buttons/secondary-button";
 import useForm from "./ui/form/use-form";
@@ -52,7 +54,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
   const [
     executeCreateCommentMutation,
     createCommentMutationResult,
-  ] = useMutation(createComment, {
+  ] = useMutation((commentData: CreateCommentData) => createComment(fetchAPI, commentData), {
     onError: (error) => {
       if ("content" in error) {
         throw error;
