@@ -2,8 +2,6 @@ version: 2.1
 orbs:
   node: circleci/node@4.0.0
   docker: circleci/docker@1.2.1
-  # kubernetes: circleci/kubernetes@0.11.1
-  cypress: cypress-io/cypress@1.26.0
 jobs:
   # --- START: Market service jobs: ---
   init-market-service:
@@ -11,7 +9,6 @@ jobs:
       name: node/default
     steps:
       - checkout
-      # - run: cd api/services/market && npm install
       - node/install-packages:
           app-dir: ./api/services/market
       - persist_to_workspace:
@@ -52,7 +49,6 @@ jobs:
       name: node/default
     steps:
       - checkout
-      # - run: cd api/services/comment && npm install
       - node/install-packages:
           app-dir: ./api/services/comment
       - persist_to_workspace:
@@ -94,7 +90,6 @@ jobs:
       name: node/default
     steps:
       - checkout
-      # - run: cd web && npm install
       - node/install-packages:
           app-dir: ./web
       - persist_to_workspace:
@@ -128,166 +123,54 @@ jobs:
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-web
   # --- END: Web jobs ---
-
-  # --- START: End to End jobs: ---
-  run-e2e-tests:
-    machine: true
-    environment:
-      CHANGE_MINIKUBE_NONE_USER: true
-      KUBECONFIG: /home/circleci/.kube/config
-      MINIKUBE_WANTUPDATENOTIFICATION: false
-      MINIKUBE_WANTREPORTERRORPROMPT: false
-      MINIKUBE_HOME: /home/circleci
-      K8S_VERSION: v1.19.0
-      MINIKUBE_VERSION: v1.14.0
-    steps:
-      - checkout
-      # - run:
-      #     name: Update System and Install Required Packages
-      #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install -y apt-transport-https
-      #     # sudo apt-get upgrade
-      # - run:
-      #     name: Install VirtualBox Hypervisor
-      #     command: |
-      #       sudo apt install -y virtualbox
-      #       sudo apt install -y virtualbox-ext-pack
-      # - run:
-      #     name: Download minikube
-      #     command: |
-      #       wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      #       chmod +x minikube-linux-amd64
-      #       sudo mv minikube-linux-amd64 /usr/local/bin/minikube
-      # - run:
-      #     name: Install kubectl
-      #     command: |
-      #       curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-      #       chmod +x ./kubectl
-      #       sudo mv ./kubectl /usr/local/bin/kubectl
-      # - run:
-      #     name: Starting minikube
-      #     command: |
-      #       minikube start
-
-      - run:
-          command: |
-            sudo apt-get update
-            sudo apt install conntrack
-      - run: curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/latest/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-      - run: curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-      - run: sudo minikube start --vm-driver=none
-      - run: minikube update-context
-      - run: JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
-
-      # - run:
-      #     name: setup kubectl
-      #     command: |
-      #       curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-      #       mkdir -p ${HOME}/.kube
-      #       touch ${HOME}/.kube/config
-      # - run:
-      #     name: Setup minikube
-      #     command: |
-      #       # curl -Lo minikube https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-      #       curl -LO https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-linux-amd64 && sudo install minikube-linux-amd64 /usr/local/bin/minikube
-      # - run:
-      #     name: Start minikube
-      #     command: |
-      #       sudo minikube start --vm-driver=none --kubernetes-version=${K8S_VERSION}
-      # - run:
-      #     name: Enable minikube ingress
-      #     command: |
-      #       minikube addons enable ingress
-      # - run:
-      #     name: Adjust local /etc/hosts
-      #     command: |
-      #       echo "$(minikube ip) itdog.de" | tee -a /etc/hosts
-      # - run:
-      #     name: Create kubernetes secrets
-      #     command: |
-      #       kubectl create secret generic comment-generic-secret --from-literal MONGODB_URL=$COMMENT_SERVICE_MONGODB_URL
-      #       kubectl create secret generic market-generic-secret --from-literal MONGODB_URL=$MARKET_SERVICE_MONGODB_URL
-      # - run:
-      #     name: Setup skaffold
-      #     command: |
-      #       curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo -E install skaffold /usr/local/bin/
-      # - run:
-      #     name: Start skaffold
-      #     command: |
-      #       skaffold run
-      # - run: npm run cypress:headless
-  # --- END: End to End jobs ---
 workflows:
   build-and-publish-docker-images:
     jobs:
-      # - init-market-service
-      # - init-comment-service
-      # - init-web
+      - init-market-service
+      - init-comment-service
+      - init-web
 
-      # - lint-market-service:
-      #     requires:
-      #       - init-market-service
-      # - lint-comment-service:
-      #     requires:
-      #       - init-comment-service
-      # - lint-web:
-      #     requires:
-      #       - init-web
+      - lint-market-service:
+          requires:
+            - init-market-service
+      - lint-comment-service:
+          requires:
+            - init-comment-service
+      - lint-web:
+          requires:
+            - init-web
 
-      # - test-market-service:
-      #     requires:
-      #       - init-market-service
-      # - test-comment-service:
-      #     requires:
-      #       - init-comment-service
-      # - test-web:
-      #     requires:
-      #       - init-web
+      - test-market-service:
+          requires:
+            - init-market-service
+      - test-comment-service:
+          requires:
+            - init-comment-service
+      - test-web:
+          requires:
+            - init-web
 
-      - run-e2e-tests
-
-      # - cypress/install:
-      #     # requires:
-      #     #   - lint-market-service
-      #     #   - lint-comment-service
-      #     #   - lint-web
-      #     #   - test-market-service
-      #     #   - test-comment-service
-      #     #   - test-web
-      #     post-checkout:
-      #       - kubernetes/install-kubectl
-      #       - run: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      #       - run: install minikube-linux-amd64 /usr/local/bin/minikube
-      #       - run: minikube start
-      #       - run: echo "$(minikube ip) itdog.de" | tee -a /etc/hosts
-      #       - run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-      #       - run: install skaffold /usr/local/bin/
-      # - cypress/run:
-      #     requires:
-      #       - cypress/install
-      #     start: skaffold run
-      #     wait-on: http://itdog.de
-      #     store_artifacts: true
-
-      # - build-and-push-market-service-docker-image:
-      #     requires:
-      #       - cypress/run
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - build-and-push-comment-service-docker-image:
-      #     requires:
-      #       - cypress/run
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - build-and-push-web-docker-image:
-      #     requires:
-      #       - cypress/run
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+      - build-and-push-market-service-docker-image:
+          requires:
+            - lint-market-service
+            - test-market-service
+          filters:
+            branches:
+              only:
+                - master
+      - build-and-push-comment-service-docker-image:
+          requires:
+            - lint-comment-service
+            - test-comment-service
+          filters:
+            branches:
+              only:
+                - master
+      - build-and-push-web-docker-image:
+          requires:
+            - lint-web
+            - test-web
+          filters:
+            branches:
+              only:
+                - master
