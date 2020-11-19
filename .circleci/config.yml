@@ -83,6 +83,46 @@ jobs:
       - run: docker push dbayarchyk/itdog-comment-service
   # --- END: Comment service jobs ---
 
+  # --- START: Auth service jobs: ---
+  init-auth-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: ./api/services/auth
+      - persist_to_workspace:
+          root: ./api/services/auth
+          paths:
+            - node_modules/*
+
+  lint-auth-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/auth
+      - run: cd api/services/auth && npm run lint
+
+  test-auth-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/auth
+      - run: cd api/services/auth && npm run test
+
+  build-and-push-auth-service-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build -t dbayarchyk/itdog-auth-service -f ~/project/api/services/auth/Dockerfile ~/project/api/services/auth
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: docker push dbayarchyk/itdog-auth-service
+  # --- END: Auth service jobs ---
+
   # --- START: Web jobs: ---
   init-web:
     executor:
@@ -127,6 +167,7 @@ workflows:
     jobs:
       - init-market-service
       - init-comment-service
+      - init-auth-service
       - init-web
 
       - lint-market-service:
@@ -135,6 +176,9 @@ workflows:
       - lint-comment-service:
           requires:
             - init-comment-service
+      - lint-auth-service:
+          requires:
+            - init-auth-service
       - lint-web:
           requires:
             - init-web
@@ -145,6 +189,9 @@ workflows:
       - test-comment-service:
           requires:
             - init-comment-service
+      - test-auth-service:
+          requires:
+            - init-auth-service
       - test-web:
           requires:
             - init-web
@@ -161,6 +208,14 @@ workflows:
           requires:
             - lint-comment-service
             - test-comment-service
+          filters:
+            branches:
+              only:
+                - master
+      - build-and-push-auth-service-docker-image:
+          requires:
+            - lint-auth-service
+            - test-auth-service
           filters:
             branches:
               only:
