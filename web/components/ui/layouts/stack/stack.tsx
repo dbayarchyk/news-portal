@@ -16,7 +16,7 @@ const SCALE_CLASSNAMES = {
 type StackProps = {
   className?: string;
   scale: keyof typeof SCALE_CLASSNAMES;
-  as?: "ul" | "ol" | "div";
+  as?: "ul" | "ol" | "div" | "section";
   "aria-describedby"?: string;
   "data-testid"?: string;
 };

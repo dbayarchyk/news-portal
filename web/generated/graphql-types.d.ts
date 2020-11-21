@@ -589,7 +589,7 @@ export type ArticlePreview_ArticleFragment = (
   ) }
 );
 
-export type ArticlePreviews_ArticleCollectionFragment = (
+export type RecentArticles_ArticleCollectionFragment = (
   { __typename?: 'ArticleCollection' }
   & { items: Array<Maybe<(
     { __typename?: 'Article' }
@@ -659,6 +659,6 @@ export type HomePageAllArticlesQuery = (
   { __typename?: 'Query' }
   & { articleCollection?: Maybe<(
     { __typename?: 'ArticleCollection' }
-    & ArticlePreviews_ArticleCollectionFragment
+    & RecentArticles_ArticleCollectionFragment
   )> }
 );
