@@ -1,10 +1,10 @@
 import React from "react";
 
-import ArticlePreview from "./article-preview";
-import Stack from "./ui/layouts/stack";
-import HeadlineText from "./ui/headline-text";
-import HeadlineDash from "./ui/headline-dash";
-import { RecentArticles_ArticleCollectionFragment } from "../generated/graphql-types";
+import ArticlePreview from "../article-preview";
+import Stack from "../ui/layouts/stack";
+import HeadlineText from "../ui/headline-text";
+import HeadlineDash from "../ui/headline-dash";
+import { RecentArticles_ArticleCollectionFragment } from "../../generated/graphql-types";
 import styles from "./recent-articles.module.scss";
 
 type RecentArticlesProps = {
@@ -18,7 +18,7 @@ const RecentArticles: React.FCWithFragments<RecentArticlesProps> = ({
 
   return (
     <Stack as="section" scale="4">
-      <HeadlineText level="1" id={headlineId}>
+      <HeadlineText level="2" id={headlineId}>
         <HeadlineDash /> Recent news
       </HeadlineText>
 
