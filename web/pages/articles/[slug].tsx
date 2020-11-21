@@ -1,8 +1,8 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Head from "next/head";
-import "isomorphic-fetch";
 
+import graphql from '../../api/contentful/graphql';
 import Article from "../../components/article";
 import ArticleComments from "../../components/article-comments";
 import Center from "../../components/ui/layouts/center";
@@ -11,31 +11,20 @@ import { ArticlePageQuery } from "../../generated/graphql-types";
 import { getHeadTitle } from "../../utils/head-title";
 
 async function queryAllArticles() {
-  const response = await fetch(
-    `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: /* GraphQL */ `
-          query ArticlePageAllArticles {
-            articleCollection {
-              items {
-                sys {
-                  id
-                }
-                slug
-              }
+  const responsePayload = await graphql(
+    /* GraphQL */ `
+      query ArticlePageAllArticles {
+        articleCollection {
+          items {
+            sys {
+              id
             }
+            slug
           }
-        `,
-      }),
-    }
+        }
+      }
+    `,
   );
-  const responsePayload = await response.json();
 
   return responsePayload;
 }
@@ -55,33 +44,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 async function queryArticle(slug) {
-  const response = await fetch(
-    `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: /* GraphQL */ `
-          query ArticlePage {
-            articleCollection(
-              where: { slug: "${slug}" }
-            ) {
-              items {
-                ... Article_article
-                ... ArticleComments_article
-              }
-            }
+  const responsePayload = await graphql(
+    /* GraphQL */ `
+      query ArticlePage {
+        articleCollection(
+          where: { slug: "${slug}" }
+        ) {
+          items {
+            ... Article_article
+            ... ArticleComments_article
           }
-          ${Article.fragments.article}
-          ${ArticleComments.fragments.article}
-        `,
-      }),
-    }
+        }
+      }
+      ${Article.fragments.article}
+      ${ArticleComments.fragments.article}
+    `,
   );
-  const responsePayload = await response.json();
 
   return responsePayload;
 }
