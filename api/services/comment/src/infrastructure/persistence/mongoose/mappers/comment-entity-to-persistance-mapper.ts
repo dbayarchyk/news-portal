@@ -12,7 +12,7 @@ export class CommentEntityToPersistanceMapper {
     const updatedAt = comment.getUpdatedAt();
 
     return {
-      _id: comment.id.toString(),
+      _id: comment.id.toValue(),
       content: content.getValue(),
       articleId: articleId.getValue().toValue(),
       authorId: authorId.getValue().toValue(),
