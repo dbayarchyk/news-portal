@@ -16,6 +16,8 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+          - src: "**/*.json"
+            dest: .
           - src: "**/*.tsx?"
             dest: .
           - src: "styles/**/*"
