@@ -22,6 +22,10 @@ export type Scalars = {
   HexColor: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
+  /** The Circle scalar type represents a circle, defined by the coordinates of its center and a radius. The Circle type is used to represent a searchable area together with the '_within_circle' filter. */
+  Circle: any;
+  /** The Rectangle scalar type represents a rectangle, defined by the coordinates of its top left and bottom right corners. The Rectangle type is used to represent a searchable area together with the '_within_rectangle' filter. */
+  Rectangle: any;
 };
 
 export type Query = {
@@ -30,6 +34,8 @@ export type Query = {
   assetCollection?: Maybe<AssetCollection>;
   paragraph?: Maybe<Paragraph>;
   paragraphCollection?: Maybe<ParagraphCollection>;
+  event?: Maybe<Event>;
+  eventCollection?: Maybe<EventCollection>;
   article?: Maybe<Article>;
   articleCollection?: Maybe<ArticleCollection>;
 };
@@ -69,6 +75,23 @@ export type QueryParagraphCollectionArgs = {
 };
 
 
+export type QueryEventArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryEventCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<EventFilter>;
+  order?: Maybe<Array<Maybe<EventOrder>>>;
+};
+
+
 export type QueryArticleArgs = {
   id: Scalars['String'];
   preview?: Maybe<Scalars['Boolean']>;
@@ -104,6 +127,12 @@ export type Asset = {
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetUrlArgs = {
   transform?: Maybe<ImageTransformOptions>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Sys = {
@@ -217,11 +246,20 @@ export enum ImageFormat {
 export type AssetLinkingCollections = {
   __typename?: 'AssetLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
+  eventCollection?: Maybe<EventCollection>;
   articleCollection?: Maybe<ArticleCollection>;
 };
 
 
 export type AssetLinkingCollectionsEntryCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type AssetLinkingCollectionsEventCollectionArgs = {
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   preview?: Maybe<Scalars['Boolean']>;
@@ -248,6 +286,103 @@ export type Entry = {
   sys: Sys;
 };
 
+export type EventCollection = {
+  __typename?: 'EventCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Maybe<Event>>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type Event = Entry & {
+  __typename?: 'Event';
+  sys: Sys;
+  linkedFrom?: Maybe<EventLinkingCollections>;
+  title?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  previewImage?: Maybe<Asset>;
+  content?: Maybe<Scalars['String']>;
+  areCommentsEnabled?: Maybe<Scalars['Boolean']>;
+  startDate?: Maybe<Scalars['DateTime']>;
+  endDate?: Maybe<Scalars['DateTime']>;
+  location?: Maybe<Location>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventTitleArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventSlugArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventPreviewImageArgs = {
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventContentArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventAreCommentsEnabledArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventStartDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventEndDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/event) */
+export type EventLocationArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type EventLinkingCollections = {
+  __typename?: 'EventLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type EventLinkingCollectionsEntryCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type Location = {
+  __typename?: 'Location';
+  lat?: Maybe<Scalars['Float']>;
+  lon?: Maybe<Scalars['Float']>;
+};
+
 export type ArticleCollection = {
   __typename?: 'ArticleCollection';
   total: Scalars['Int'];
@@ -270,6 +405,24 @@ export type Article = Entry & {
 
 
 /** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/article) */
+export type ArticleLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/article) */
+export type ArticleTitleArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/article) */
+export type ArticleSlugArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/article) */
 export type ArticlePreviewImageArgs = {
   preview?: Maybe<Scalars['Boolean']>;
   locale?: Maybe<Scalars['String']>;
@@ -281,6 +434,12 @@ export type ArticleContentCollectionArgs = {
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/article) */
+export type ArticleAreCommentsEnabledArgs = {
   locale?: Maybe<Scalars['String']>;
 };
 
@@ -443,6 +602,18 @@ export type Paragraph = Entry & {
   content?: Maybe<ParagraphContent>;
 };
 
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/paragraph) */
+export type ParagraphLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/lp31vknyje6d/content_types/paragraph) */
+export type ParagraphContentArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
 export type ParagraphLinkingCollections = {
   __typename?: 'ParagraphLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
@@ -507,6 +678,81 @@ export type ParagraphCollection = {
   items: Array<Maybe<Paragraph>>;
 };
 
+export type EventFilter = {
+  sys?: Maybe<SysFilter>;
+  title_exists?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  slug_exists?: Maybe<Scalars['Boolean']>;
+  slug?: Maybe<Scalars['String']>;
+  slug_not?: Maybe<Scalars['String']>;
+  slug_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  slug_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  slug_contains?: Maybe<Scalars['String']>;
+  slug_not_contains?: Maybe<Scalars['String']>;
+  previewImage_exists?: Maybe<Scalars['Boolean']>;
+  content_exists?: Maybe<Scalars['Boolean']>;
+  content?: Maybe<Scalars['String']>;
+  content_not?: Maybe<Scalars['String']>;
+  content_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  content_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  content_contains?: Maybe<Scalars['String']>;
+  content_not_contains?: Maybe<Scalars['String']>;
+  areCommentsEnabled_exists?: Maybe<Scalars['Boolean']>;
+  areCommentsEnabled?: Maybe<Scalars['Boolean']>;
+  areCommentsEnabled_not?: Maybe<Scalars['Boolean']>;
+  startDate_exists?: Maybe<Scalars['Boolean']>;
+  startDate?: Maybe<Scalars['DateTime']>;
+  startDate_not?: Maybe<Scalars['DateTime']>;
+  startDate_in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
+  startDate_not_in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
+  startDate_gt?: Maybe<Scalars['DateTime']>;
+  startDate_gte?: Maybe<Scalars['DateTime']>;
+  startDate_lt?: Maybe<Scalars['DateTime']>;
+  startDate_lte?: Maybe<Scalars['DateTime']>;
+  endDate_exists?: Maybe<Scalars['Boolean']>;
+  endDate?: Maybe<Scalars['DateTime']>;
+  endDate_not?: Maybe<Scalars['DateTime']>;
+  endDate_in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
+  endDate_not_in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
+  endDate_gt?: Maybe<Scalars['DateTime']>;
+  endDate_gte?: Maybe<Scalars['DateTime']>;
+  endDate_lt?: Maybe<Scalars['DateTime']>;
+  endDate_lte?: Maybe<Scalars['DateTime']>;
+  location_exists?: Maybe<Scalars['Boolean']>;
+  location_within_circle?: Maybe<Scalars['Circle']>;
+  location_within_rectangle?: Maybe<Scalars['Rectangle']>;
+  OR?: Maybe<Array<Maybe<EventFilter>>>;
+  AND?: Maybe<Array<Maybe<EventFilter>>>;
+};
+
+
+
+export enum EventOrder {
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  AreCommentsEnabledAsc = 'areCommentsEnabled_ASC',
+  AreCommentsEnabledDesc = 'areCommentsEnabled_DESC',
+  StartDateAsc = 'startDate_ASC',
+  StartDateDesc = 'startDate_DESC',
+  EndDateAsc = 'endDate_ASC',
+  EndDateDesc = 'endDate_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 export type ArticleFilter = {
   sys?: Maybe<SysFilter>;
   title_exists?: Maybe<Scalars['Boolean']>;
@@ -523,6 +769,8 @@ export type ArticleFilter = {
   slug_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   slug_contains?: Maybe<Scalars['String']>;
   slug_not_contains?: Maybe<Scalars['String']>;
+  previewImage_exists?: Maybe<Scalars['Boolean']>;
+  contentCollection_exists?: Maybe<Scalars['Boolean']>;
   areCommentsEnabled_exists?: Maybe<Scalars['Boolean']>;
   areCommentsEnabled?: Maybe<Scalars['Boolean']>;
   areCommentsEnabled_not?: Maybe<Scalars['Boolean']>;
@@ -561,6 +809,12 @@ export type ArticleContentCollection_ArticleFragment = (
   & { contentCollection?: Maybe<(
     { __typename?: 'ArticleContentCollection' }
     & { items: Array<Maybe<(
+      { __typename: 'Event' }
+      & { sys: (
+        { __typename?: 'Sys' }
+        & Pick<Sys, 'id'>
+      ) }
+    ) | (
       { __typename: 'Article' }
       & { sys: (
         { __typename?: 'Sys' }
@@ -589,15 +843,6 @@ export type ArticlePreview_ArticleFragment = (
   ) }
 );
 
-export type RecentArticles_ArticleCollectionFragment = (
-  { __typename?: 'ArticleCollection' }
-  & { items: Array<Maybe<(
-    { __typename?: 'Article' }
-    & Pick<Article, 'slug'>
-    & ArticlePreview_ArticleFragment
-  )>> }
-);
-
 export type Article_ArticleFragment = (
   { __typename?: 'Article' }
   & Pick<Article, 'title' | 'slug'>
@@ -617,6 +862,24 @@ export type Paragraph_ParagraphFragment = (
     { __typename?: 'ParagraphContent' }
     & Pick<ParagraphContent, 'json'>
   )> }
+);
+
+export type RecentArticles_ArticleCollectionFragment = (
+  { __typename?: 'ArticleCollection' }
+  & { items: Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'slug'>
+    & ArticlePreview_ArticleFragment
+  )>> }
+);
+
+export type TopArticles_ArticleCollectionFragment = (
+  { __typename?: 'ArticleCollection' }
+  & { items: Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'slug'>
+    & ArticlePreview_ArticleFragment
+  )>> }
 );
 
 export type ArticlePageAllArticlesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -652,13 +915,24 @@ export type ArticlePageQuery = (
   )> }
 );
 
-export type HomePageAllArticlesQueryVariables = Exact<{ [key: string]: never; }>;
+export type HomePageRecentArticlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomePageAllArticlesQuery = (
+export type HomePageRecentArticlesQuery = (
   { __typename?: 'Query' }
   & { articleCollection?: Maybe<(
     { __typename?: 'ArticleCollection' }
     & RecentArticles_ArticleCollectionFragment
+  )> }
+);
+
+export type HomePageTopArticlesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomePageTopArticlesQuery = (
+  { __typename?: 'Query' }
+  & { articleCollection?: Maybe<(
+    { __typename?: 'ArticleCollection' }
+    & TopArticles_ArticleCollectionFragment
   )> }
 );

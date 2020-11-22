@@ -23,7 +23,7 @@ const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
       data-testid="article-preview"
     >
       <Stack className={styles.header} scale="2">
-        <HeadlineText level="2" data-testid="article-title">
+        <HeadlineText level="3" data-testid="article-title">
           <NextLink href={`articles/[slug]`} as={`articles/${article.slug}`}>
             <Link className={styles.titleLink}>{article.title}</Link>
           </NextLink>
