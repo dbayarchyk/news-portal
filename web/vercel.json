@@ -3,7 +3,7 @@
     "env": {
       "CONTENTFUL_SPACE_ID": "@contentful_space_id",
       "CONTENTFUL_ACCESS_TOKEN": "@contentful_access_token",
-      "NEXT_PUBLIC_API_URL": "@next_public_api_url"
+      "NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID": "@next_public_google_analytics_tracking_id"
     }
   }
 }
