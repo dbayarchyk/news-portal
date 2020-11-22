@@ -2,6 +2,7 @@ import React from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 
 import SiteLayout from "../components/site-layout";
+import GoogleAnalytics from "../components/google-analytics";
 import { AuthProvider }  from '../context/auth';
 import getCurrentUser, { User } from '../api/auth/get-current-user';
 import fetchAPI from '../api/fetch-api';
@@ -36,11 +37,14 @@ class MyApp extends App<MyAppInitialProps> {
     const { Component, pageProps, currentUser } = this.props;
 
     return (
-      <AuthProvider initialCurrentUser={currentUser}>
-        <SiteLayout>
-          <Component {...pageProps} />
-        </SiteLayout>
-      </AuthProvider>
+      <>
+        <GoogleAnalytics />
+        <AuthProvider initialCurrentUser={currentUser}>
+          <SiteLayout>
+            <Component {...pageProps} />
+          </SiteLayout>
+        </AuthProvider>
+      </>
     );
   }
 }
