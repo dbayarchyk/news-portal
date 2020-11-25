@@ -15,6 +15,7 @@ const TopArticles: React.FCWithFragments<TopArticlesProps> = ({
   articleCollection,
 }) => {
   const headlineId = "top-news";
+  const hasEnoughItemsToStretchFirstItem = articleCollection.items.length > 4;
 
   return (
     <Stack as="section" scale="4">
@@ -23,14 +24,25 @@ const TopArticles: React.FCWithFragments<TopArticlesProps> = ({
       </HeadlineText>
 
       <ul className={styles.list} aria-labelledby={headlineId}>
-        {articleCollection.items.map((article) => (
-          <li key={article.slug} className={styles.listItem}>
-            <ArticlePreview
-              className={styles.listItemContent}
-              article={article}
-            />
-          </li>
-        ))}
+        {articleCollection.items.map((article, articleIndex) => {
+          const isArticlePreviewStretched = hasEnoughItemsToStretchFirstItem && articleIndex === 0;
+          
+          return (
+            <li
+              key={article.slug}
+              className={
+                [styles.listItem]
+                  .concat(isArticlePreviewStretched ? [styles.stretchedListItem] : [])
+                  .join(" ")
+              }
+            >
+              <ArticlePreview
+                className={styles.listItemContent}
+                article={article}
+              />
+            </li>
+          );
+        })}
       </ul>
     </Stack>
   );
