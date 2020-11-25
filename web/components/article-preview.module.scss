@@ -7,19 +7,26 @@
   justify-content: flex-end;
   box-sizing: border-box;
 
-  @include tablet {
-    flex-direction: column-reverse;
-    justify-content: start;
+  &:not(.condensedArticle) {
+    @include tablet {
+      flex-direction: column-reverse;
+      justify-content: start;
+
+      .header {
+        margin-top: var(--spacing-2);
+        margin-left: 0;
+      }
+
+      .imageWrapper {
+        height: auto;
+        width: auto;
+      }
+    }
   }
 }
 
 .header {
   margin-left: var(--spacing-2);
-
-  @include tablet {
-    margin-top: var(--spacing-2);
-    margin-left: 0;
-  }
 }
 
 .titleLink {
@@ -46,11 +53,6 @@
   flex-shrink: 0;
   height: 5rem;
   width: 8rem;
-
-  @include tablet {
-    height: auto;
-    width: auto;
-  }
 }
 
 .image {
