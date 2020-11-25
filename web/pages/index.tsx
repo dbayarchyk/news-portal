@@ -7,6 +7,7 @@ import graphql from '../api/contentful/graphql';
 import { getHeadTitle } from "../utils/head-title";
 import RecentArticles from "../components/recent-articles";
 import TopArticles from "../components/top-articles";
+import AllArticles from "../components/all-articles";
 import Stack from "../components/ui/layouts/stack";
 
 type HomePageProps = {
@@ -24,6 +25,7 @@ const HomePage: React.FC<HomePageProps> = ({ recentArticleCollection }) => {
       <Stack scale="8">
         <RecentArticles articleCollection={recentArticleCollection} />
         <TopArticles articleCollection={recentArticleCollection} />
+        <AllArticles articleCollection={recentArticleCollection} />
       </Stack>
     </>
   );

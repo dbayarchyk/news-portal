@@ -795,6 +795,15 @@ export enum ArticleOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+export type AllArticles_ArticleCollectionFragment = (
+  { __typename?: 'ArticleCollection' }
+  & { items: Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'slug'>
+    & ArticlePreview_ArticleFragment
+  )>> }
+);
+
 export type ArticleComments_ArticleFragment = (
   { __typename?: 'Article' }
   & Pick<Article, 'areCommentsEnabled'>

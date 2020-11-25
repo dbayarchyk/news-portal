@@ -11,15 +11,17 @@ import styles from "./article-preview.module.scss";
 type ArticlePreviewProps = {
   className?: string;
   article: ArticlePreview_ArticleFragment;
+  isCondensed?: boolean;
 };
 
 const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
   className,
   article,
+  isCondensed,
 }) => {
   return (
     <article
-      className={[className, styles.article].join(" ")}
+      className={[className, styles.article].concat(isCondensed ? [styles.condensedArticle] : []).join(" ")}
       data-testid="article-preview"
     >
       <Stack className={styles.header} scale="2">

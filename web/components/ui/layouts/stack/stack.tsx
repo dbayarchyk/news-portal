@@ -18,6 +18,7 @@ type StackProps = {
   scale: keyof typeof SCALE_CLASSNAMES;
   as?: "ul" | "ol" | "div" | "section";
   "aria-describedby"?: string;
+  "aria-labelledby"?: string;
   "data-testid"?: string;
 };
 
@@ -27,12 +28,14 @@ const Stack: React.FC<StackProps> = ({
   children,
   as = "div",
   "aria-describedby": ariaDescribedby,
+  "aria-labelledby": ariaLabelledby,
   "data-testid": dataTestId,
 }) => {
   const element = React.createElement(as, {
     children,
     className: [className, SCALE_CLASSNAMES[scale], styles.stack].join(" "),
     "aria-describedby": ariaDescribedby,
+    "aria-labelledby": ariaLabelledby,
     "data-testid": dataTestId,
   });
 
