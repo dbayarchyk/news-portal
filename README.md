@@ -7,7 +7,8 @@ This is a monorepo that contains all the necessary services:
 - [🖥 Web](./web/README.md)
 - [📊 Market service](./api/services/market/README.md)
 - [💬 Comment service](./api/services/comment/README.md)
-- [💬 Auth service](./api/services/auth/README.md)
+- [🔐 Auth service](./api/services/auth/README.md)
+- [📈 Analytics service](./api/services/analytics/README.md)
 
 ## CI / CD 🚀
 
