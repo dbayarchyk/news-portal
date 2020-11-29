@@ -16,10 +16,13 @@ export class FieldsValidationError extends BaseError {
 
   public serialize(): SerializedResponse {
     return {
-      errors: this.fieldErrors.map((fieldError) => ({
-        message: fieldError.error.message,
-        field: fieldError.field,
-      })),
+      error: {
+        code: this.statusCode,
+        errors: this.fieldErrors.map((fieldError) => ({
+          message: fieldError.error.message,
+          field: fieldError.field,
+        })),
+      }
     }
   }
 }

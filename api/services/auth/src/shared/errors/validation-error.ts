@@ -10,11 +10,14 @@ export class ValidationError extends BaseError {
 
   public serialize(): SerializedResponse {
     return {
-      errors: [
-        {
-          message: this.message,
-        },
-      ],
+      error: {
+        code: this.statusCode,
+        errors: [
+          {
+            message: this.message,
+          },
+        ],
+      }
     }
   }
 }
