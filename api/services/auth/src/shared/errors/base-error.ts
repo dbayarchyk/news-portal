@@ -3,7 +3,10 @@ export interface SerializedError {
 }
 
 export interface SerializedResponse {
-  errors: SerializedError[];
+  error: {
+    code: number;
+    errors: SerializedError[];
+  }
 }
 
 export abstract class BaseError extends Error {

@@ -31,7 +31,7 @@ const signIn = async (
 };
 
 const map400Response = (response): Record<string, string> =>
-  response.errors.reduce((errors, error) => ({
+  response.error.errors.reduce((errors, error) => ({
     ...errors,
     [error.field]: error.message,
   }), {});
