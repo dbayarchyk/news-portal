@@ -23,3 +23,7 @@ spec:
             backend:
               serviceName: auth-service
               servicePort: 8000
+          - path: /api/analytics(/|$)(.*)
+            backend:
+              serviceName: analytics-service
+              servicePort: 8000
