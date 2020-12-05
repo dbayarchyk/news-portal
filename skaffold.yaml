@@ -46,3 +46,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: dbayarchyk/itdog-analytics-service
+      context: api/services/analytics
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
