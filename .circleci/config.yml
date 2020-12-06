@@ -123,6 +123,46 @@ jobs:
       - run: docker push dbayarchyk/itdog-auth-service
   # --- END: Auth service jobs ---
 
+    # --- START: Analytics service jobs: ---
+  init-auth-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: ./api/services/analytics
+      - persist_to_workspace:
+          root: ./api/services/analytics
+          paths:
+            - node_modules/*
+
+  lint-analytics-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/analytics
+      - run: cd api/services/analytics && npm run lint
+
+  test-analytics-service:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./api/services/analytics
+      - run: cd api/services/analytics && npm run test
+
+  build-and-push-analytics-service-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build -t dbayarchyk/itdog-analytics-service -f ~/project/api/services/analytics/Dockerfile ~/project/api/services/analytics
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: docker push dbayarchyk/itdog-analytics-service
+  # --- END: Analytics service jobs ---
+
   # --- START: Web jobs: ---
   init-web:
     executor:
@@ -168,6 +208,7 @@ workflows:
       - init-market-service
       - init-comment-service
       - init-auth-service
+      - init-analytics-service
       - init-web
 
       - lint-market-service:
@@ -179,6 +220,9 @@ workflows:
       - lint-auth-service:
           requires:
             - init-auth-service
+      - lint-analytics-service:
+          requires:
+            - init-analytics-service
       - lint-web:
           requires:
             - init-web
@@ -192,6 +236,9 @@ workflows:
       - test-auth-service:
           requires:
             - init-auth-service
+      - test-analytics-service:
+          requires:
+            - init-analytics-service
       - test-web:
           requires:
             - init-web
@@ -216,6 +263,14 @@ workflows:
           requires:
             - lint-auth-service
             - test-auth-service
+          filters:
+            branches:
+              only:
+                - master
+      - build-and-push-analytics-service-docker-image:
+          requires:
+            - lint-analytics-service
+            - test-analytics-service
           filters:
             branches:
               only:
