@@ -123,8 +123,8 @@ jobs:
       - run: docker push dbayarchyk/itdog-auth-service
   # --- END: Auth service jobs ---
 
-    # --- START: Analytics service jobs: ---
-  init-auth-service:
+  # --- START: Analytics service jobs: ---
+  init-analytics-service:
     executor:
       name: node/default
     steps:
