@@ -17,6 +17,10 @@ type AllArticlesProps = {
 const AllArticles: React.FCWithFragments<AllArticlesProps> = ({
   articleCollection,
 }) => {
+  if (articleCollection.items.length === 0) {
+    return null;
+  }
+
   const headlineId = "all-news";
 
   return (

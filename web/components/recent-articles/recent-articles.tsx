@@ -14,6 +14,10 @@ type RecentArticlesProps = {
 const RecentArticles: React.FCWithFragments<RecentArticlesProps> = ({
   articleCollection,
 }) => {
+  if (articleCollection.items.length === 0) {
+    return null;
+  }
+
   const headlineId = "recent-news";
 
   return (
