@@ -1,1 +1,4 @@
-export enum IOCTypes {}
+export enum IOCTypes {
+  AnalyticsService = "AnalyticsService",
+  GetTopArticleUrlsUseCase = "GetTopArticleUrlsUseCase"
+}

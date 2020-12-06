@@ -2,9 +2,10 @@ import React from "react";
 import Head from "next/head";
 
 const GoogleAnalytics: React.FC = () => {
-  if (process.env.NODE_ENV !== "production") {
-    return null;
-  }
+  // TODO: uncomment when release the app.
+  // if (process.env.NODE_ENV !== "production") {
+  //   return null;
+  // }
 
   if (!process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID) {
     // eslint-disable-next-line no-console

@@ -15,3 +15,16 @@ spec:
       containers:
         - name: analytics
           image: dbayarchyk/itdog-analytics-service
+          env:
+            - name: GOOGLE_ANALYTICS_VIEW_ID
+              value: "234204206"
+            - name: GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-generic-secret
+                  key: GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL
+            - name: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-generic-secret
+                  key: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
