@@ -924,7 +924,9 @@ export type ArticlePageQuery = (
   )> }
 );
 
-export type HomePageRecentArticlesQueryVariables = Exact<{ [key: string]: never; }>;
+export type HomePageRecentArticlesQueryVariables = Exact<{
+  excludeSlugs: Array<Scalars['String']>;
+}>;
 
 
 export type HomePageRecentArticlesQuery = (
@@ -935,7 +937,9 @@ export type HomePageRecentArticlesQuery = (
   )> }
 );
 
-export type HomePageTopArticlesQueryVariables = Exact<{ [key: string]: never; }>;
+export type HomePageTopArticlesQueryVariables = Exact<{
+  slugs: Array<Scalars['String']>;
+}>;
 
 
 export type HomePageTopArticlesQuery = (
@@ -943,5 +947,18 @@ export type HomePageTopArticlesQuery = (
   & { articleCollection?: Maybe<(
     { __typename?: 'ArticleCollection' }
     & TopArticles_ArticleCollectionFragment
+  )> }
+);
+
+export type HomePageAllArticlesQueryVariables = Exact<{
+  excludeSlugs: Array<Scalars['String']>;
+}>;
+
+
+export type HomePageAllArticlesQuery = (
+  { __typename?: 'Query' }
+  & { articleCollection?: Maybe<(
+    { __typename?: 'ArticleCollection' }
+    & AllArticles_ArticleCollectionFragment
   )> }
 );

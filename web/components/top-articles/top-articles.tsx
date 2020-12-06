@@ -14,6 +14,10 @@ type TopArticlesProps = {
 const TopArticles: React.FCWithFragments<TopArticlesProps> = ({
   articleCollection,
 }) => {
+  if (articleCollection.items.length === 0) {
+    return null;
+  }
+
   const headlineId = "top-news";
   const hasEnoughItemsToStretchFirstItem = articleCollection.items.length > 4;
 
