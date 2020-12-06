@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { InversifyExpressServer } from "inversify-express-utils";
 
 import { iocContainer } from "../../infrastructure/ioc/inversify.config";
+import "./controllers/get-current-user-controller";
 
 const server = new InversifyExpressServer(iocContainer);
 
