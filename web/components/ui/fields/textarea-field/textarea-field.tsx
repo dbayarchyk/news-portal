@@ -15,6 +15,7 @@ type TextareaFieldProps = {
   value: string;
   placeholder?: string;
   textareaRef?: React.Ref<HTMLTextAreaElement>;
+  autoComplete?: TextareaInputProps["autoComplete"];
   autoFocus?: TextareaInputProps["autoFocus"];
   onChange: TextareaInputProps["onChange"];
   onBlur?: TextareaInputProps["onBlur"];
@@ -30,6 +31,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   value,
   placeholder,
   textareaRef,
+  autoComplete,
   autoFocus,
   onChange,
   onBlur,
@@ -49,6 +51,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
         value={value}
         name={name}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         autoFocus={autoFocus}
         aria-invalid={hasError}
         aria-describedby={errorId}

@@ -15,6 +15,7 @@ type SelectFieldProps = {
   value: string;
   placeholder?: string;
   options: Array<{ value: string; label: string }>;
+  autoComplete?: SelectInputProps["autoComplete"];
   autoFocus?: SelectInputProps["autoFocus"];
   onChange: SelectInputProps["onChange"];
   onBlur?: SelectInputProps["onBlur"];
@@ -29,6 +30,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   name,
   value,
   placeholder,
+  autoComplete,
   autoFocus,
   options,
   onChange,
@@ -47,6 +49,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         id={id}
         value={value}
         name={name}
+        autoComplete={autoComplete}
         autoFocus={autoFocus}
         aria-invalid={hasError}
         aria-describedby={errorId}
