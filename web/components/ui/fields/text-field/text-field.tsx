@@ -14,6 +14,7 @@ type TextareaFieldProps = {
   name?: string;
   type?: "email" | "password";
   value: string;
+  autoFocus?: TextInputProps["autoFocus"];
   onChange: TextInputProps["onChange"];
   onBlur?: TextInputProps["onBlur"];
   onFocus?: TextInputProps["onFocus"];
@@ -27,6 +28,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   name,
   value,
   type,
+  autoFocus,
   onChange,
   onBlur,
   onFocus,
@@ -44,6 +46,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
         value={value}
         name={name}
         type={type}
+        autoFocus={autoFocus}
         aria-invalid={hasError}
         aria-describedby={errorId}
         onChange={onChange}
