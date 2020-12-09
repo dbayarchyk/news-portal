@@ -13,7 +13,7 @@ const AnnualSalaryReportMissingData: React.FC = () => {
       <div className={styles.cardContent}>
         <img className={styles.illustration} src="file-searching.svg" alt="" />
 
-        <Stack scale="4">
+        <Stack scale="2">
           <BodyText type="primary">
             No report for you position, city or technology?
           </BodyText>
