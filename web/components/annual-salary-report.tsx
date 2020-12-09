@@ -5,6 +5,7 @@ import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 import Stack from "./ui/layouts/stack";
 import AnnualSalaryReportData from "./annual-salary-report-data";
 import AnnualSalaryReportMissingData from "./annual-salary-report-missing-data";
+import AnnualSalaryReportNoData from "./annual-salary-report/annual-salary-report-no-data";
 import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../api/market/get-annual-salary-report";
 import fetchAPI from "../api/fetch-api";
 import styles from "./annual-salary-report.module.scss";
@@ -36,6 +37,13 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
     refetch();
   }, [tabState.selectedId]);
 
+  const hasReportItems = data.length > 0;
+  const tabPanelContent = hasReportItems ? (
+    <AnnualSalaryReportData annualSalaryReport={data} />
+  ) : (
+    <AnnualSalaryReportNoData />
+  );
+
   return (
     <Stack scale="6">
       <Stack scale="4">
@@ -52,17 +60,19 @@ const AnnualSalaryReport: React.FC<AnnualSalaryReportProps> = ({
         </TabList>
 
         <TabPanel {...tabState} id="technology">
-          <AnnualSalaryReportData annualSalaryReport={data} />
+          {tabPanelContent}
         </TabPanel>
         <TabPanel {...tabState} id="position">
-          <AnnualSalaryReportData annualSalaryReport={data} />
+          {tabPanelContent}
         </TabPanel>
         <TabPanel {...tabState} id="city">
-          <AnnualSalaryReportData annualSalaryReport={data} />
+          {tabPanelContent}
         </TabPanel>
       </Stack>
 
-      <AnnualSalaryReportMissingData />
+      {hasReportItems ? (
+        <AnnualSalaryReportMissingData />
+      ): null}
     </Stack>
   );
 };

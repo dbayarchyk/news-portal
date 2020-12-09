@@ -1,0 +1,13 @@
+@import "../../../styles/media.scss";
+
+.illustration {
+  width: 50%;
+
+  @include tablet {
+    width: 33.333333%;
+  }
+
+  @include desktop {
+    width: 25%;
+  }
+}
