@@ -25,7 +25,7 @@ const AnnualSalaryReportMissingData: React.FC = () => {
             together.
           </BodyText>
 
-          <div className="flex justify-center md:justify-start mt-2">
+          <div>
             <Link href="./salaries/share">
               <a>
                 <SecondaryButton tabIndex={-1} title="Share your report" />
