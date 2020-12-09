@@ -1,0 +1,23 @@
+.tab {
+  padding: var(--spacing-3) var(--spacing-5);
+  border-bottom-left-radius: var(--border-radius-none);
+  border-bottom-right-radius: var(--border-radius-none);
+  border-top-left-radius: var(--border-radius-base);
+  border-top-right-radius: var(--border-radius-base);
+  border: none;
+  background: none;
+  border-bottom: var(--border-width-sm) solid var(--color-gray-500);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-600);
+
+  &:not([aria-selected="true"]):hover {
+    color: var(--color-primary-600);
+    border-color: var(--color-primary-600);
+  }
+
+  &[aria-selected="true"] {
+    background: var(--color-gray-100);
+    border-color: var(--color-primary-600);
+    color: var(--color-primary-600);
+  }
+}
