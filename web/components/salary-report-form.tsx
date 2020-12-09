@@ -109,6 +109,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           id="positionId"
           value={formState.values.positionId}
           placeholder="Please pick the position"
+          autoComplete="organization-title"
           autoFocus
           options={positions.map((position) => ({
             value: position.id,

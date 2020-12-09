@@ -90,6 +90,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
           id={inputId}
           placeholder="Type your comment here..."
           value={formState.values.content}
+          autoComplete="off"
           errorMessage={formState.errors.content}
           onChange={formState.onFieldValueChange}
           onBlur={formState.onFieldBlur}
