@@ -12,14 +12,14 @@ const NAV_ITEMS = [
     title: "Home",
     href: "/",
   },
-  {
-    title: "Jobs",
-    href: "/jobs",
-  },
-  {
-    title: "Events",
-    href: "/events",
-  },
+  // {
+  //   title: "Jobs",
+  //   href: "/jobs",
+  // },
+  // {
+  //   title: "Events",
+  //   href: "/events",
+  // },
   {
     title: "Salaries",
     href: "/salaries",
