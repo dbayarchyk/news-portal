@@ -7,7 +7,7 @@ import FieldError from "../../field-error";
 
 type TextInputProps = React.ComponentProps<typeof TextInput>;
 
-type TextareaFieldProps = {
+type TextFieldProps = {
   label: string;
 
   id: string;
@@ -16,6 +16,7 @@ type TextareaFieldProps = {
   value: string;
   autoComplete?: TextInputProps["autoComplete"];
   autoFocus?: TextInputProps["autoFocus"];
+  placeholder?: TextInputProps["placeholder"];
   onChange: TextInputProps["onChange"];
   onBlur?: TextInputProps["onBlur"];
   onFocus?: TextInputProps["onFocus"];
@@ -23,12 +24,13 @@ type TextareaFieldProps = {
   errorMessage?: string;
 };
 
-const TextareaField: React.FC<TextareaFieldProps> = ({
+const TextField: React.FC<TextFieldProps> = ({
   label,
   id,
   name,
   value,
   type,
+  placeholder,
   autoComplete,
   autoFocus,
   onChange,
@@ -48,6 +50,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
         value={value}
         name={name}
         type={type}
+        placeholder={placeholder}
         autoComplete={autoComplete}
         autoFocus={autoFocus}
         aria-invalid={hasError}
@@ -62,4 +65,4 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   );
 };
 
-export default TextareaField;
+export default TextField;
