@@ -2,12 +2,12 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
 
-import Stack from "./ui/layouts/stack";
+import Stack from "../ui/layouts/stack";
 import AnnualSalaryReportData from "./annual-salary-report-data";
 import AnnualSalaryReportMissingData from "./annual-salary-report-missing-data";
-import AnnualSalaryReportNoData from "./annual-salary-report/annual-salary-report-no-data";
-import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../api/market/get-annual-salary-report";
-import fetchAPI from "../api/fetch-api";
+import AnnualSalaryReportNoData from "./annual-salary-report-no-data";
+import getAnnualSalaryReport, { AnnualSalaryReportItem } from "../../api/market/get-annual-salary-report";
+import fetchAPI from "../../api/fetch-api";
 import styles from "./annual-salary-report.module.scss";
 
 type AnnualSalaryReportProps = {

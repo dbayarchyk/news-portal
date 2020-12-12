@@ -1,11 +1,11 @@
 import React from "react";
 
-import Table, { TableCell } from "./ui/table";
+import Table, { TableCell } from "../../ui/table";
 import RangeChart, {
   RangeChartAxis,
   RangeChartBar,
-} from "./ui/charts/range-chart";
-import { AnnualSalaryReportItem } from "../api/market";
+} from "../../ui/charts/range-chart";
+import { AnnualSalaryReportItem } from "../../../api/market";
 import styles from "./annual-salary-report-table.module.scss";
 
 type AnnualSalaryReportTableProps = {
