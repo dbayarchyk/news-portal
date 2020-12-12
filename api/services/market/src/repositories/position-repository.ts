@@ -4,6 +4,7 @@ import { PositionMapper } from "../mappers/position-mapper";
 
 export interface IPositionRepository {
   findPositionById(id: string): Promise<Position | null>;
+  findPositionByName(name: string): Promise<Position | null>;
   findPositions(): Promise<Position[]>;
   save(position: Position): Promise<void>;
   exists(position: Position): Promise<boolean>;
@@ -12,6 +13,16 @@ export interface IPositionRepository {
 export class PositionRepository implements IPositionRepository {
   public async findPositionById(id: string): Promise<Position | null> {
     const rawPosition = await PositionModel.findById(id).lean();
+
+    if (rawPosition === null) {
+      return null;
+    }
+
+    return PositionMapper.toEntity(rawPosition);
+  }
+
+  public async findPositionByName(name: string): Promise<Position | null> {
+    const rawPosition = await PositionModel.findOne({ name }).lean();
 
     if (rawPosition === null) {
       return null;

@@ -4,6 +4,7 @@ import { CityMapper } from "../mappers/city-mapper";
 
 export interface ICityRepository {
   findCityById(id: string): Promise<City | null>;
+  findCityByName(name: string): Promise<City | null>;
   findCities(): Promise<City[]>;
   save(city: City): Promise<void>;
   exists(city: City): Promise<boolean>;
@@ -12,6 +13,16 @@ export interface ICityRepository {
 export class CityRepository implements ICityRepository {
   public async findCityById(id: string): Promise<City | null> {
     const rawCity = await CityModel.findById(id).lean();
+
+    if (rawCity === null) {
+      return null;
+    }
+
+    return CityMapper.toEntity(rawCity);
+  }
+
+  public async findCityByName(name: string): Promise<City | null> {
+    const rawCity = await CityModel.findOne({ name }).lean();
 
     if (rawCity === null) {
       return null;

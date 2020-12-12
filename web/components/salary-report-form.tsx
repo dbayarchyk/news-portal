@@ -9,15 +9,14 @@ import fetchAPI from "../api/fetch-api";
 import PrimaryButton from "./ui/buttons/primary-button";
 import HeadlineText from "./ui/headline-text";
 import BodyText from "./ui/body-text";
-import SelectField from "./ui/fields/select-field";
 import TextField from "./ui/fields/text-field";
 import useForm from "./ui/form/use-form";
 import Stack from "./ui/layouts/stack";
 
 type FormValues = {
-  positionId: string;
-  technologyId: string;
-  cityId: string;
+  position: string;
+  technology: string;
+  city: string;
   annualSalary: string;
   workExperience: string;
 };
@@ -25,16 +24,16 @@ type FormValues = {
 const validateFormValues = (values: FormValues): void | never => {
   const errors = new Map<keyof FormValues, string>();
 
-  if (!values.positionId) {
-    errors.set("positionId", "Please provide your position");
+  if (!values.position) {
+    errors.set("position", "Please provide your position");
   }
 
-  if (!values.technologyId) {
-    errors.set("technologyId", "Please provide your main technology");
+  if (!values.technology) {
+    errors.set("technology", "Please provide your main technology");
   }
 
-  if (!values.cityId) {
-    errors.set("cityId", "Please provide your city");
+  if (!values.city) {
+    errors.set("city", "Please provide your city");
   }
 
   if (!values.annualSalary) {
@@ -57,9 +56,9 @@ const validateFormValues = (values: FormValues): void | never => {
 const formValuesToCreateSalaryReportDate = (
   values: FormValues
 ): CreateSalaryReportData => ({
-  positionId: values.positionId,
-  cityId: values.cityId,
-  technologyId: values.technologyId,
+  position: values.position,
+  city: values.city,
+  technology: values.technology,
   annualSalary: Number(values.annualSalary),
   workExperience: Number(values.workExperience),
 });
@@ -77,9 +76,9 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
 }) => {
   const formState = useForm({
     initialValues: {
-      positionId: "",
-      technologyId: "",
-      cityId: "",
+      position: "",
+      technology: "",
+      city: "",
       annualSalary: "",
       workExperience: "",
     },
@@ -88,7 +87,7 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
       const createSalaryReportData = formValuesToCreateSalaryReportDate(values);
 
       await createSalaryReport(fetchAPI, createSalaryReportData);
-      router.push("./salaries");
+      router.push("/salaries");
     },
   });
   const router = useRouter();
@@ -103,52 +102,59 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           </BodyText>
         </Stack>
 
-        <SelectField
+        <TextField
           label="Position"
-          name="positionId"
-          id="positionId"
-          value={formState.values.positionId}
+          name="position"
+          id="position"
+          value={formState.values.position}
           placeholder="Please pick the position"
           autoComplete="organization-title"
+          list="positions"
           autoFocus
-          options={positions.map((position) => ({
-            value: position.id,
-            label: position.name,
-          }))}
-          errorMessage={formState.errors.positionId}
+          errorMessage={formState.errors.position}
           onChange={formState.onFieldValueChange}
           onBlur={formState.onFieldBlur}
         />
+        <datalist id="positions">
+          {positions.map((position) => (
+            <option key={position.id} value={position.name} />
+          ))}
+        </datalist>
 
-        <SelectField
+        <TextField
           label="Technology"
-          name="technologyId"
-          id="technologyId"
-          value={formState.values.technologyId}
+          name="technology"
+          id="technology"
+          value={formState.values.technology}
           placeholder="Please pick the technology"
-          options={technologies.map((technology) => ({
-            value: technology.id,
-            label: technology.name,
-          }))}
-          errorMessage={formState.errors.technologyId}
+          list="technologies"
+          errorMessage={formState.errors.technology}
           onChange={formState.onFieldValueChange}
           onBlur={formState.onFieldBlur}
         />
+        <datalist id="technologies">
+          {technologies.map((technology) => (
+            <option key={technology.id} value={technology.name} />
+          ))}
+        </datalist>
 
-        <SelectField
+        <TextField
           label="City"
-          name="cityId"
-          id="cityId"
-          value={formState.values.cityId}
+          name="city"
+          id="city"
+          value={formState.values.city}
+          autoComplete="locality"
+          list="cities"
           placeholder="Please pick the city"
-          options={cities.map((city) => ({
-            value: city.id,
-            label: city.name,
-          }))}
-          errorMessage={formState.errors.cityId}
+          errorMessage={formState.errors.city}
           onChange={formState.onFieldValueChange}
           onBlur={formState.onFieldBlur}
         />
+        <datalist id="cities">
+          {cities.map((city) => (
+            <option key={city.id} value={city.name} />
+          ))}
+        </datalist>
 
         <TextField
           label="Annual salary"
