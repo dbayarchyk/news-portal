@@ -12,9 +12,11 @@ type TextFieldProps = {
 
   id: string;
   name?: string;
-  type?: "email" | "password";
   value: string;
+  type?: TextInputProps["type"];
   autoComplete?: TextInputProps["autoComplete"];
+  pattern?: TextInputProps["pattern"];
+  inputMode?: TextInputProps["inputMode"];
   list?: TextInputProps["list"];
   autoFocus?: TextInputProps["autoFocus"];
   placeholder?: TextInputProps["placeholder"];
@@ -33,6 +35,8 @@ const TextField: React.FC<TextFieldProps> = ({
   type,
   list,
   placeholder,
+  pattern,
+  inputMode,
   autoComplete,
   autoFocus,
   onChange,
@@ -56,6 +60,8 @@ const TextField: React.FC<TextFieldProps> = ({
         autoComplete={autoComplete}
         autoFocus={autoFocus}
         list={list}
+        pattern={pattern}
+        inputMode={inputMode}
         aria-invalid={hasError}
         aria-describedby={errorId}
         onChange={onChange}

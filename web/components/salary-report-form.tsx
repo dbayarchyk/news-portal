@@ -160,6 +160,8 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
           label="Annual salary"
           name="annualSalary"
           id="annualSalary"
+          pattern="[0-9]*"
+          inputMode="numeric"
           value={formState.values.annualSalary}
           errorMessage={formState.errors.annualSalary}
           onChange={formState.onFieldValueChange}
@@ -167,7 +169,8 @@ const SalaryReportForm: React.FC<SalaryReportFormProps> = ({
         />
 
         <TextField
-          label="Work experience"
+          type="number"
+          label="Work experience (years)"
           name="workExperience"
           id="workExperience"
           value={formState.values.workExperience}
