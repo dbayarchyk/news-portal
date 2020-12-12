@@ -12,9 +12,9 @@ export type SalaryReport = {
 };
   
 export type CreateSalaryReportData = {
-  positionId: string;
-  cityId: string;
-  technologyId: string;
+  position: string;
+  city: string;
+  technology: string;
   workExperience: number;
   annualSalary: number;
 };

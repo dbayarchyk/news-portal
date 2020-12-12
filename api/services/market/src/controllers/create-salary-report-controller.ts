@@ -10,15 +10,18 @@ import { SalaryReport } from "../entities/salary-report";
 import { CreatedAt } from "../value-objects/created-at";
 import { WorkExperience } from "../value-objects/work-experience";
 import { AnnualSalary } from "../value-objects/annual-salary";
+import { PositionName } from "../value-objects/position-name";
+import { CityName } from "../value-objects/city-name";
+import { TechnologyName } from "../value-objects/technology-name";
 import { City } from "../entities/city";
 import { Technology } from "../entities/technology";
 import { Position } from "../entities/position";
 import { Result } from "../utils/result";
 
 export interface CreateSalaryReportRequestDTO {
-  positionId: string;
-  cityId: string;
-  technologyId: string;
+  position: string;
+  city: string;
+  technology: string;
   workExperience: number;
   annualSalary: number;
 }
@@ -61,9 +64,9 @@ export class CreateSalaryReportController extends Controller {
     const rawSalaryReport = req.body;
 
     const combinedSalaryReportPropsResult = Result.combine({
-      position: await this.getPosition(rawSalaryReport.positionId),
-      technology: await this.getTechnology(rawSalaryReport.technologyId),
-      city: await this.getCity(rawSalaryReport.cityId),
+      position: await this.getPosition(rawSalaryReport.position),
+      technology: await this.getTechnology(rawSalaryReport.technology),
+      city: await this.getCity(rawSalaryReport.city),
       workExperience: WorkExperience.create(rawSalaryReport.workExperience),
       annualSalary: AnnualSalary.create(rawSalaryReport.annualSalary),
     });
@@ -81,9 +84,9 @@ export class CreateSalaryReportController extends Controller {
       );
 
       res.status(422).send({
-        positionId: position,
-        cityId: city,
-        technologyId: technology,
+        position: position,
+        city: city,
+        technology: technology,
         ...validationErrors,
       });
       return;
@@ -112,37 +115,71 @@ export class CreateSalaryReportController extends Controller {
     res.status(201).send(salaryDTO);
   }
 
-  private async getCity(cityId: string): Promise<Result<City, string>> {
-    const city = await this.cityRepository.findCityById(cityId);
+  private async getCity(rawCityName: string): Promise<Result<City, string>> {
+    if (!rawCityName) {
+      return Result.fail(`Please provide the city`);
+    }
+
+    let city = await this.cityRepository.findCityByName(rawCityName);
 
     if (city === null) {
-      return Result.fail(`City with id "${cityId}" does not exist`);
+      const cityNameOrError = CityName.create(rawCityName);
+
+      if (cityNameOrError.checkStatus("failure")) {
+        return Result.fail(cityNameOrError.error);
+      }
+
+      const cityName = cityNameOrError.value;
+      city = new City({ name: cityName });
+      this.cityRepository.save(city);
     }
 
     return Result.ok(city);
   }
 
   private async getTechnology(
-    technologyId: string
+    rawTechnologyName: string
   ): Promise<Result<Technology, string>> {
-    const technology = await this.technologyRepository.findTechnologyById(
-      technologyId
-    );
+    if (!rawTechnologyName) {
+      return Result.fail(`Please provide the technology`);
+    }
+
+    let technology = await this.technologyRepository.findTechnologyByName(rawTechnologyName);
 
     if (technology === null) {
-      return Result.fail(`Technology with id "${technologyId}" does not exist`);
+      const technologyNameOrError = TechnologyName.create(rawTechnologyName);
+
+      if (technologyNameOrError.checkStatus("failure")) {
+        return Result.fail(technologyNameOrError.error);
+      }
+
+      const technologyName = technologyNameOrError.value;
+      technology = new Technology({ name: technologyName });
+      this.technologyRepository.save(technology);
     }
 
     return Result.ok(technology);
   }
 
   private async getPosition(
-    positionId: string
+    rawPositionName: string
   ): Promise<Result<Position, string>> {
-    const position = await this.positionRepository.findPositionById(positionId);
+    if (!rawPositionName) {
+      return Result.fail(`Please provide the position`);
+    }
+
+    let position = await this.positionRepository.findPositionByName(rawPositionName);
 
     if (position === null) {
-      return Result.fail(`Position with id "${positionId}" does not exist`);
+      const positionNameOrError = PositionName.create(rawPositionName);
+
+      if (positionNameOrError.checkStatus("failure")) {
+        return Result.fail(positionNameOrError.error);
+      }
+
+      const positionName = positionNameOrError.value;
+      position = new Position({ name: positionName });
+      this.positionRepository.save(position);
     }
 
     return Result.ok(position);

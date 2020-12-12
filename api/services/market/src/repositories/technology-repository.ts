@@ -4,6 +4,7 @@ import { TechnologyMapper } from "../mappers/technology-mapper";
 
 export interface ITechnologyRepository {
   findTechnologyById(id: string): Promise<Technology | null>;
+  findTechnologyByName(id: string): Promise<Technology | null>;
   findTechnologies(): Promise<Technology[]>;
   save(technology: Technology): Promise<void>;
   exists(technology: Technology): Promise<boolean>;
@@ -12,6 +13,16 @@ export interface ITechnologyRepository {
 export class TechnologyRepository implements ITechnologyRepository {
   public async findTechnologyById(id: string): Promise<Technology | null> {
     const rawTechnology = await TechnologyModel.findById(id).lean();
+
+    if (rawTechnology === null) {
+      return null;
+    }
+
+    return TechnologyMapper.toEntity(rawTechnology);
+  }
+
+  public async findTechnologyByName(name: string): Promise<Technology | null> {
+    const rawTechnology = await TechnologyModel.findOne({ name }).lean();
 
     if (rawTechnology === null) {
       return null;
