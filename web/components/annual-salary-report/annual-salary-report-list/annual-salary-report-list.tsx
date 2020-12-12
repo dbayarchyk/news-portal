@@ -1,8 +1,8 @@
 import React from "react";
 
-import Stack from "./ui/layouts/stack";
-import AnnualSalaryReportListItem from "./annual-salary-report-list-item";
-import { AnnualSalaryReportItem } from "../api/market";
+import Stack from "../../ui/layouts/stack";
+import AnnualSalaryReportListItem from "../annual-salary-report-list-item";
+import { AnnualSalaryReportItem } from "../../../api/market";
 import styles from "./annual-salary-report-list.module.scss";
 
 type AnnualSalaryReportListProps = {

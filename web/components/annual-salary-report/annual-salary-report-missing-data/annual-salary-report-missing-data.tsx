@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-import BodyText from "./ui/body-text";
-import SecondaryButton from "./ui/buttons/secondary-button";
-import Stack from "./ui/layouts/stack";
-import Cluster from "./ui/layouts/cluster";
+import BodyText from "../../ui/body-text";
+import SecondaryButton from "../../ui/buttons/secondary-button";
+import Stack from "../../ui/layouts/stack";
+import Cluster from "../../ui/layouts/cluster";
 import styles from "./annual-salary-report-missing-data.module.scss";
 
 const AnnualSalaryReportMissingData: React.FC = () => {

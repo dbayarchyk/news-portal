@@ -1,15 +1,15 @@
 import React from "react";
 
-import VisuallyHidden from "./ui/visually-hidden";
-import Stack from "./ui/layouts/stack";
-import Cluster from "./ui/layouts/cluster";
-import HeadlineText from "./ui/headline-text";
-import BodyText from "./ui/body-text";
+import VisuallyHidden from "../../ui/visually-hidden";
+import Stack from "../../ui/layouts/stack";
+import Cluster from "../../ui/layouts/cluster";
+import HeadlineText from "../../ui/headline-text";
+import BodyText from "../../ui/body-text";
 import RangeChart, {
   RangeChartAxis,
   RangeChartBar,
-} from "./ui/charts/range-chart";
-import { AnnualSalaryReportItem } from "../api/market";
+} from "../../ui/charts/range-chart";
+import { AnnualSalaryReportItem } from "../../../api/market";
 import styles from "./annual-salary-report-list-item.module.scss";
 
 type AnnualSalaryReportListItemProps = {
