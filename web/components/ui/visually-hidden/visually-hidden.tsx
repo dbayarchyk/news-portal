@@ -2,8 +2,10 @@ import React from "react";
 
 import styles from "./visually-hidden.module.scss";
 
-const VisuallyHidden: React.FC = ({ children }) => {
-  return <span className={styles.visuallyHidden}>{children}</span>;
+type VisuallyHiddenProps = Omit<JSX.IntrinsicElements["span"], "className">;
+
+const VisuallyHidden: React.FC<VisuallyHiddenProps> = (props) => {
+  return <span {...props} className={styles.visuallyHidden} />;
 };
 
 export default VisuallyHidden;
