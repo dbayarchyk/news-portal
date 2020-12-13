@@ -11,5 +11,8 @@
   "scripts": {
     "cypress": "cypress open",
     "cypress:headless": "cypress run --headless --browser chrome"
+  },
+  "devDependencies": {
+    "cypress": "^6.1.0"
   }
 }
