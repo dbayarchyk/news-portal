@@ -1,8 +1,8 @@
 import React from "react";
 
-import CommentsListItem from "./comments-list-item";
-import { Comment } from "../api/comment";
-import Stack from "./ui/layouts/stack";
+import CommentsListItem from "../comments-list-item";
+import { Comment } from "../../../api/comment";
+import Stack from "../../ui/layouts/stack";
 import styles from "./comments-list.module.scss";
 
 export type CommentTreeItem = Comment & {

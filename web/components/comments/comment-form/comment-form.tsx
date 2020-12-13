@@ -1,17 +1,17 @@
 import React from "react";
 import { useMutation } from "react-query";
 
-import { Comment } from "../api/comment/get-comments-by-article-id";
-import createComment, { CreateCommentData } from "../api/comment/create-comment";
-import fetchAPI from '../api/fetch-api';
-import PrimaryButton from "./ui/buttons/primary-button";
-import SecondaryButton from "./ui/buttons/secondary-button";
-import useForm from "./ui/form/use-form";
-import TextareaField from "./ui/fields/textarea-field";
-import Stack from "./ui/layouts/stack";
-import Cluster from "./ui/layouts/cluster";
-import { useAuth } from '../context/auth';
-import SignInLink from './sign-in-link';
+import { Comment } from "../../../api/comment/get-comments-by-article-id";
+import createComment, { CreateCommentData } from "../../../api/comment/create-comment";
+import fetchAPI from '../../../api/fetch-api';
+import PrimaryButton from "../../ui/buttons/primary-button";
+import SecondaryButton from "../../ui/buttons/secondary-button";
+import useForm from "../../ui/form/use-form";
+import TextareaField from "../../ui/fields/textarea-field";
+import Stack from "../../ui/layouts/stack";
+import Cluster from "../../ui/layouts/cluster";
+import { useAuth } from '../../../context/auth';
+import SignInLink from '../../sign-in-link';
 import styles from "./comment-form.module.scss";
 
 type CommentFormProps = {
