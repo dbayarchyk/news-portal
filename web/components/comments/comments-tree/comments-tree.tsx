@@ -1,7 +1,7 @@
 import React from "react";
 
-import CommentsList, { CommentTreeItem } from "./comments-list";
-import { Comment } from "../api/comment";
+import CommentsList, { CommentTreeItem } from "../comments-list";
+import { Comment } from "../../../api/comment";
 
 const buildCommentsMap = (comments: Comment[]): Map<string, Comment> => {
   const commentsChildrenMap = new Map<string, Comment>();

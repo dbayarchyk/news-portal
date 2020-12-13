@@ -5,13 +5,13 @@ import {
   DisclosureContent,
 } from "reakit/Disclosure";
 
-import { useAuth } from '../context/auth';
-import CommentsList, { CommentTreeItem } from "./comments-list";
-import CommentForm from "./comment-form";
-import { Comment } from "../api/comment";
-import FlatButton from "./ui/buttons/flat-button";
-import BodyText from "./ui/body-text";
-import Stack from "./ui/layouts/stack";
+import { useAuth } from '../../../context/auth';
+import CommentsList, { CommentTreeItem } from "../comments-list";
+import CommentForm from "../comment-form";
+import { Comment } from "../../../api/comment";
+import FlatButton from "../../ui/buttons/flat-button";
+import BodyText from "../../ui/body-text";
+import Stack from "../../ui/layouts/stack";
 import styles from "./comments-list-item.module.scss";
 
 type CommentsListItemProps = {
