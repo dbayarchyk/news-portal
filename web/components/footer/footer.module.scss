@@ -1,4 +1,13 @@
-.footer {
+.footerContent {
   padding-top: var(--spacing-4);
   padding-bottom: var(--spacing-4);
+  border-top: var(--border-width-xs) solid var(--color-gray-400);
+}
+
+.scrollToTopButton {
+  background: transparent;
+  padding: var(--spacing-1) var(--spacing-2);
+  border: none;
+  color: var(--color-gray-500);
+  font-weight: var(--font-weight-semibold);
 }

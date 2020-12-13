@@ -5,3 +5,7 @@
   display: grid;
   grid-template-rows: auto auto 1fr auto;
 }
+
+.footer {
+  margin-top: var(--spacing-8);
+}
