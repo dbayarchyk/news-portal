@@ -198,7 +198,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile ~/project/web
+      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile ~/project/web --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker push dbayarchyk/itdog-web
   # --- END: Web jobs ---
