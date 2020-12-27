@@ -23,6 +23,7 @@ const ArticlePreview: React.FCWithFragments<ArticlePreviewProps> = ({
     <article
       className={[className, styles.article].concat(isCondensed ? [styles.condensedArticle] : []).join(" ")}
       data-testid="article-preview"
+      data-are-comments-enabled={article.areCommentsEnabled}
     >
       <Stack className={styles.header} scale="2">
         <HeadlineText level="3" data-testid="article-title">
@@ -61,6 +62,7 @@ ArticlePreview.fragments = {
       sys {
         publishedAt
       }
+      areCommentsEnabled
     }
   `,
 };

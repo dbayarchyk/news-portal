@@ -38,4 +38,20 @@ context("Articles", () => {
         });
       });
   });
+
+  it("should be able to comment an article", () => {
+    cy.get('[data-testid="article-preview"][data-are-comments-enabled="true"]')
+      .then(($articlePreviews) => {
+        const randomArticlePreviewIndex = getRandomNumber(
+          $articlePreviews.length
+        );
+        const $randomArticlePreview =
+          $articlePreviews[randomArticlePreviewIndex];
+
+        cy.wrap($randomArticlePreview);
+      })
+      .within(() => {
+        cy.get('[data-testid="article-title"]').click();
+      });
+  });
 });
