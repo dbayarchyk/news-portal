@@ -842,7 +842,7 @@ export type ArticleContentCollection_ArticleFragment = (
 
 export type ArticlePreview_ArticleFragment = (
   { __typename?: 'Article' }
-  & Pick<Article, 'title' | 'slug'>
+  & Pick<Article, 'title' | 'slug' | 'areCommentsEnabled'>
   & { previewImage?: Maybe<(
     { __typename?: 'Asset' }
     & Pick<Asset, 'title' | 'description' | 'url'>
