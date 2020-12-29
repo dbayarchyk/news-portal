@@ -38,13 +38,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker build -t dbayarchyk/itdog-market-service:$CIRCLE_SHA1 -f ~/project/api/services/market/Dockerfile ~/project/api/services/market
+      - run: docker push dbayarchyk/itdog-market-service:$CIRCLE_SHA1
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             docker tag dbayarchyk/itdog-market-service:$CIRCLE_SHA1 dbayarchyk/itdog-market-service:latest
+            docker push dbayarchyk/itdog-market-service:latest
           fi
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-market-service:$CIRCLE_SHA1
   # --- END: Market service jobs ---
 
   # --- START: Comment service jobs: ---
@@ -82,13 +83,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker build -t dbayarchyk/itdog-comment-service:$CIRCLE_SHA1 -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
+      - run: docker push dbayarchyk/itdog-comment-service:$CIRCLE_SHA1
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             docker tag dbayarchyk/itdog-comment-service:$CIRCLE_SHA1 dbayarchyk/itdog-comment-service:latest
+            docker push dbayarchyk/itdog-comment-service:latest
           fi
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-comment-service:$CIRCLE_SHA1
   # --- END: Comment service jobs ---
 
   # --- START: Auth service jobs: ---
@@ -126,13 +128,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker build -t dbayarchyk/itdog-auth-service:$CIRCLE_SHA1 -f ~/project/api/services/auth/Dockerfile ~/project/api/services/auth
+      - run: docker push dbayarchyk/itdog-auth-service:$CIRCLE_SHA1
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             docker tag dbayarchyk/itdog-auth-service:$CIRCLE_SHA1 dbayarchyk/itdog-auth-service:latest
+            docker push dbayarchyk/itdog-auth-service:latest
           fi
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-auth-service:$CIRCLE_SHA1
   # --- END: Auth service jobs ---
 
   # --- START: Analytics service jobs: ---
@@ -170,13 +173,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker build -t dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1 -f ~/project/api/services/analytics/Dockerfile ~/project/api/services/analytics
+      - run: docker push dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             docker tag dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1 dbayarchyk/itdog-analytics-service:latest
+            docker push dbayarchyk/itdog-analytics-service:latest
           fi
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1
   # --- END: Analytics service jobs ---
 
   # --- START: Web jobs: ---
@@ -214,13 +218,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: docker build -t dbayarchyk/itdog-web:$CIRCLE_SHA1 -f ~/project/web/Dockerfile ~/project/web --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
+      - run: docker push dbayarchyk/itdog-web:$CIRCLE_SHA1
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             docker tag dbayarchyk/itdog-web:$CIRCLE_SHA1 dbayarchyk/itdog-web:latest
+            docker push dbayarchyk/itdog-web:latest
           fi
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-web:$CIRCLE_SHA1
   # --- END: Web jobs ---
 workflows:
   build-and-publish-docker-images:
