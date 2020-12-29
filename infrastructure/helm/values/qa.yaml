@@ -1,0 +1,16 @@
+host: qa.itdog.dbayarchyk.dev
+
+analyticsService:
+  image: dbayarchyk/itdog-analytics-service
+
+authService:
+  image: dbayarchyk/itdog-auth-service
+
+commentService:
+  image: dbayarchyk/itdog-comment-service
+
+marketService:
+  image: dbayarchyk/itdog-market-service
+
+web:
+  image: dbayarchyk/itdog-web
