@@ -38,9 +38,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-market-service -f ~/project/api/services/market/Dockerfile ~/project/api/services/market
+      - run: docker build -t dbayarchyk/itdog-market-service:$CIRCLE_SHA1 -f ~/project/api/services/market/Dockerfile ~/project/api/services/market
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-market-service
+      - run: docker push dbayarchyk/itdog-market-service:$CIRCLE_SHA1
   # --- END: Market service jobs ---
 
   # --- START: Comment service jobs: ---
@@ -78,9 +78,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-comment-service -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
+      - run: docker build -t dbayarchyk/itdog-comment-service:$CIRCLE_SHA1 -f ~/project/api/services/comment/Dockerfile ~/project/api/services/comment
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-comment-service
+      - run: docker push dbayarchyk/itdog-comment-service:$CIRCLE_SHA1
   # --- END: Comment service jobs ---
 
   # --- START: Auth service jobs: ---
@@ -118,9 +118,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-auth-service -f ~/project/api/services/auth/Dockerfile ~/project/api/services/auth
+      - run: docker build -t dbayarchyk/itdog-auth-service:$CIRCLE_SHA1 -f ~/project/api/services/auth/Dockerfile ~/project/api/services/auth
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-auth-service
+      - run: docker push dbayarchyk/itdog-auth-service:$CIRCLE_SHA1
   # --- END: Auth service jobs ---
 
   # --- START: Analytics service jobs: ---
@@ -158,9 +158,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-analytics-service -f ~/project/api/services/analytics/Dockerfile ~/project/api/services/analytics
+      - run: docker build -t dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1 -f ~/project/api/services/analytics/Dockerfile ~/project/api/services/analytics
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-analytics-service
+      - run: docker push dbayarchyk/itdog-analytics-service:$CIRCLE_SHA1
   # --- END: Analytics service jobs ---
 
   # --- START: Web jobs: ---
@@ -198,9 +198,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build -t dbayarchyk/itdog-web -f ~/project/web/Dockerfile ~/project/web --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
+      - run: docker build -t dbayarchyk/itdog-web:$CIRCLE_SHA1 -f ~/project/web/Dockerfile ~/project/web --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: docker push dbayarchyk/itdog-web
+      - run: docker push dbayarchyk/itdog-web:$CIRCLE_SHA1
   # --- END: Web jobs ---
 workflows:
   build-and-publish-docker-images:
