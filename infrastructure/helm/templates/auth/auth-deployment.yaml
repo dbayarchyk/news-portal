@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: dbayarchyk/itdog-auth-service
+          image: {{ .Values.authService.image }}
           env:
             - name: MONGODB_URL
               valueFrom:

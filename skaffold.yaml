@@ -1,9 +1,23 @@
-apiVersion: skaffold/v2alpha3
+apiVersion: skaffold/v2beta10
 kind: Config
 deploy:
-  kubectl:
-    manifests:
-      - ./infrastructure/k8s/**/*
+  helm:
+    releases:
+      - name: itdog
+        artifactOverrides:
+          analyticsService:
+            image: dbayarchyk/itdog-analytics-service
+          authService:
+            image: dbayarchyk/itdog-auth-service
+          commentService:
+            image: dbayarchyk/itdog-comment-service
+          marketService:
+            image: dbayarchyk/itdog-market-service
+          web:
+            image: dbayarchyk/itdog-web
+        chartPath: ./infrastructure/helm
+        valuesFiles:
+          - ./infrastructure/helm/values/local.yaml
 build:
   local:
     push: false

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: market
-          image: dbayarchyk/itdog-market-service
+          image: {{ .Values.marketService.image }}
           env:
             - name: MONGODB_URL
               valueFrom:

@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-    - host: itdog.de
+    - host: {{ .Values.host }}
       http:
         paths:
           - path: /api/comment(/|$)(.*)

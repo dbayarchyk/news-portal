@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: analytics
-          image: dbayarchyk/itdog-analytics-service
+          image: {{ .Values.analyticsService.image }}
           env:
             - name: GOOGLE_ANALYTICS_VIEW_ID
               value: "234204206"

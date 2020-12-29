@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: comment
-          image: dbayarchyk/itdog-comment-service
+          image: {{ .Values.commentService.image }}
           env:
             - name: MONGODB_URL
               valueFrom:
