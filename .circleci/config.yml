@@ -267,39 +267,19 @@ workflows:
           requires:
             - lint-market-service
             - test-market-service
-          filters:
-            branches:
-              only:
-                - master
       - build-and-push-comment-service-docker-image:
           requires:
             - lint-comment-service
             - test-comment-service
-          filters:
-            branches:
-              only:
-                - master
       - build-and-push-auth-service-docker-image:
           requires:
             - lint-auth-service
             - test-auth-service
-          filters:
-            branches:
-              only:
-                - master
       - build-and-push-analytics-service-docker-image:
           requires:
             - lint-analytics-service
             - test-analytics-service
-          filters:
-            branches:
-              only:
-                - master
       - build-and-push-web-docker-image:
           requires:
             - lint-web
             - test-web
-          filters:
-            branches:
-              only:
-                - master
