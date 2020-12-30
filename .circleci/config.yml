@@ -241,7 +241,7 @@ jobs:
       - run: doctl kubernetes cluster kubeconfig save news-portal
       - helm/install-helm-client:
           version: v3.4.2
-      - run: helm upgrade --install -f infrastructure/helm/values/prod.yaml itdog infrastructure/helm
+      - run: helm upgrade --install --recreate-pods -f infrastructure/helm/values/prod.yaml itdog infrastructure/helm
 workflows:
   build-and-publish-docker-images:
     jobs:
