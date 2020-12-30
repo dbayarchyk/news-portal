@@ -1,4 +1,4 @@
-host: itdog.dbayarchyk.dev
+host: itdog.dbayarchyk.xyz
 
 analyticsService:
   image: dbayarchyk/itdog-analytics-service
