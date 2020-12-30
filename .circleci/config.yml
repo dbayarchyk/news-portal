@@ -241,9 +241,7 @@ jobs:
       - run: doctl kubernetes cluster kubeconfig save news-portal
       - helm/install-helm-client:
           version: v3.4.2
-      # TODO: should we check if the release exists and install it when it does not?
-      # - run: helm install -f infrastructure/helm/values/prod.yaml itdog infrastructure/helm
-      - run: helm upgrade -f infrastructure/helm/values/prod.yaml itdog infrastructure/helm
+      - run: helm upgrade --install -f infrastructure/helm/values/prod.yaml itdog infrastructure/helm
 workflows:
   build-and-publish-docker-images:
     jobs:
