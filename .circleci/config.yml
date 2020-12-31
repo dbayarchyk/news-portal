@@ -231,6 +231,24 @@ jobs:
           fi
   # --- END: Web jobs ---
 
+  deploy-to-preview:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          DOMAIN_RECORD_NAME=${CIRCLE_BRANCH//[^a-zA-Z0-9-_]/-}.itdog
+
+          if ! $(doctl compute domain records list dbayarchyk.xyz | grep -q ${DOMAIN_RECORD_NAME})
+          then
+            LOAD_BALANCER_IP=$(doctl compute load-balancer get ${LOAD_BALANCER_ID} --format IP --no-header)
+            doctl compute domain records create dbayarchyk.xyz \
+                --record-type A \
+                --record-name ${DOMAIN_RECORD_NAME} \
+                --record-data ${LOAD_BALANCER_IP} \
+                --record-ttl 60
+            echo "Created a preview domain: ${DOMAIN_RECORD_NAME}"
+          fi
+
   deploy-to-prod:
     machine: true
     steps:
@@ -303,6 +321,18 @@ workflows:
           requires:
             - lint-web
             - test-web
+
+      - deploy-to-preview:
+          requires:
+            - build-and-push-market-service-docker-image
+            - build-and-push-comment-service-docker-image
+            - build-and-push-auth-service-docker-image
+            - build-and-push-analytics-service-docker-image
+            - build-and-push-web-docker-image
+          filters:
+            branches:
+              ignore:
+                - master
 
       - deploy-to-prod:
           requires:
