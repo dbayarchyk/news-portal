@@ -235,19 +235,62 @@ jobs:
     machine: true
     steps:
       - checkout
+      - digitalocean/install
+      - digitalocean/initialize:
+          digitalocean-access-token: DIGITALOCEAN_ACCESS_TOKEN
+      - run: doctl kubernetes cluster kubeconfig save news-portal
+      - helm/install-helm-client:
+          version: v3.4.2
       - run: |
-          DOMAIN_RECORD_NAME=${CIRCLE_BRANCH//[^a-zA-Z0-9-_]/-}.itdog
+          SANITIZED_BRANCH=${CIRCLE_BRANCH//[^a-zA-Z0-9-_]/-}
+          DOMAIN_RECORD_NAME=${SANITIZED_BRANCH}.itdog
 
           if ! $(doctl compute domain records list dbayarchyk.xyz | grep -q ${DOMAIN_RECORD_NAME})
           then
             LOAD_BALANCER_IP=$(doctl compute load-balancer get ${LOAD_BALANCER_ID} --format IP --no-header)
             doctl compute domain records create dbayarchyk.xyz \
-                --record-type A \
-                --record-name ${DOMAIN_RECORD_NAME} \
-                --record-data ${LOAD_BALANCER_IP} \
-                --record-ttl 60
-            echo "Created a preview domain: ${DOMAIN_RECORD_NAME}"
+              --record-type A \
+              --record-name ${DOMAIN_RECORD_NAME} \
+              --record-data ${LOAD_BALANCER_IP} \
+              --record-ttl 60
           fi
+
+          PREVIEW_HOST=${DOMAIN_RECORD_NAME}.dbayarchyk.xyz
+
+          # Apply CIRCLE_SHA1 to the docker images as a tag
+          sed -i -e "s/{{ RELEASE_TAG }}/${CIRCLE_SHA1}/" infrastructure/helm/values/preview.yaml
+
+          kubectl create namespace ${SANITIZED_BRANCH}
+
+          # Setup all secrets
+          kubectl create secret generic comment-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
+            --namespace ${SANITIZED_BRANCH}
+
+          kubectl create secret generic market-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
+            --namespace ${SANITIZED_BRANCH}
+
+          kubectl create secret generic auth-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
+            --from-literal ACCESS_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET}" \
+            --from-literal REFRESH_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET}" \
+            --namespace ${SANITIZED_BRANCH}
+
+          kubectl create secret generic analytics-generic-secret \
+            --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
+            --from-literal GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY}" \
+            --namespace ${SANITIZED_BRANCH}
+
+          helm upgrade ${DOMAIN_RECORD_NAME} infrastructure/helm \
+            --install \
+            --recreate-pods \
+            -f infrastructure/helm/values/preview.yaml \
+            --set host=${PREVIEW_HOST} \
+            --namespace ${SANITIZED_BRANCH} \
+            --create-namespace
+
+          echo "Created a preview environment: ${PREVIEW_HOST}"
 
   deploy-to-prod:
     machine: true

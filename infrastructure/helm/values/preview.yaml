@@ -1,0 +1,16 @@
+# !!! IMPORTANT !!!
+# {{ RELEASE_TAG }} substring will be replace automatically with a SHA1 in CI
+# Do not remove it!
+
+host: preview.itdog.dbayarchyk.xyz
+
+analyticsService:
+  image: dbayarchyk/itdog-analytics-service:{{ RELEASE_TAG }}
+authService:
+  image: dbayarchyk/itdog-auth-service:{{ RELEASE_TAG }}
+commentService:
+  image: dbayarchyk/itdog-comment-service:{{ RELEASE_TAG }}
+marketService:
+  image: dbayarchyk/itdog-market-service:{{ RELEASE_TAG }}
+web:
+  image: dbayarchyk/itdog-web:{{ RELEASE_TAG }}
