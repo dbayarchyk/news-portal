@@ -5,11 +5,6 @@ COPY package-lock.json ./
 RUN npm install
 COPY . .
 
-FROM base AS quality
-RUN npm run lint
-ENV CI=true
-RUN npm run test
-
 FROM base AS build
 ENV NODE_ENV=production
 WORKDIR /build
