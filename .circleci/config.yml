@@ -5,6 +5,7 @@ orbs:
   digitalocean: digitalocean/cli@0.1.1
   kubernetes: circleci/kubernetes@0.3.0
   helm: circleci/helm@1.1.2
+  cypress: cypress-io/cypress@1.26.0
 jobs:
   # --- START: Market service jobs: ---
   init-market-service:
@@ -376,6 +377,12 @@ workflows:
             branches:
               ignore:
                 - master
+
+      - cypress/run:
+          pre-steps:
+            - run: export CYPRESS_BASE_URL=http://${CIRCLE_BRANCH//[^a-zA-Z0-9-_]/-}.itdog.dbayarchyk.xyz
+          requires:
+            - deploy-to-preview
 
       - deploy-to-prod:
           requires:
