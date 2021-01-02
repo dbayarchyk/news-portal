@@ -18,14 +18,12 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save news-portal
       - name: Uninstall the preview helm release
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: |
-            BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
-            SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
-            DOMAIN_RECORD_NAME=${SANITIZED_BRANCH}.itdog
+        run: |
+          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
+          DOMAIN_RECORD_NAME=${SANITIZED_BRANCH}.itdog
 
-            helm uninstall ${DOMAIN_RECORD_NAME} infrastructure/helm --namespace=${SANITIZED_BRANCH}
+          helm uninstall ${DOMAIN_RECORD_NAME} infrastructure/helm --namespace=${SANITIZED_BRANCH} 
       - name: Remove the preview namespace
         run: |
           BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
