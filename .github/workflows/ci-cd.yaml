@@ -1,0 +1,127 @@
+name: CI/CD
+
+on:
+  push:
+    branches-ignore:
+      - "master"
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+
+  deploy-to-preview:
+    needs: [init]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save news-portal
+      - name: Create a preview DNS record
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          LOAD_BALANCER_ID: ${{ LOAD_BALANCER_ID }}
+        run: |
+          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+
+          if ! $(doctl compute domain records list ${DOMAIN} | grep -q ${PREVIEW_DNS_RECORD_NAME})
+          then
+            LOAD_BALANCER_IP=$(doctl compute load-balancer get ${LOAD_BALANCER_ID} --format IP --no-header)
+            doctl compute domain records create ${DOMAIN} \
+              --record-type A \
+              --record-name ${PREVIEW_DNS_RECORD_NAME} \
+              --record-data ${LOAD_BALANCER_IP} \
+              --record-ttl 60
+          fi
+        - name: Setup a preview kubernetes environment
+          env:
+            DOMAIN: ${{ secrets.DOMAIN }}
+            PREVIEW_COMMENT_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_COMMENT_SERVICE_MONGODB_URL }}
+            PREVIEW_MARKET_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_MARKET_SERVICE_MONGODB_URL }}
+            PREVIEW_AUTH_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_AUTH_SERVICE_MONGODB_URL }}
+            PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET }}
+            PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET }}
+            PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL }}
+            PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY }}
+          run: |
+            BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+            SHA1=$(git rev-parse HEAD)
+            PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+            PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+            PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
+
+            # Apply SHA1 to the docker images as a tag
+            sed -i -e "s/{{ RELEASE_TAG }}/${SHA1}/" infrastructure/helm/values/preview.yaml
+
+            NAMESPACE=${PREVIEW_HOSTNAME}
+
+            kubectl create namespace ${NAMESPACE}
+
+            # Setup all secrets
+            kubectl create secret generic comment-generic-secret \
+              --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
+              --namespace ${NAMESPACE}
+            kubectl create secret generic market-generic-secret \
+              --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
+              --namespace ${NAMESPACE}
+            kubectl create secret generic auth-generic-secret \
+              --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
+              --from-literal ACCESS_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET}" \
+              --from-literal REFRESH_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET}" \
+              --namespace ${NAMESPACE}
+            kubectl create secret generic analytics-generic-secret \
+              --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
+              --from-literal GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY}" \
+              --namespace ${NAMESPACE}
+
+            helm upgrade ${PREVIEW_HOSTNAME} infrastructure/helm \
+              --install \
+              --wait \
+              --recreate-pods \
+              -f infrastructure/helm/values/preview.yaml \
+              --set host=${PREVIEW_HOST} \
+              --namespace ${NAMESPACE} \
+              --create-namespace
+
+            echo "Created a preview environment: ${PREVIEW_HOST}"
+
+  run-e2e-tests:
+    needs: [deploy-to-preview]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Cypress Base url
+        run: |
+          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          SHA1=$(git rev-parse HEAD)
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+          export PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
+
+      - name: Run end-to-end tests
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
+          browser: chrome
+
+      - name: Store cypress screenshots
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: end-to-end-result-screenshots
+          path: cypress/screenshots
+
+      - name: Store cypress videos
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: end-to-end-result--videos
+          path: cypress/videos
