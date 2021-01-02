@@ -285,6 +285,7 @@ jobs:
 
           helm upgrade ${DOMAIN_RECORD_NAME} infrastructure/helm \
             --install \
+            --wait \
             --recreate-pods \
             -f infrastructure/helm/values/preview.yaml \
             --set host=${PREVIEW_HOST} \
