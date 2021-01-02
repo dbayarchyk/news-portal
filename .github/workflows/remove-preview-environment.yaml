@@ -17,16 +17,9 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save news-portal
-      - name: Uninstall the preview helm release
-        run: |
-          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
-          SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
-          DOMAIN_RECORD_NAME=${SANITIZED_BRANCH}.itdog
-
-          helm uninstall ${DOMAIN_RECORD_NAME} infrastructure/helm --namespace=${SANITIZED_BRANCH} 
       - name: Remove the preview namespace
         run: |
-          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          BRANCH="${{ github.event.ref }}"
           SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
 
           kubectl delete namespace ${SANITIZED_BRANCH}
@@ -34,8 +27,9 @@ jobs:
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
         run: |
-          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          # BRANCH=$(git rev-parse --abbrev-ref "${{ github.event.ref }}")
+          BRANCH="${{ github.event.ref }}"
           SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_ID=$(doctl compute domain records list ${DOMAIN} --format ID,Name --no-header | grep ${SANITIZED_BRANCH} | awk '{print $1;}')
 
-          doctl compute domain records delete ${DOMAIN} ${PREVIEW_DNS_RECORD_ID}
+          doctl compute domain records delete ${DOMAIN} ${PREVIEW_DNS_RECORD_ID} --force
