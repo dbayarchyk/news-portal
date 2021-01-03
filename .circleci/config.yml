@@ -236,6 +236,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - kubernetes/install-kubectl
       - digitalocean/install
       - digitalocean/initialize:
           digitalocean-access-token: DIGITALOCEAN_ACCESS_TOKEN
