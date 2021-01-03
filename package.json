@@ -9,10 +9,14 @@
   "author": "Dzmitry Bayarchyk <dzmitry.bayarchyk@gmail.com>",
   "private": true,
   "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
     "cypress": "cypress open",
     "cypress:headless": "cypress run --headless --browser chrome"
   },
   "devDependencies": {
-    "cypress": "^6.1.0"
+    "cypress": "^6.1.0",
+    "lerna": "^3.15.0"
   }
 }

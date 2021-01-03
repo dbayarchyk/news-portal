@@ -6,18 +6,89 @@ on:
       - "master"
 
 jobs:
-  init:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Cache and restore dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm install
+      - name: Bootstrap all packages
+        run: npm run bootstrap
+      - name: Lint all packages
+        run: npm run lint
+      - name: Test all packages
+        env:
+          CI: true
+        run: npm run test
 
-  deploy-to-preview:
-    needs: [init]
+  build-and-push-docker-images:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to docker
+        env:
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - name: Build analytics service docker image
+        run: |
+          docker build api/services/analytics \
+            --tag dbayarchyk/itdog-analytics-service:${GITHUB_SHA} \
+            --file api/services/analytics/Dockerfile
+      - name: Build auth service docker image
+        run: |
+          docker build api/services/auth \
+            --tag dbayarchyk/itdog-auth-service:${GITHUB_SHA} \
+            --file api/services/auth/Dockerfile
+      - name: Build comment service docker image
+        run: |
+          docker build api/services/comment \
+            --tag dbayarchyk/itdog-comment-service:${GITHUB_SHA} \
+            --file api/services/comment/Dockerfile
+      - name: Build market service docker image
+        run: |
+          docker build api/services/market \
+            --tag dbayarchyk/itdog-market-service:${GITHUB_SHA} \
+            --file api/services/market/Dockerfile
+      - name: Build web docker image
+        env:
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
+        run: |
+          docker build web \
+            --tag dbayarchyk/itdog-web:${GITHUB_SHA} \
+            --file web/Dockerfile \
+            --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID \
+            --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN \
+            --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
+      - name: Push analytics service docker image
+        run: docker push dbayarchyk/itdog-analytics-service:${GITHUB_SHA}
+      - name: Push auth service docker image
+        run: docker push dbayarchyk/itdog-auth-service:${GITHUB_SHA}
+      - name: Push comment service docker image
+        run: docker push dbayarchyk/itdog-comment-service:${GITHUB_SHA}
+      - name: Push market service docker image
+        run: docker push dbayarchyk/itdog-market-service:${GITHUB_SHA}
+      - name: Push web docker image
+        run: docker push dbayarchyk/itdog-web:${GITHUB_SHA}
+
+  deploy-to-preview:
+    needs: [build-and-push-docker-images]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -27,9 +98,9 @@ jobs:
       - name: Create a preview DNS record
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
-          LOAD_BALANCER_ID: ${{ LOAD_BALANCER_ID }}
+          LOAD_BALANCER_ID: ${{ secrets.LOAD_BALANCER_ID }}
         run: |
-          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+          BRANCH=${GITHUB_REF##*/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
 
@@ -42,86 +113,93 @@ jobs:
               --record-data ${LOAD_BALANCER_IP} \
               --record-ttl 60
           fi
-        - name: Setup a preview kubernetes environment
-          env:
-            DOMAIN: ${{ secrets.DOMAIN }}
-            PREVIEW_COMMENT_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_COMMENT_SERVICE_MONGODB_URL }}
-            PREVIEW_MARKET_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_MARKET_SERVICE_MONGODB_URL }}
-            PREVIEW_AUTH_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_AUTH_SERVICE_MONGODB_URL }}
-            PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET }}
-            PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET }}
-            PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL }}
-            PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY }}
-          run: |
-            BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
-            SHA1=$(git rev-parse HEAD)
-            PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
-            PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
-            PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
+      - name: Setup a preview kubernetes environment
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          PREVIEW_COMMENT_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_COMMENT_SERVICE_MONGODB_URL }}
+          PREVIEW_MARKET_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_MARKET_SERVICE_MONGODB_URL }}
+          PREVIEW_AUTH_SERVICE_MONGODB_URL: ${{ secrets.PREVIEW_AUTH_SERVICE_MONGODB_URL }}
+          PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET }}
+          PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET: ${{ secrets.PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET }}
+          PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL }}
+          PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY }}
+        run: |
+          BRANCH=${GITHUB_REF##*/}
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+          PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
 
-            # Apply SHA1 to the docker images as a tag
-            sed -i -e "s/{{ RELEASE_TAG }}/${SHA1}/" infrastructure/helm/values/preview.yaml
+          # Apply SHA1 to the docker images as a tag
+          sed -i -e "s/{{ RELEASE_TAG }}/${GITHUB_SHA}/" infrastructure/helm/values/preview.yaml
 
-            NAMESPACE=${PREVIEW_HOSTNAME}
+          NAMESPACE=${PREVIEW_HOSTNAME}
 
-            kubectl create namespace ${NAMESPACE}
+          kubectl create namespace ${NAMESPACE}
 
-            # Setup all secrets
-            kubectl create secret generic comment-generic-secret \
-              --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
-              --namespace ${NAMESPACE}
-            kubectl create secret generic market-generic-secret \
-              --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
-              --namespace ${NAMESPACE}
-            kubectl create secret generic auth-generic-secret \
-              --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
-              --from-literal ACCESS_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET}" \
-              --from-literal REFRESH_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET}" \
-              --namespace ${NAMESPACE}
-            kubectl create secret generic analytics-generic-secret \
-              --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
-              --from-literal GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY}" \
-              --namespace ${NAMESPACE}
+          # Setup all secrets
+          kubectl create secret generic comment-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
+            --namespace ${NAMESPACE}
+          kubectl create secret generic market-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
+            --namespace ${NAMESPACE}
+          kubectl create secret generic auth-generic-secret \
+            --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
+            --from-literal ACCESS_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET}" \
+            --from-literal REFRESH_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET}" \
+            --namespace ${NAMESPACE}
+          kubectl create secret generic analytics-generic-secret \
+            --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
+            --from-literal GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY}" \
+            --namespace ${NAMESPACE}
 
-            helm upgrade ${PREVIEW_HOSTNAME} infrastructure/helm \
-              --install \
-              --wait \
-              --recreate-pods \
-              -f infrastructure/helm/values/preview.yaml \
-              --set host=${PREVIEW_HOST} \
-              --namespace ${NAMESPACE} \
-              --create-namespace
+          helm upgrade ${PREVIEW_HOSTNAME} infrastructure/helm \
+            --install \
+            --wait \
+            --recreate-pods \
+            -f infrastructure/helm/values/preview.yaml \
+            --set host=${PREVIEW_HOST} \
+            --namespace ${NAMESPACE} \
+            --create-namespace
 
-            echo "Created a preview environment: ${PREVIEW_HOST}"
+          echo "Created a preview environment: ${PREVIEW_HOST}"
 
   run-e2e-tests:
     needs: [deploy-to-preview]
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Cypress Base url
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Setup Cypress Base URL
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
         run: |
-          BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
-          SHA1=$(git rev-parse HEAD)
+          BRANCH=${GITHUB_REF##*/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
-          export PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
-
+          # This is a specific way to set env variables in github actions
+          # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+          echo "CYPRESS_BASE_URL=http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}" >> $GITHUB_ENV
       - name: Run end-to-end tests
         uses: cypress-io/github-action@v2
         with:
-          install: false
           browser: chrome
-
       - name: Store cypress screenshots
         uses: actions/upload-artifact@v1
         if: failure()
         with:
           name: end-to-end-result-screenshots
           path: cypress/screenshots
-
       - name: Store cypress videos
         uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: end-to-end-result--videos
+          name: end-to-end-result-videos
           path: cypress/videos
