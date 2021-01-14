@@ -23,6 +23,16 @@ const AnnualSalaryReportListItem: React.FC<AnnualSalaryReportListItemProps> = ({
   maxAnnualSalary,
   annualSalaryReportItem,
 }) => {
+  const currencyFormatter = Intl.NumberFormat(
+    'de-DE',
+    {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    },
+  );
+
   return (
     <li>
       <article className={styles.card}>
@@ -49,17 +59,17 @@ const AnnualSalaryReportListItem: React.FC<AnnualSalaryReportListItemProps> = ({
             <div>
               <Stack scale="1">
                 <BodyText type="secondary">Median</BodyText>
-                <BodyText>{annualSalaryReportItem.median}</BodyText>
+                <BodyText>{currencyFormatter.format(annualSalaryReportItem.median)}</BodyText>
               </Stack>
 
               <Stack scale="1">
                 <BodyText type="secondary">Min</BodyText>
-                <BodyText>{annualSalaryReportItem.min}</BodyText>
+                <BodyText>{currencyFormatter.format(annualSalaryReportItem.min)}</BodyText>
               </Stack>
 
               <Stack scale="1">
                 <BodyText type="secondary">Max</BodyText>
-                <BodyText>{annualSalaryReportItem.max}</BodyText>
+                <BodyText>{currencyFormatter.format(annualSalaryReportItem.max)}</BodyText>
               </Stack>
             </div>
           </Cluster>
