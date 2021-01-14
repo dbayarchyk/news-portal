@@ -27,7 +27,6 @@ jobs:
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
         run: |
-          # BRANCH=$(git rev-parse --abbrev-ref "${{ github.event.ref }}")
           BRANCH="${{ github.event.ref }}"
           SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_ID=$(doctl compute domain records list ${DOMAIN} --format ID,Name --no-header | grep ${SANITIZED_BRANCH} | awk '{print $1;}')

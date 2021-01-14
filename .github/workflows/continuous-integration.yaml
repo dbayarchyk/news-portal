@@ -1,4 +1,4 @@
-name: CI/CD
+name: Continuous Integration
 
 on:
   push:
@@ -100,7 +100,7 @@ jobs:
           DOMAIN: ${{ secrets.DOMAIN }}
           LOAD_BALANCER_ID: ${{ secrets.LOAD_BALANCER_ID }}
         run: |
-          BRANCH=${GITHUB_REF##*/}
+          BRANCH=${GITHUB_REF#refs/heads/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
 
@@ -124,7 +124,7 @@ jobs:
           PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL }}
           PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY }}
         run: |
-          BRANCH=${GITHUB_REF##*/}
+          BRANCH=${GITHUB_REF#refs/heads/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
           PREVIEW_HOST=${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}
@@ -181,7 +181,7 @@ jobs:
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
         run: |
-          BRANCH=${GITHUB_REF##*/}
+          BRANCH=${GITHUB_REF#refs/heads/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
           # This is a specific way to set env variables in github actions
