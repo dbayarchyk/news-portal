@@ -1,5 +1,5 @@
 # !!! IMPORTANT !!!
-# {{ RELEASE_TAG }} substring will be replace automatically with a SHA1 in CI
+# {{ RELEASE_TAG }} substring will be replaced automatically with a SHA1 in CI
 # Do not remove it!
 
 host: preview.itdog.dbayarchyk.xyz
