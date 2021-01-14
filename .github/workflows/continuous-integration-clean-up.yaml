@@ -1,4 +1,4 @@
-name: Remove the preview environment
+name: Continuous Integration Clean Up
 
 on:
   delete:
@@ -21,8 +21,11 @@ jobs:
         run: |
           BRANCH="${{ github.event.ref }}"
           SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
-
-          kubectl delete namespace ${SANITIZED_BRANCH}
+          
+          if $(kubectl get namespaces | grep -q ${SANITIZED_BRANCH})
+          then
+            kubectl delete namespace ${SANITIZED_BRANCH}
+          fi
       - name: Remove the preview DNS record
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
@@ -31,4 +34,7 @@ jobs:
           SANITIZED_BRANCH=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_ID=$(doctl compute domain records list ${DOMAIN} --format ID,Name --no-header | grep ${SANITIZED_BRANCH} | awk '{print $1;}')
 
-          doctl compute domain records delete ${DOMAIN} ${PREVIEW_DNS_RECORD_ID} --force
+          if [[ $PREVIEW_DNS_RECORD_ID ]]
+          then
+            doctl compute domain records delete ${DOMAIN} ${PREVIEW_DNS_RECORD_ID} --force
+          fi
