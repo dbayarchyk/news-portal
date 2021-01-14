@@ -19,6 +19,15 @@ const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
     Math.min(...annualSalaryReport.map((item) => item.min)) || 0;
   const maxAnnualSalary =
     Math.max(...annualSalaryReport.map((item) => item.max)) || 0;
+  const currencyFormatter = Intl.NumberFormat(
+    'de-DE',
+    {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    },
+  );
 
   return (
     <Table>
@@ -58,13 +67,13 @@ const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
               {reportItem.groupBy}
             </TableCell>
             <TableCell as="td" align="right">
-              {reportItem.median}
+              {currencyFormatter.format(reportItem.median)}
             </TableCell>
             <TableCell as="td" align="right">
-              {reportItem.min}
+              {currencyFormatter.format(reportItem.min)}
             </TableCell>
             <TableCell as="td" align="right">
-              {reportItem.max}
+              {currencyFormatter.format(reportItem.max)}
             </TableCell>
             <TableCell as="td" align="center">
               <RangeChart
