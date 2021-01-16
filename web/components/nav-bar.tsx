@@ -20,14 +20,14 @@ const NAV_ITEMS = [
   //   title: "Events",
   //   href: "/events",
   // },
-  {
-    title: "Salaries",
-    href: "/salaries",
-  },
-  {
-    title: "About",
-    href: "/about",
-  },
+  // {
+  //   title: "Salaries",
+  //   href: "/salaries",
+  // },
+  // {
+  //   title: "About",
+  //   href: "/about",
+  // },
 ];
 
 const NavBar: React.FC = () => {
