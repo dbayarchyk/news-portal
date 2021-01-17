@@ -1,5 +1,5 @@
 import React from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 
 import graphql from '../../api/contentful/graphql';
@@ -9,39 +9,6 @@ import Center from "../../components/ui/layouts/center";
 import Stack from "../../components/ui/layouts/stack";
 import { ArticlePageQuery } from "../../generated/graphql-types";
 import { getHeadTitle } from "../../utils/head-title";
-
-async function queryAllArticles() {
-  const responsePayload = await graphql(
-    /* GraphQL */ `
-      query ArticlePageAllArticles {
-        articleCollection {
-          items {
-            sys {
-              id
-            }
-            slug
-          }
-        }
-      }
-    `,
-  );
-
-  return responsePayload;
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await queryAllArticles();
-  const paths = data.articleCollection.items.map((item) => ({
-    params: {
-      slug: item.slug,
-    },
-  }));
-
-  return {
-    paths: paths,
-    fallback: false,
-  };
-};
 
 async function queryArticle(slug) {
   const responsePayload = await graphql(
@@ -64,7 +31,7 @@ async function queryArticle(slug) {
   return responsePayload;
 }
 
-export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params: { slug } }) => {
   const { data } = await queryArticle(slug);
 
   return {
