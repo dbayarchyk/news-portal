@@ -34,7 +34,7 @@ const Footer: React.FC<FooterProps> = ({
           <div className={styles.footerContent}>
             <Stack scale="1">
               <BodyText type="secondary">
-                IT Dog Copyright© 2020
+                IT Dog Copyright© 2021
               </BodyText>
             </Stack>
           </div>
