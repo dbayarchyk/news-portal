@@ -1,3 +1,4 @@
 {
-  "baseUrl": "http://itdog.de"
+  "baseUrl": "http://itdog.de",
+  "blockHosts": ["*.google-analytics.com"]
 }
