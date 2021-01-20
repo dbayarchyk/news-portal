@@ -19,6 +19,7 @@ type CommentFormProps = {
   parentCommentId?: string;
   textareaRef?: React.Ref<HTMLTextAreaElement>;
   extraControl?: React.ReactNode;
+  "data-testid"?: string;
   onCreate?: (createdComment: Comment) => void;
 };
 
@@ -27,6 +28,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
   parentCommentId,
   textareaRef,
   extraControl,
+  "data-testid": dataTestid,
   onCreate,
 }) => {
   const formState = useForm({
@@ -81,7 +83,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
   }
 
   return (
-    <form onSubmit={formState.onFormSubmit}>
+    <form onSubmit={formState.onFormSubmit} data-testid={dataTestid}>
       <Stack scale="2">
         <TextareaField
           textareaRef={textareaRef}

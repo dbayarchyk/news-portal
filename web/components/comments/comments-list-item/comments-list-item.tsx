@@ -58,7 +58,7 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
   return (
     <li>
       <Stack scale="1">
-        <div id={comment.id}>
+        <div id={comment.id} data-testid="comment">
           <Stack scale="2">
             <BodyText type="secondary">
               {new Date(comment.createdAt).toLocaleDateString()}
@@ -101,6 +101,7 @@ const CommentsListItem: React.FC<CommentsListItemProps> = ({
                   onClick={handleReplyFormCanceling}
                 />
               }
+              data-testid="reply-to-comment-form"
               onCreate={handleCommentCreation}
             />
           </div>

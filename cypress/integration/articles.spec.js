@@ -39,19 +39,52 @@ context("Articles", () => {
       });
   });
 
-  it("should be able to comment an article", () => {
-    cy.get('[data-testid="article-preview"][data-are-comments-enabled="true"]')
-      .then(($articlePreviews) => {
-        const randomArticlePreviewIndex = getRandomNumber(
-          $articlePreviews.length
-        );
-        const $randomArticlePreview =
-          $articlePreviews[randomArticlePreviewIndex];
+  describe("when an article allows comments", () => {
+    it("should be able to comment an article", () => {
+      cy.get('[data-testid="article-preview"][data-are-comments-enabled="true"]')
+        .then(($articlePreviews) => {
+          const randomArticlePreviewIndex = getRandomNumber(
+            $articlePreviews.length
+          );
+          const $randomArticlePreview =
+            $articlePreviews[randomArticlePreviewIndex];
+  
+          cy.wrap($randomArticlePreview);
+        })
+        .within(() => {
+          cy.get('[data-testid="article-title"]').click();
+        });
 
-        cy.wrap($randomArticlePreview);
-      })
-      .within(() => {
-        cy.get('[data-testid="article-title"]').click();
+      cy.contains("Sign in to leave a comment").click();
+      cy.get("input#email").type(Cypress.env('USER_EMAIL'));
+      cy.get("input#password").type(Cypress.env('USER_PASSWORD'));
+      cy.get("button").contains("Sign In").click();
+
+      const newCommentText = "Wow, nice article!";
+      cy.get('[data-testid="new-comment-form"]').within(() => {
+        cy.get("textarea#new-comment").type(newCommentText);
+        cy.get("button").contains("Leave a comment").click();
       });
+      cy.get('[data-testid="comment"]').contains(newCommentText);
+    });
+  });
+
+  describe("when an article does not allow comments", () => {
+    it("should not be able to comment an article", () => {
+      cy.get('[data-testid="article-preview"][data-are-comments-enabled="false"]')
+        .then(($articlePreviews) => {
+          const randomArticlePreviewIndex = getRandomNumber(
+            $articlePreviews.length
+          );
+          const $randomArticlePreview =
+            $articlePreviews[randomArticlePreviewIndex];
+  
+          cy.wrap($randomArticlePreview);
+        })
+        .within(() => {
+          cy.get('[data-testid="article-title"]').click();
+        });
+      cy.contains("Comments are disabled.");
+    });
   });
 });
