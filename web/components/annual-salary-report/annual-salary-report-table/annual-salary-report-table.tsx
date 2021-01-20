@@ -62,7 +62,7 @@ const AnnualSalaryReportTable: React.FC<AnnualSalaryReportTableProps> = ({
 
       <tbody>
         {annualSalaryReport.map((reportItem) => (
-          <tr key={reportItem.groupBy}>
+          <tr key={reportItem.groupBy} data-testid="salary-report-item">
             <TableCell as="td" align="left">
               {reportItem.groupBy}
             </TableCell>

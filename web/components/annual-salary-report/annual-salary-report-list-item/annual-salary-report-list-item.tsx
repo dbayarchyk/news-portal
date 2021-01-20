@@ -34,7 +34,7 @@ const AnnualSalaryReportListItem: React.FC<AnnualSalaryReportListItemProps> = ({
   );
 
   return (
-    <li>
+    <li data-testid="salary-report-item">
       <article className={styles.card}>
         <Stack scale="4">
           <Cluster scale="2">
