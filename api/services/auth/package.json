@@ -8,7 +8,10 @@
     "start": "node ./build/interface/http/server.js",
     "dev": "ts-node-dev --poll src/interface/http/server.ts",
     "test": "jest",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "migrate-mongo:create": "migrate-mongo create $1",
+    "migrate-mongo:up": "migrate-mongo up",
+    "migrate-mongo:down": "migrate-mongo down"
   },
   "husky": {
     "hooks": {
@@ -51,6 +54,7 @@
     "eslint": "^7.6.0",
     "husky": "^4.2.5",
     "jest": "^26.2.2",
+    "migrate-mongo": "^8.1.4",
     "ts-node-dev": "^1.0.0-pre.51",
     "typescript": "^3.9.7"
   }
