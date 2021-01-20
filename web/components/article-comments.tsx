@@ -59,6 +59,7 @@ const ArticleComments: React.FCWithFragments<ArticleCommentsProps> = ({
           <CommentForm
             articleId={article.sys.id}
             onCreate={handleCommentCreation}
+            data-testid="new-comment-form"
           />
         </>
       ) : (
