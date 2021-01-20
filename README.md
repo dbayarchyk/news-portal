@@ -12,19 +12,19 @@ This is a monorepo that contains all the necessary services:
 
 ## CI / CD 🚀
 
-For continuous integration and continuous delivery we use [CircleCI](https://circleci.com/).
+For continuous integration and continuous deployment we use [Github Actions](https://docs.github.com/en/actions).
 This tool helps us to:
 
 - Lint all our internal services to keep the code style consistent
 - Run all our tests to make sure we ship a robust product
 - Create all our Docker images and push them to Docker hub
-- TODO: Deliver every part of the application to one of our environments
+- Deliver every part of the application to one of our environments (Preview or Production)
 
 ## Infrastructure 🏘
 
 TODO: write a short overview about the tools we use to build our infrastructure:
 
-- Kubernetes
+- Kubernetes and Helm
 - Terraform
 
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.2/deploy/static/provider/cloud/deploy.yaml`
