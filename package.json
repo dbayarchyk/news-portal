@@ -11,6 +11,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
+    "test:ci": "lerna run test:ci",
     "lint": "lerna run lint",
     "cypress": "cypress open",
     "cypress:headless": "cypress run --headless --browser chrome"
