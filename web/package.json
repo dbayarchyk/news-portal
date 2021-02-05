@@ -9,6 +9,7 @@
     "start": "next start",
     "export": "next export",
     "test": "jest",
+    "test:ci": "jest --changedSince=master --coverage --ci",
     "lint": "eslint . --ext .ts --ext .tsx",
     "graphql-codegen": "graphql-codegen --config codegen.yml"
   },

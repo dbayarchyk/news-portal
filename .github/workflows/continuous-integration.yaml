@@ -27,7 +27,7 @@ jobs:
       - name: Test all packages
         env:
           CI: true
-        run: npm run test
+        run: npm run test:ci
 
   build-and-push-docker-images:
     needs: [test]
