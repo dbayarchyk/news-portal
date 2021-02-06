@@ -8,6 +8,7 @@
     "start": "node ./build/interface/http/server.js",
     "dev": "ts-node-dev --poll src/interface/http/server.ts",
     "test": "jest",
+    "test:ci": "jest --changedSince=master --coverage --ci",
     "lint": "eslint . --ext .ts"
   },
   "husky": {
