@@ -196,6 +196,9 @@ jobs:
           # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
           echo "CYPRESS_BASE_URL=http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}" >> $GITHUB_ENV
       - name: Run end-to-end tests
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
