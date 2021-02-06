@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Checkout master
+        # By default github downloads only the current branch. We also want to have master
+        # branch locally to be able to run test only for the files that have been changed since master. 
+        # https://dev.to/bnb/jest-and-the-changedsince-flag-in-github-actions-ci-468i
+        run: |
+          git fetch --no-tags --depth=1 origin master
+          git checkout -b master
+          git checkout ${{ github.event.pull_request.head.sha }}
       - name: Cache and restore dependencies
         uses: actions/cache@v2
         with:
