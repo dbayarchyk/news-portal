@@ -14,9 +14,11 @@
     "test:ci": "lerna run test:ci",
     "lint": "lerna run lint",
     "cypress": "cypress open",
-    "cypress:headless": "cypress run --headless --browser chrome"
+    "cypress:headless": "cypress run --headless --browser chrome",
+    "lighthouse": "lhci autorun"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.7.0",
     "cypress": "^6.1.0",
     "lerna": "^3.15.0"
   }

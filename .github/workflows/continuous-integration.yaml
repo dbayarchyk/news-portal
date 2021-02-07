@@ -232,3 +232,26 @@ jobs:
         with:
           name: end-to-end-result-videos
           path: cypress/videos
+
+  run-lighthouse-ci:
+    needs: [deploy-to-preview]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: run Lighthouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+          BASE_URL="http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}"
+          npm run lighthouse
