@@ -253,5 +253,5 @@ jobs:
           BRANCH=${GITHUB_REF#refs/heads/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
           PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
-          BASE_URL="http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}"
+          export BASE_URL="http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}"
           npm run lighthouse
