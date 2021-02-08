@@ -148,21 +148,21 @@ jobs:
           fi
 
           # Setup all secrets
-          if ! $(kubectl get secrets | grep -q comment-generic-secret)
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q comment-generic-secret)
           then
             kubectl create secret generic comment-generic-secret \
               --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
               --namespace ${NAMESPACE}
           fi
 
-          if ! $(kubectl get secrets | grep -q market-generic-secret)
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q market-generic-secret)
           then
           kubectl create secret generic market-generic-secret \
             --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
             --namespace ${NAMESPACE}
           fi
 
-          if ! $(kubectl get secrets | grep -q auth-generic-secret)
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q auth-generic-secret)
           then
           kubectl create secret generic auth-generic-secret \
             --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
@@ -171,7 +171,7 @@ jobs:
             --namespace ${NAMESPACE}
           fi
 
-          if ! $(kubectl get secrets | grep -q analytics-generic-secret)
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q analytics-generic-secret)
           then
           kubectl create secret generic analytics-generic-secret \
             --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
@@ -232,3 +232,27 @@ jobs:
         with:
           name: end-to-end-result-videos
           path: cypress/videos
+
+  run-lighthouse-ci:
+    needs: [deploy-to-preview]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: run Lighthouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+          export BASE_URL="http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}"
+          npm run lighthouse
