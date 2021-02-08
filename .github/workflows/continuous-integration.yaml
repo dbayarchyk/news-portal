@@ -249,6 +249,7 @@ jobs:
       - name: run Lighthouse CI
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          DOMAIN: ${{ secrets.DOMAIN }}
         run: |
           BRANCH=${GITHUB_REF#refs/heads/}
           PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
