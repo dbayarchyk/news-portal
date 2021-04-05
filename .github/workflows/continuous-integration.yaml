@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Checkout master
+        # By default github downloads only the current branch. We also want to have master
+        # branch locally to be able to run test only for the files that have been changed since master. 
+        # https://dev.to/bnb/jest-and-the-changedsince-flag-in-github-actions-ci-468i
+        run: |
+          git fetch --no-tags --depth=1 origin master
+          git checkout -b master
+          git checkout ${{ github.event.pull_request.head.sha }}
       - name: Cache and restore dependencies
         uses: actions/cache@v2
         with:
@@ -27,7 +35,7 @@ jobs:
       - name: Test all packages
         env:
           CI: true
-        run: npm run test
+        run: npm run test:ci
 
   build-and-push-docker-images:
     needs: [test]
@@ -134,24 +142,42 @@ jobs:
 
           NAMESPACE=${PREVIEW_HOSTNAME}
 
-          kubectl create namespace ${NAMESPACE}
+          if ! $(kubectl get namespaces | grep -q ${NAMESPACE})
+          then
+            kubectl create namespace ${NAMESPACE}
+          fi
 
           # Setup all secrets
-          kubectl create secret generic comment-generic-secret \
-            --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
-            --namespace ${NAMESPACE}
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q comment-generic-secret)
+          then
+            kubectl create secret generic comment-generic-secret \
+              --from-literal MONGODB_URL="${PREVIEW_COMMENT_SERVICE_MONGODB_URL}" \
+              --namespace ${NAMESPACE}
+          fi
+
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q market-generic-secret)
+          then
           kubectl create secret generic market-generic-secret \
             --from-literal MONGODB_URL="${PREVIEW_MARKET_SERVICE_MONGODB_URL}" \
             --namespace ${NAMESPACE}
+          fi
+
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q auth-generic-secret)
+          then
           kubectl create secret generic auth-generic-secret \
             --from-literal MONGODB_URL="${PREVIEW_AUTH_SERVICE_MONGODB_URL}" \
             --from-literal ACCESS_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_ACCESS_TOKEN_SECRET}" \
             --from-literal REFRESH_TOKEN_SECRET="${PREVIEW_AUTH_SERVICE_REFRESH_TOKEN_SECRET}" \
             --namespace ${NAMESPACE}
+          fi
+
+          if ! $(kubectl get secrets --namespace ${NAMESPACE} | grep -q analytics-generic-secret)
+          then
           kubectl create secret generic analytics-generic-secret \
             --from-literal GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL}" \
             --from-literal GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="${PREVIEW_ANALYLICS_SERVICE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY}" \
             --namespace ${NAMESPACE}
+          fi
 
           helm upgrade ${PREVIEW_HOSTNAME} infrastructure/helm \
             --install \
@@ -188,6 +214,9 @@ jobs:
           # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
           echo "CYPRESS_BASE_URL=http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}" >> $GITHUB_ENV
       - name: Run end-to-end tests
+        env:
+          CYPRESS_USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          CYPRESS_USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
@@ -203,3 +232,27 @@ jobs:
         with:
           name: end-to-end-result-videos
           path: cypress/videos
+
+  run-lighthouse-ci:
+    needs: [deploy-to-preview]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: run Lighthouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          PREVIEW_HOSTNAME=${BRANCH//[^a-zA-Z0-9-_]/-}
+          PREVIEW_DNS_RECORD_NAME=${PREVIEW_HOSTNAME}.itdog
+          export BASE_URL="http://${PREVIEW_DNS_RECORD_NAME}.${DOMAIN}"
+          npm run lighthouse
