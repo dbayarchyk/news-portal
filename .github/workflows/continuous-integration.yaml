@@ -58,6 +58,11 @@ jobs:
           docker build api/services/auth \
             --tag dbayarchyk/itdog-auth-service:${GITHUB_SHA} \
             --file api/services/auth/Dockerfile
+      - name: Build email service docker image
+        run: |
+          docker build api/services/email \
+            --tag dbayarchyk/itdog-email-service:${GITHUB_SHA} \
+            --file api/services/email/Dockerfile
       - name: Build comment service docker image
         run: |
           docker build api/services/comment \
@@ -84,6 +89,8 @@ jobs:
         run: docker push dbayarchyk/itdog-analytics-service:${GITHUB_SHA}
       - name: Push auth service docker image
         run: docker push dbayarchyk/itdog-auth-service:${GITHUB_SHA}
+      - name: Push email service docker image
+        run: docker push dbayarchyk/itdog-email-service:${GITHUB_SHA}
       - name: Push comment service docker image
         run: docker push dbayarchyk/itdog-comment-service:${GITHUB_SHA}
       - name: Push market service docker image

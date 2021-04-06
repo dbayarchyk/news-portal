@@ -11,6 +11,8 @@ deploy:
             image: dbayarchyk/itdog-auth-service
           commentService:
             image: dbayarchyk/itdog-comment-service
+          emailService:
+            image: dbayarchyk/itdog-email-service
           marketService:
             image: dbayarchyk/itdog-market-service
           web:
@@ -62,6 +64,14 @@ build:
             dest: .
     - image: dbayarchyk/itdog-analytics-service
       context: api/services/analytics
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: dbayarchyk/itdog-email-service
+      context: api/services/email
       docker:
         dockerfile: Dockerfile.dev
       sync:

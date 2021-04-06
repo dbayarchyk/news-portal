@@ -41,6 +41,12 @@ jobs:
             --tag dbayarchyk/itdog-comment-service:${GITHUB_SHA} \
             --file api/services/comment/Dockerfile
           docker tag dbayarchyk/itdog-comment-service:${GITHUB_SHA} dbayarchyk/itdog-comment-service:latest
+      - name: Build email service docker image
+        run: |
+          docker build api/services/email \
+            --tag dbayarchyk/itdog-email-service:${GITHUB_SHA} \
+            --file api/services/email/Dockerfile
+          docker tag dbayarchyk/itdog-email-service:${GITHUB_SHA} dbayarchyk/itdog-email-service:latest
       - name: Build market service docker image
         run: |
           docker build api/services/market \
@@ -72,6 +78,10 @@ jobs:
         run: |
           docker push dbayarchyk/itdog-comment-service:${GITHUB_SHA}
           docker push dbayarchyk/itdog-comment-service:latest
+      - name: Push email service docker image
+        run: |
+          docker push dbayarchyk/itdog-email-service:${GITHUB_SHA}
+          docker push dbayarchyk/itdog-email-service:latest
       - name: Push market service docker image
         run: |
           docker push dbayarchyk/itdog-market-service:${GITHUB_SHA}
