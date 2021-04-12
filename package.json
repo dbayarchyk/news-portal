@@ -1,5 +1,5 @@
 {
-  "name": "news-portal",
+  "name": "itdog",
   "version": "0.0.1",
   "description": "A mass media portal about the IT market in Germany 🇩🇪",
   "repository": {
@@ -15,7 +15,11 @@
     "lint": "lerna run lint",
     "cypress": "cypress open",
     "cypress:headless": "cypress run --headless --browser chrome",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "lhci autorun",
+    "docker:build": "lerna run docker:build",
+    "docker:push": "lerna run docker:push",
+    "heroku:push": "lerna run heroku:push",
+    "heroku:release": "lerna run heroku:release"
   },
   "devDependencies": {
     "@lhci/cli": "^0.7.0",

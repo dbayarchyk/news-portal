@@ -1,15 +1,19 @@
 {
-  "name": "api-email-service",
+  "name": "itdog-email-service",
   "version": "0.0.1",
   "description": "The API to generate and send emails.",
   "main": "build/index.js",
   "scripts": {
-    "build": "babel ./src -d ./dist --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx'",
+    "build": "babel ./src -d ./build --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx'",
     "start": "node ./build/interface/http/server.js",
     "dev": "nodemon --watch src --ext '.ts,.tsx' --exec babel-node ./src/interface/http/server.ts --extensions '.ts,.tsx'",
     "test": "jest",
     "test:ci": "jest --changedSince=master --coverage --ci",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "docker:build": "docker build . --tag dbayarchyk/${npm_package_name} --file Dockerfile",
+    "docker:push": "docker push dbayarchyk/${npm_package_name}",
+    "heroku:push": "heroku container:push -a ${npm_package_name} web",
+    "heroku:release": "heroku container:release -a ${npm_package_name} web"
   },
   "husky": {
     "hooks": {
