@@ -1,5 +1,5 @@
 {
-  "name": "api-analytics-service",
+  "name": "itdog-analytics-service",
   "version": "0.0.1",
   "description": "The API to get analytics data.",
   "main": "build/index.js",
@@ -9,7 +9,11 @@
     "dev": "ts-node-dev --poll src/interface/http/server.ts",
     "test": "jest",
     "test:ci": "jest --changedSince=master --coverage --ci",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "docker:build": "docker build . --tag dbayarchyk/${npm_package_name} --file Dockerfile",
+    "docker:push": "docker push dbayarchyk/${npm_package_name}",
+    "heroku:push": "heroku container:push -a ${npm_package_name} web",
+    "heroku:release": "heroku container:release -a ${npm_package_name} web"
   },
   "husky": {
     "hooks": {

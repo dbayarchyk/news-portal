@@ -15,3 +15,8 @@ spec:
       containers:
         - name: web
           image: {{ .Values.web.image }}
+          env:
+            - name: SERVER_SIDE_API_URL
+              value: {{ .Values.web.env.SERVER_SIDE_API_URL }}
+            - name: NEXT_PUBLIC_CLIENT_SIDE_API_URL
+              value: {{ .Values.web.env.NEXT_PUBLIC_CLIENT_SIDE_API_URL }}

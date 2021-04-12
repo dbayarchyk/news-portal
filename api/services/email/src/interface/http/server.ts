@@ -13,7 +13,7 @@ server.setConfig((app) => {
 });
 
 const app = server.build();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

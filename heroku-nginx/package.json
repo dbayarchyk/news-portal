@@ -1,0 +1,13 @@
+{
+  "name": "itdog-nginx",
+  "version": "0.0.1",
+  "scripts": {
+    "docker:build": "docker build . --tag dbayarchyk/${npm_package_name} --file Dockerfile",
+    "docker:push": "docker push dbayarchyk/${npm_package_name}",
+    "heroku:push": "heroku container:push -a ${npm_package_name} web",
+    "heroku:release": "heroku container:release -a ${npm_package_name} web"
+  },
+  "author": "Dzmitry Bayarchyk <dzmitry.bayarchyk@gmail.com>",
+  "license": "ISC"
+}
+  

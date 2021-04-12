@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "itdog-web",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,11 @@
     "test": "jest",
     "test:ci": "jest --changedSince=master --coverage --ci",
     "lint": "eslint . --ext .ts --ext .tsx",
-    "graphql-codegen": "graphql-codegen --config codegen.yml"
+    "graphql-codegen": "graphql-codegen --config codegen.yml",
+    "docker:build": "docker build . --tag dbayarchyk/${npm_package_name} --file Dockerfile",
+    "docker:push": "docker push dbayarchyk/${npm_package_name}",
+    "heroku:push": "heroku container:push -a ${npm_package_name} web",
+    "heroku:release": "heroku container:release -a ${npm_package_name} web"
   },
   "author": "Dzmitry Bayarchyk <dzmitry.bayarchyk@gmail.com>",
   "license": "ISC",

@@ -2,7 +2,7 @@ import { NextPageContext, GetServerSidePropsContext } from 'next';
 
 const extendFetchWithSSRContext = (
   context: NextPageContext | GetServerSidePropsContext,
-  fetch: typeof window.fetch,
+  fetch: typeof global.fetch,
 ) =>
   (input: RequestInfo, init: RequestInit = {}): ReturnType<typeof window.fetch> =>
     fetch(
@@ -10,7 +10,7 @@ const extendFetchWithSSRContext = (
       {
         ...init,
         headers: {
-          ...context.req.headers as HeadersInit,
+          cookie: context.req.headers.cookie,
           ...init.headers
         }
       },

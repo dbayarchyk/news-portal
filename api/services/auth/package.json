@@ -1,5 +1,5 @@
 {
-  "name": "api-auth-service",
+  "name": "itdog-auth-service",
   "version": "0.0.1",
   "description": "The API to authenticate and authorize requests.",
   "main": "build/index.js",
@@ -12,7 +12,11 @@
     "lint": "eslint . --ext .ts",
     "migrate-mongo:create": "migrate-mongo create $1",
     "migrate-mongo:up": "migrate-mongo up",
-    "migrate-mongo:down": "migrate-mongo down"
+    "migrate-mongo:down": "migrate-mongo down",
+    "docker:build": "docker build . --tag dbayarchyk/${npm_package_name} --file Dockerfile",
+    "docker:push": "docker push dbayarchyk/${npm_package_name}",
+    "heroku:push": "heroku container:push -a ${npm_package_name} web",
+    "heroku:release": "heroku container:release -a ${npm_package_name} web"
   },
   "husky": {
     "hooks": {

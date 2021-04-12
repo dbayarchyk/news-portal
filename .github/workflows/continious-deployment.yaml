@@ -6,112 +6,29 @@ on:
       - "master"
 
 jobs:
-  build-and-push-docker-images:
+  deploy-to-production:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Restore node modules
+      - name: Cache and restore dependencies
         uses: actions/cache@v2
         with:
           path: |
             node_modules
             */*/node_modules
           key: node_modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Login to docker
+      - name: Install dependencies
+        run: npm install
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+      - name: Build and push
         env:
-          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - name: Build analytics service docker image
-        run: |
-          docker build api/services/analytics \
-            --tag dbayarchyk/itdog-analytics-service:${GITHUB_SHA} \
-            --file api/services/analytics/Dockerfile
-          docker tag dbayarchyk/itdog-analytics-service:${GITHUB_SHA} dbayarchyk/itdog-analytics-service:latest
-      - name: Build auth service docker image
-        run: |
-          docker build api/services/auth \
-            --tag dbayarchyk/itdog-auth-service:${GITHUB_SHA} \
-            --file api/services/auth/Dockerfile
-          docker tag dbayarchyk/itdog-auth-service:${GITHUB_SHA} dbayarchyk/itdog-auth-service:latest
-      - name: Build comment service docker image
-        run: |
-          docker build api/services/comment \
-            --tag dbayarchyk/itdog-comment-service:${GITHUB_SHA} \
-            --file api/services/comment/Dockerfile
-          docker tag dbayarchyk/itdog-comment-service:${GITHUB_SHA} dbayarchyk/itdog-comment-service:latest
-      - name: Build email service docker image
-        run: |
-          docker build api/services/email \
-            --tag dbayarchyk/itdog-email-service:${GITHUB_SHA} \
-            --file api/services/email/Dockerfile
-          docker tag dbayarchyk/itdog-email-service:${GITHUB_SHA} dbayarchyk/itdog-email-service:latest
-      - name: Build market service docker image
-        run: |
-          docker build api/services/market \
-            --tag dbayarchyk/itdog-market-service:${GITHUB_SHA} \
-            --file api/services/market/Dockerfile
-          docker tag dbayarchyk/itdog-market-service:${GITHUB_SHA} dbayarchyk/itdog-market-service:latest
-      - name: Build web docker image
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: npm run heroku:push
+      - name: Release
         env:
-          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
-          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
-        run: |
-          docker build web \
-            --tag dbayarchyk/itdog-web:${GITHUB_SHA} \
-            --file web/Dockerfile \
-            --build-arg CONTENTFUL_SPACE_ID_ARG=$CONTENTFUL_SPACE_ID \
-            --build-arg CONTENTFUL_ACCESS_TOKEN_ARG=$CONTENTFUL_ACCESS_TOKEN \
-            --build-arg NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID_ARG=$NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID
-          docker tag dbayarchyk/itdog-web:${GITHUB_SHA} dbayarchyk/itdog-web:latest
-      - name: Push analytics service docker image
-        run: |
-          docker push dbayarchyk/itdog-analytics-service:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-analytics-service:latest
-      - name: Push auth service docker image
-        run: |
-          docker push dbayarchyk/itdog-auth-service:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-auth-service:latest
-      - name: Push comment service docker image
-        run: |
-          docker push dbayarchyk/itdog-comment-service:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-comment-service:latest
-      - name: Push email service docker image
-        run: |
-          docker push dbayarchyk/itdog-email-service:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-email-service:latest
-      - name: Push market service docker image
-        run: |
-          docker push dbayarchyk/itdog-market-service:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-market-service:latest
-      - name: Push web docker image
-        run: |
-          docker push dbayarchyk/itdog-web:${GITHUB_SHA}
-          docker push dbayarchyk/itdog-web:latest
-
-  deploy-to-production:
-    needs: [build-and-push-docker-images]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save news-portal
-      - name: Upgrade helm release
-        run: |
-          # Apply SHA1 to the docker images as a tag
-          sed -i -e "s/{{ RELEASE_TAG }}/${GITHUB_SHA}/" infrastructure/helm/values/prod.yaml
-
-          helm upgrade itdog infrastructure/helm \
-            --install \
-            --wait \
-            --recreate-pods \
-            -f infrastructure/helm/values/prod.yaml \
-            --namespace default \
-            --create-namespace
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: npm run heroku:release
