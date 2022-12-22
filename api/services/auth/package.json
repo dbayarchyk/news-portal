@@ -33,7 +33,7 @@
     "express": "^4.17.1",
     "inversify": "^5.0.1",
     "inversify-express-utils": "^6.3.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.27",
     "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
